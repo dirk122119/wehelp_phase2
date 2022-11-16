@@ -38,8 +38,10 @@ def attractionsAPI():
 	else:
 		connect_objt=cnx.get_connection()
 		cursor = connect_objt.cursor()
+		sql="SET SESSION group_concat_max_len = 1000000;"
+		cursor.execute(sql)
 		if(keyword==None):
-			sql="SELECT view.numberId,view.name,category.categoryName,view.description,view.address,view.direction,mrt.mrtName,view.latitude,view.longitude,GROUP_CONCAT(image.imageName) FROM view INNER JOIN category ON view.category = category.categoryID INNER JOIN mrt ON view.mrt = mrt.mrtID INNER JOIN image ON view.numberId = image.viewId GROUP BY view.numberId;"
+			sql="SELECT view.numberId,view.name,category.categoryName,view.description,view.address,view.direction,mrt.mrtName,view.latitude,view.longitude,GROUP_CONCAT(image.imageName) FROM view INNER JOIN category ON view.category = category.categoryID INNER JOIN mrt ON view.mrt = mrt.mrtID INNER JOIN image ON view.numberId = image.viewId SET SESSION group_concat_max_len = 1000000 GROUP BY view.numberId;"
 			cursor.execute(sql)
 			results=cursor.fetchall()
 		else:
