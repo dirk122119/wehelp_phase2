@@ -2,6 +2,7 @@ import json
 import mysql.connector
 
 def create_connection_pool():
+    # change db_config on EC2
     db_config = {
         'host' : 'localhost',
         'user' : 'root',
