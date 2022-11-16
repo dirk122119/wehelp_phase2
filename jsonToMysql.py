@@ -1,6 +1,6 @@
 import json 
 import mysql.connector
-from sqlFunction import create_connection_pool,insertCatgory,insertMrt,insertView
+from sqlFunction import create_connection_pool,insertCatgory,insertMrt,insertView,insertImage
 
 
 
@@ -23,13 +23,16 @@ for i in data["result"]["results"] :
         insertCatgory(cnx,str)
     if i["MRT"] not in mrtList:
         if(i["MRT"]==None):
-            i["MRT"]="no station"
-            print(i["MRT"])
+            i["MRT"]="Null"
+            viewName=i["name"]
+            print(f"注意, there is no mrt station in {viewName},use 'Null' in mrt table")
+        mrtList.append(i["MRT"])
         mrtList.append(i["MRT"])
         insertMrt(cnx,i["MRT"])
 
 for i in data["result"]["results"] :
     insertView(cnx,i)
+    insertImage(cnx,i)
 
 f.close()
 

@@ -39,86 +39,94 @@ def attractionsAPI():
 		connect_objt=cnx.get_connection()
 		cursor = connect_objt.cursor()
 		if(keyword==None):
-			sql="SELECT view._id,view.name,category.categoryName,view.description,view.address,view.direction,mrt.mrtName,view.latitude,view.longitude,view.file FROM view INNER JOIN category ON view.category = category.categoryID INNER JOIN mrt ON view.mrt = mrt.mrtID;"
+			sql="SELECT view.numberId,view.name,category.categoryName,view.description,view.address,view.direction,mrt.mrtName,view.latitude,view.longitude,GROUP_CONCAT(image.imageName) FROM view INNER JOIN category ON view.category = category.categoryID INNER JOIN mrt ON view.mrt = mrt.mrtID INNER JOIN image ON view.numberId = image.viewId GROUP BY view.numberId;"
 			cursor.execute(sql)
-			result=cursor.fetchall()
-			data=[]
-			for i in range(int(page)*12,int(page)*12+12):
-				# get categoryName from category table
-				print(result[i])
-				images=result[i][9].split("https://")
-				returnImages=[]
-				for imag in images:
-					if (imag.endswith("jpg") or imag.endswith("JPG") or imag.endswith("png") or imag.endswith("PNG")):
-						returnImages.append(imag)
-				print(returnImages)
-				
-				responseView={
-					"id":result[i][0],
-					"name":result[i][1],
-					"category":result[i][2],
-					"description":result[i][3],
-					"address":result[i][4],
-					"transport":result[i][5],
-					"mrt":result[i][6],
-					"lat":float(result[i][7]),
-					"lng":float(result[i][8]),
-					"images":returnImages}
-				data.append(responseView)
-			
-			cursor.close()
-			connect_objt.close()
-			return jsonify({"nextPage":int(page)+1,"data":data}),200
+			results=cursor.fetchall()
 		else:
-			sql="SELECT view._id,view.name,category.categoryName,view.description,view.address,view.direction,mrt.mrtName,view.latitude,view.longitude,view.file,view.numberID FROM view INNER JOIN category ON view.category = category.categoryID INNER JOIN mrt ON view.mrt = mrt.mrtID WHERE view.name like %s or category.categoryName = %s;"
-			val=('%'+keyword+'%',keyword)
+			sql="SELECT view.numberId,view.name,category.categoryName,view.description,view.address,view.direction,mrt.mrtName,view.latitude,view.longitude,GROUP_CONCAT(image.imageName) FROM view INNER JOIN category ON view.category = category.categoryID INNER JOIN mrt ON view.mrt = mrt.mrtID INNER JOIN image ON view.numberId = image.viewId  WHERE view.name like %s or category.categoryName = %s GROUP BY view.numberId;"
+			val=(f"%{keyword}%",keyword)
 			cursor.execute(sql,val)
 			results=cursor.fetchall()
-			
+		
+		cursor.close()
+		connect_objt.close()
+		numberPage=len(results)//12
+		# 考慮總個數為12的倍數出現得情況
+		numberItemInLastPage=len(results)%12
+		if(int(page)==numberPage and numberItemInLastPage>0):
+			results=results[int(page)*12:]
 			data=[]
 			for result in results:
-				if(result[10]>int(page)*12+12 or result[10]<int(page)*12+1):
-					pass
+				# mrt table get "Null"
+				if(result[6]=="Null"):
+					getMrt=None
 				else:
-					images=result[9].split("https://")
-					returnImages=[]
-					for imag in images:
-						if (imag.endswith("jpg") or imag.endswith("JPG") or imag.endswith("png") or imag.endswith("PNG")):
-							returnImages.append(imag)
-					
-					
-					responseView={
-						"id":result[0],
-						"name":result[1],
-						"category":result[2],
-						"description":result[3],
-						"address":result[4],
-						"transport":result[5],
-						"mrt":result[6],
-						"lat":float(result[7]),
-						"lng":float(result[8]),
-						"images":returnImages}
-					data.append(responseView)
-			
-			cursor.close()
-			connect_objt.close()
-			return jsonify({"nextPage":int(page)+1,"data":data}),200
+					getMrt=result[6]
+				responseView={
+					"id":result[0],
+					"name":result[1],
+					"category":result[2],
+					"description":result[3],
+					"address":result[4],
+					"transport":result[5],
+					"mrt":getMrt,
+					"lat":float(result[7]),
+					"lng":float(result[8]),
+					"images":result[9].split(",")}
+				data.append(responseView)
+			return jsonify({"nextPage":None,"data":data}),200
+
+		elif(0<=int(page)<numberPage):
+			results=results[int(page)*12:int(page)*12+12]
+			print("number"+str(len(results)))
+			data=[]
+			for result in results:
+				# mrt table get "Null"
+				if(result[6]=="Null"):
+					getMrt=None
+				else:
+					getMrt=result[6]
+				responseView={
+					"id":result[0],
+					"name":result[1],
+					"category":result[2],
+					"description":result[3],
+					"address":result[4],
+					"transport":result[5],
+					"mrt":getMrt,
+					"lat":float(result[7]),
+					"lng":float(result[8]),
+					"images":result[9].split(",")}
+				data.append(responseView)
+				# 考慮總個數為12的倍數出現得情況
+			if(numberItemInLastPage>0):
+				return jsonify({"nextPage":int(page)+1,"data":data}),200
+			else:
+				return jsonify({"nextPage":None,"data":data}),200
+		elif(int(page)<0):
+			return jsonify({"error":True,"message":"page >= 0"}),500
+		elif(int(page)>numberPage):
+			return jsonify({"error":True,"message":"out of range"}),500
+		else:
+			return jsonify({"error":True,"message":f"not find keyword : {keyword}"}),500
+		
+
+
 
 @app.route("/api/attraction/<attractionId>")
 def attractionIdAPI(attractionId):
 	connect_objt=cnx.get_connection()
 	cursor = connect_objt.cursor()
-	sql="SELECT view._id,view.name,category.categoryName,view.description,view.address,view.direction,mrt.mrtName,view.latitude,view.longitude,view.file,view.numberID FROM view INNER JOIN category ON view.category = category.categoryID INNER JOIN mrt ON view.mrt = mrt.mrtID WHERE view._id= %s;"
+	sql="SELECT view.numberId,view.name,category.categoryName,view.description,view.address,view.direction,mrt.mrtName,view.latitude,view.longitude,GROUP_CONCAT(image.imageName) FROM view INNER JOIN category ON view.category = category.categoryID INNER JOIN mrt ON view.mrt = mrt.mrtID INNER JOIN image ON view.numberId = image.viewId  WHERE view.numberId= %s GROUP BY view.numberId;"
 	val=(attractionId,)
 	cursor.execute(sql,val)
 	result=cursor.fetchone()
 	if(result!=None):
-		print(result)
-		images=result[9].split("https://")
-		returnImages=[]
-		for imag in images:
-			if (imag.endswith("jpg") or imag.endswith("JPG") or imag.endswith("png") or imag.endswith("PNG")):
-				returnImages.append(imag)
+		# mrt table get "Null"
+		if(result[6]=="Null"):
+			getMrt=None
+		else:
+			getMrt=result[6]
 
 		responseView={
 			"id":result[0],
@@ -127,15 +135,15 @@ def attractionIdAPI(attractionId):
 			"description":result[3],
 			"address":result[4],
 			"transport":result[5],
-			"mrt":result[6],
+			"mrt":getMrt,
 			"lat":float(result[7]),
 			"lng":float(result[8]),
-			"images":returnImages}
+			"images":result[9].split(",")}
 		cursor.close()
 		connect_objt.close()
-		return jsonify({"data":responseView})
+		return jsonify({"data":responseView}),200
 	else:
-		return jsonify({"error":True,"message": "無此Id"})
+		return jsonify({"error":True,"message": "景點編號不正確"}),400
 @app.route("/api/categories")
 
 def categoriesApi():
@@ -152,4 +160,4 @@ def categoriesApi():
 
 
 app.debug=True
-app.run(port=3000)
+app.run("0.0.0.0",port=3000)
