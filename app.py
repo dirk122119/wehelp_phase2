@@ -33,6 +33,7 @@ def thankyou():
 def attractionsAPI():
 	page = request.args.get('page')
 	keyword = request.args.get('keyword')
+
 	if(page==None):
 		return jsonify({"error":True,"message":"必須指定page"}),500
 	else:
@@ -40,23 +41,29 @@ def attractionsAPI():
 		cursor = connect_objt.cursor()
 		sql="SET SESSION group_concat_max_len = 1000000;"
 		cursor.execute(sql)
-		if(keyword==None):
-			sql="SELECT view.numberId,view.name,category.categoryName,view.description,view.address,view.direction,mrt.mrtName,view.latitude,view.longitude,GROUP_CONCAT(image.imageName) FROM view INNER JOIN category ON view.category = category.categoryID INNER JOIN mrt ON view.mrt = mrt.mrtID INNER JOIN image ON view.numberId = image.viewId GROUP BY view.numberId;"
-			cursor.execute(sql)
-			results=cursor.fetchall()
+		sql="SELECT COUNT(*) from view;"
+		cursor.execute(sql)
+		numberView=cursor.fetchone()[0]
+		if(numberView%12>0):
+			# 0,1,2...,totalPage
+			totalPage=numberView//12
 		else:
-			sql="SELECT view.numberId,view.name,category.categoryName,view.description,view.address,view.direction,mrt.mrtName,view.latitude,view.longitude,GROUP_CONCAT(image.imageName) FROM view INNER JOIN category ON view.category = category.categoryID INNER JOIN mrt ON view.mrt = mrt.mrtID INNER JOIN image ON view.numberId = image.viewId  WHERE view.name like %s or category.categoryName = %s GROUP BY view.numberId;"
-			val=(f"%{keyword}%",keyword)
+			# 0,1,2...,totalPage
+			totalPage=(numberView//12)-1
+
+		if(keyword==None):
+			sql="SELECT view.numberId,view.name,category.categoryName,view.description,view.address,view.direction,mrt.mrtName,view.latitude,view.longitude,GROUP_CONCAT(image.imageName) FROM view INNER JOIN category ON view.category = category.categoryID INNER JOIN mrt ON view.mrt = mrt.mrtID INNER JOIN image ON view.numberId = image.viewId GROUP BY view.numberId ORDER BY view.numberId LIMIT 12 OFFSET %s ;"
+			val=(int(page)*12,)
 			cursor.execute(sql,val)
 			results=cursor.fetchall()
-		
+		else:
+			sql="SELECT view.numberId,view.name,category.categoryName,view.description,view.address,view.direction,mrt.mrtName,view.latitude,view.longitude,GROUP_CONCAT(image.imageName) FROM view INNER JOIN category ON view.category = category.categoryID INNER JOIN mrt ON view.mrt = mrt.mrtID INNER JOIN image ON view.numberId = image.viewId  WHERE view.name like %s or category.categoryName = %s GROUP BY view.numberId ORDER BY view.numberId LIMIT 12 OFFSET %s;"
+			val=(f"%{keyword}%",keyword,int(page)*12)
+			cursor.execute(sql,val)
+			results=cursor.fetchall()
 		cursor.close()
 		connect_objt.close()
-		numberPage=len(results)//12
-		# 考慮總個數為12的倍數出現得情況
-		numberItemInLastPage=len(results)%12
-		if(int(page)==numberPage and numberItemInLastPage>0):
-			results=results[int(page)*12:]
+		if(len(results)!=12 and len(results)!=0):
 			data=[]
 			for result in results:
 				# mrt table get "Null"
@@ -78,9 +85,7 @@ def attractionsAPI():
 				data.append(responseView)
 			return jsonify({"nextPage":None,"data":data}),200
 
-		elif(0<=int(page)<numberPage):
-			results=results[int(page)*12:int(page)*12+12]
-			print("number"+str(len(results)))
+		elif(len(results)==12):
 			data=[]
 			for result in results:
 				# mrt table get "Null"
@@ -100,14 +105,14 @@ def attractionsAPI():
 					"lng":float(result[8]),
 					"images":result[9].split(",")}
 				data.append(responseView)
-				# 考慮總個數為12的倍數出現得情況
-			if(numberItemInLastPage>0):
+			if(int(page)!=totalPage):
 				return jsonify({"nextPage":int(page)+1,"data":data}),200
 			else:
 				return jsonify({"nextPage":None,"data":data}),200
+			
 		elif(int(page)<0):
 			return jsonify({"error":True,"message":"page >= 0"}),500
-		elif(int(page)>numberPage):
+		elif(int(page)>totalPage):
 			return jsonify({"error":True,"message":"out of range"}),500
 		else:
 			return jsonify({"error":True,"message":f"not find keyword : {keyword}"}),500
