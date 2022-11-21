@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/sass.css')}}" />
+    <link href="{{url_for('static', filename='css/style.css')}}" rel="stylesheet" type="text/css" />
+    <title>Taipei Trip</title>
+</head>
+<body>
+    <nav>
+        <ul class="gridNav">
+            <li class="gridNavBox1"><a href="#home">台北一日遊</a></li>
+            <li class="gridNavBox2">
+                <ul>
+                    <li><a href="#news">預定行程</a></li>
+                    <li><a href="#contact">登入/註冊</a></li>
+                </ul>
+            </li>
+            
+        </ul>
+    </nav>
+    <div class="banner">
+        <div class="bannerContainer">
+            <div class="bannerHead">輕鬆享受台北一日悠閒</div>
+            <div class="bannerBody">探索每個角落，體驗城市的深度旅遊行程</div>
+            <div class="searchContainer">
+                <input type="search" class="viewSearch">
+                <button><img src="{{url_for('static', filename='image/icon_search.png')}}" alt=""></button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,92 @@
+@media only screen and (min-width: 1200px) and (max-width: 1920px) {
+@import "sass.css";
+
+body{ margin: 0; padding: 0; }
+
+.gridNav{
+    display: grid;
+    list-style-type: none;
+    grid-template-columns: auto auto;
+}
+
+.gridNav li{
+    display: inline-block;
+    text-align: center;
+}
+
+.gridNavBox1 a{
+    text-decoration:none;
+    color:var(--Primary_Color_70);
+    font-family:var(--Header_2_Bold_Typeface);
+    font-weight:var(--Header_2_Bold_Weight);
+    font-size:var(--Header_2_Bold_Size);
+    line-height:var(--Header_2_Bold_Line_Height);
+}
+
+
+
+.gridNavBox2 ul li a{
+    text-decoration:none;
+    color:var(--Secondary_Color_70);
+    font-family:var(--Body_Med_Typeface);
+    font-weight:var(--Body_Med_Weight);
+    font-size:var(--Body_Med_Size);
+    line-height:var(--Body_Med_Height);
+}
+.banner{
+    background-image:url("../image/welcome.png");
+    height: 20vw;
+    width: 100vw;
+    background-position: top;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.banner .bannerContainer{
+    position: absolute;
+    width: 600px;
+    margin-top: 100px;
+    margin-left: 50px;
+}
+.banner .bannerContainer .bannerHead{
+    color:var(--Secondary_Color_10);
+    font-family:var(--Header_1_Bold_Typeface);
+    font-weight:var(--Header_1_Bold_Weight);
+    font-size:var(--Header_1_Bold_Size);
+    line-height:var(--Header_1_Bold_Height);
+}
+
+.banner .bannerContainer .bannerBody{
+    color:var(--Secondary_Color_10);
+    font-family:var(--Body_Bold_Typeface);
+    font-weight:var(--Body_Bold_Weight);
+    font-size:var(--Body_Bold_Size);
+    line-height:var(--Body_Bold_Height);
+}
+.bannerContainer button{
+    background-color:var(--Primary_Color_70);
+    border: none;
+    width:60px;
+    height:46px;
+    color: white;
+
+}
+.searchContainer{
+    margin-top:30px;
+}
+.searchContainer button{
+    position: absolute;
+    /* margin-bottom:0px; */
+}
+.viewSearch{
+    height:46px;
+    width: 230px;
+}
+.bannerContainer button img{
+    
+    height: 30px;
+    width: 30px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+}

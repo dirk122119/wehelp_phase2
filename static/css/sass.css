@@ -1,0 +1,100 @@
+/* import font */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;700&display=swap');
+
+:root{
+    /************** Typography **************/
+
+    /* Header 1 Bold variable */
+    --Header_1_Bold_Typeface:'Noto Sans TC', sans-serif;
+    --Header_1_Bold_Weight:bold;
+    --Header_1_Bold_Size:28px;
+    --Header_1_Bold_Line_Height:24px;
+
+    /* Header 2 Bold variable */
+    --Header_2_Bold_Typeface:'Noto Sans TC', sans-serif;
+    --Header_2_Bold_Weight:bold;
+    --Header_2_Bold_Size:30px;
+    --Header_2_Bold_Line_Height:34px;
+
+    /* Header 3 Bold variable */
+    --Header_3_Bold_Typeface:'Noto Sans TC', sans-serif;
+    --Header_3_Bold_Weight:bold;
+    --Header_3_Bold_Size:24px;
+    --Header_3_Bold_Line_Height:24px;
+
+    /* Header 3 Reg variable */
+    --Header_3_Reg_Typeface:'Noto Sans TC', sans-serif;
+    --Header_3_Reg_Weight:normal;
+    --Header_3_Reg_Size:24px;
+    --Header_3_Reg_Line_Height:24px;
+
+    /* Button Bold variable */
+    --Button_Bold_Typeface:'Noto Sans TC', sans-serif;
+    --Button_Bold_Weight:bold;
+    --Button_Bold_Size:19px;
+    --Button_Bold_Line_Height:16px;
+
+    /* Button Reg variable */
+    --Button_Reg_Typeface:'Noto Sans TC', sans-serif;
+    --Button_Reg_Weight:normal;
+    --Button_Reg_Size:19px;
+    --Button_Reg_Line_Height:16px;
+
+    /* Content Bold variable */
+    --Content_Bold_Typeface:'Noto Sans TC', sans-serif;
+    --Content_Bold_Weight:bold;
+    --Content_Bold_Size:16px;
+    --Content_Bold_Line_Height:auto;
+
+    /* Content Reg variable */
+    --Content_Reg_Typeface:'Noto Sans TC', sans-serif;
+    --Content_Reg_Weight:normal;
+    --Content_Reg_Size:16px;
+    --Content_Reg_Line_Height:auto;
+
+     /* Body Bold variable */
+     --Body_Bold_Typeface:'Noto Sans TC', sans-serif;
+     --Body_Bold_Weight:bold;
+     --Body_Bold_Size:16px;
+     --Body_Bold_Line_Height:13.3px;
+ 
+     /* Body Med variable */
+     --Body_Med_Typeface:'Noto Sans TC', sans-serif;
+     --Body_Med_Weight:medium;
+     --Body_Med_Size:16px;
+     --Body_Med_Line_Height:13.3px;
+
+     /* Category List variable */
+    --Category_List_Typeface:'Noto Sans TC', sans-serif;
+    --Category_List_Weight:medium;
+    --Category_List_Size:14px;
+    --Category_List_Line_Height:auto;
+
+    /************** Color Scheme **************/
+
+    /* Primary Color/Cyan 70 */
+    --Primary_Color_70:#448899;
+    /* Primary Color/Cyan 50 */
+    --Primary_Color_50:#66AABB;
+    /* Primary Color/Cyan 20 */
+    --Primary_Color_20:#AADDEE;
+    /* Secondary Color/Gray 70 */
+    --Secondary_Color_70:#666666;
+    /* Secondary Color/Gray 50 */
+    --Secondary_Color_50:#757575;
+    /* Secondary Color/Gray 20 */
+    --Secondary_Color_20:#E8E8E8;
+    /* Secondary Color/Gray 10 */
+    --Secondary_Color_10:#F8F8F8;
+    /* Additional Color/Light Cyan Gradient (135deg) */
+    --Additional_Color_Dark_Cyan_Gradient_135deg:linear-gradient(135deg, #AADDEE 0%, #66AABB 100%);
+    /* Additional Color/Dark Cyan Gradient (0deg) */
+    --Additional_Color_Dark_Cyan_Gradient_0deg:linear-gradient(270deg, #337788 0%, #66AABB 100%);
+    /* Additional Color/Blue Gray */
+    --Additional_Color_Blue_Gray:#AABBCC;
+    /* Additional Color/White */
+    --Additional_Color_White:#FFFFFF;
+    /* Additional Color/Black */
+    --Additional_Color_Black:#000000;
+
+}
