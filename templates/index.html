@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{url_for('static', filename='css/sass.css')}}" />
     <link href="{{url_for('static', filename='css/style.css')}}" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="{{url_for('static', filename='js/getData.js')}}"></script>
     <title>Taipei Trip</title>
 </head>
 <body>
@@ -21,15 +22,26 @@
             
         </ul>
     </nav>
+
     <div class="banner">
         <div class="bannerContainer">
             <div class="bannerHead">輕鬆享受台北一日悠閒</div>
             <div class="bannerBody">探索每個角落，體驗城市的深度旅遊行程</div>
             <div class="searchContainer">
-                <input type="search" class="viewSearch">
+                <input type="search" class="viewSearch" placeholder="輸入景點名稱查詢">
                 <button><img src="{{url_for('static', filename='image/icon_search.png')}}" alt=""></button>
             </div>
         </div>
+    </div>
+
+    <div class="viewFlexContainer">
+        <div class="viewGridContainer">
+
+        </div>
+    </div>
+
+    <div class="footer">
+
     </div>
 </body>
 </html>

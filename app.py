@@ -130,7 +130,7 @@ def attractionsAPI():
 			response.headers['Access-Control-Allow-Origin'] = '*'
 			return response
 		else:
-			response = make_response(jsonify({"error":True,"message":f"not find keyword : {keyword}"}),500)
+			response = make_response(jsonify({"error":True,"message":f"not find keyword : {keyword}"}),mimetype='application/json',status=500)
 			response.headers['content-type'] = 'application/json'
 			response.headers['Access-Control-Allow-Origin'] = '*'
 			return response
@@ -187,9 +187,10 @@ def categoriesApi():
 	for item in results:
 		data.append(item[0])
 
-	response = make_response(jsonify({"data":data}),200)
-	response.headers['content-type'] = 'application/json'
-	response.headers['Access-Control-Allow-Origin'] = '*'
+	# json.dumps and jsonify difference
+	response = make_response(jsonify({"data":data}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+	# response.headers['content-type'] = 'application/json'
+	# response.headers['Access-Control-Allow-Origin'] = '*'
 	return response
 
 
