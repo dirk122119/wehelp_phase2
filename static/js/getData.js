@@ -124,7 +124,7 @@ function categoriesList(req=getCategoriesData()){
             let newCategoryDiv = document.createElement("div");
             let newA = document.createElement("a");
             let newContent = document.createTextNode(category);
-            newCategoryDiv.onclick=(e)=>{searchKeyword.value=e.target.innerText;console.log(e.target.innerText)}
+            newCategoryDiv.onclick=(e)=>{searchKeyword.value=e.target.innerText;categoriesListBlock.style.display="none"}
             newA.appendChild(newContent);
             newCategoryDiv.appendChild(newA);
             newCategoryDiv.className = "gridCategoryTitle";
@@ -137,7 +137,7 @@ function categoriesList(req=getCategoriesData()){
 
 function showList(){
     let categoriesListBlock = document.querySelectorAll('.categoriesList')[0];
-    categoriesListBlock.style.display="block";
+    categoriesListBlock.style.display="flex";
 }
 
 
@@ -146,6 +146,7 @@ let nowPage = 0;
 
 createIndexView();
 categoriesList();
+
 let options = {
   root: null,
   rootMargin: "0px",
@@ -167,4 +168,10 @@ let target = document.querySelectorAll(".footer")[0];
 observer.observe(target);
 
 
-
+document.addEventListener("click", (e)=>{
+    console.log(e)
+    if(e.target.className!="viewSearch"){
+        let categoriesListBlock = document.querySelectorAll('.categoriesList')[0];
+        categoriesListBlock.style.display="none"
+    }
+  }); 

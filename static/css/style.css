@@ -107,17 +107,25 @@ input{
 .categoriesList{
     display:none;
     margin-top: 5px;
-    height:300px;
+    height:auto;
     width: 400px;
     border: none; /* <-- This thing here */
     border:solid 1px var(--Additional_Color_White);
-    border-radius: 10px 0 0 10px;
-    background-color:var(--Additional_Color_White);
+    border-radius: 10px 10px 10px 10px;
+    justify-content:center;
+    align-items: center;
+    
 }
 .categoriesListGridContainer{
+    width:400px;
     display: grid;
     gap: 0px;
-    grid-template-columns:120px 120px 120px;
+    grid-template-columns:auto auto auto;
+    background-color:var(--Additional_Color_White);
+    border: none; /* <-- This thing here */
+    border:solid 1px var(--Additional_Color_White);
+    border-radius: 10px 10px 10px 10px;
+   
 }
 .gridCategoryTitle{
     display: flex;
@@ -126,6 +134,9 @@ input{
     width: 120px;
     height: 40px;
     background-color:var(--Additional_Color_White);
+    border: none; /* <-- This thing here */
+    border:solid 1px var(--Additional_Color_White);
+    border-radius: 10px 10px 10px 10px;
 }
 
 .gridCategoryTitle:hover{
