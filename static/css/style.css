@@ -100,8 +100,47 @@ input::placeholder {
     font-weight:var(--Body_Bold_Weight);
     font-size:var(--Body_Bold_Size);
     line-height:var(--Body_Bold_Height);
-    padding: 15px;
   }
+input{
+    padding: 15px;
+}
+.categoriesList{
+    display:none;
+    margin-top: 5px;
+    height:300px;
+    width: 400px;
+    border: none; /* <-- This thing here */
+    border:solid 1px var(--Additional_Color_White);
+    border-radius: 10px 0 0 10px;
+    background-color:var(--Additional_Color_White);
+}
+.categoriesListGridContainer{
+    display: grid;
+    gap: 0px;
+    grid-template-columns:120px 120px 120px;
+}
+.gridCategoryTitle{
+    display: flex;
+    justify-content:center;
+    align-items: left;
+    width: 120px;
+    height: 40px;
+    background-color:var(--Additional_Color_White);
+}
+
+.gridCategoryTitle:hover{
+    width: 120px;
+    height: 40px;
+    background-color:var(--Secondary_Color_20);
+}
+.gridCategoryTitle a{
+    padding: 10px;
+    color:var(--Category_List_Color_50);
+    font-family:var(--Category_List_Typeface);
+    font-weight:var(--Category_List_Weight);
+    font-size:var(--Category_List_Size);
+    line-height:var(--Category_List_Height);
+}
 .viewFlexContainer{
     margin-top: 50px;
     display: flex;
@@ -113,7 +152,7 @@ input::placeholder {
     width: 1200px;
     display: grid;
     gap: 30px;
-    grid-template-columns: auto auto auto auto;
+    grid-template-columns: 270px 270px 270px 270px;
 }
 .gridItem {
         

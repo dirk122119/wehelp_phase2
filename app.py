@@ -191,6 +191,8 @@ def categoriesApi():
 	response = make_response(jsonify({"data":data}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
 	# response.headers['content-type'] = 'application/json'
 	# response.headers['Access-Control-Allow-Origin'] = '*'
+	cursor.close()
+	connect_objt.close()
 	return response
 
 
