@@ -15,6 +15,7 @@ function getCategoriesData() {
 }
 
 function getAttractionsData(page = 0, keyword = "") {
+  loadingFlag=true;
   if (keyword == "") {
     return fetch(`http://54.64.173.185:3000/api/attractions?page=${page}`).then(
       (response) => response.json()
@@ -77,20 +78,50 @@ function createIndexView(req = getAttractionsData()) {
         newGridItemDiv.appendChild(newGridInfoDiv);
         el.appendChild(newGridItemDiv);
       }
-    }
-    else {
+    } else {
       let el = document.querySelectorAll(".viewGridContainer")[0];
       let newA = document.createElement("a");
       let newContent = document.createTextNode("沒有結果");
-      newA.id='nonfound';
+      newA.id = "nonfound";
       newA.appendChild(newContent);
       el.appendChild(newA);
     }
-  });
+  }).then(()=>{loadingFlag=false;});
+}
+function loadHomePage() {
+
+  createIndexView();
+
+   options = {
+    root: null,
+    rootMargin: "0px",
+    threshold: 0.0,
+  };
+
+   callback = (entries, observer) => {
+    let thirdLi = document.querySelectorAll(".gridItem");
+    entries.forEach((entry) => {
+      if (entry.isIntersecting === true && thirdLi.length != 0) {
+        if (nextPage === null) {
+        } else {
+          if(loadingFlag===false)
+          {
+          createIndexView(
+            (req = getAttractionsData((page = nextPage), (keyword = "")))
+          );
+        }
+        }
+      }
+    });
+  };
+  observer = new IntersectionObserver(callback, options);
+  let target = document.querySelectorAll(".footer")[0];
+  observer.observe(target);
+
 }
 
-function searchKeyword(observerPass = observer) {
-  observerPass.disconnect();
+function searchKeyword() {
+  observer.disconnect();
   const nonfoundNode = document.querySelectorAll("#nonfound");
   nonfoundNode.forEach((item) => {
     item.remove();
@@ -103,13 +134,13 @@ function searchKeyword(observerPass = observer) {
 
   createIndexView((req = getAttractionsData((page = 0), (keyword = keyword))));
 
-  let options = {
+  options = {
     root: null,
     rootMargin: "0px",
     threshold: 0.0,
   };
 
-  let callback = (entries, observer) => {
+  callback = (entries, observer) => {
     let thirdLi = document.querySelectorAll(".gridItem");
     entries.forEach((entry) => {
       if (entry.isIntersecting === true && thirdLi.length != 0) {
@@ -123,7 +154,7 @@ function searchKeyword(observerPass = observer) {
     });
   };
 
-  let observer = new IntersectionObserver(callback, options);
+  observer = new IntersectionObserver(callback, options);
   let target = document.querySelectorAll(".footer")[0];
   observer.observe(target);
 }
@@ -157,36 +188,37 @@ function showList() {
   categoriesListBlock.style.display = "flex";
 }
 
-let nextPage = null;
-let nowPage = 0;
+function debounce(func,time) {
+  var timeout;
+  return ()=>{
+    //清除定时器
+    clearTimeout(timeout);
+    timeout = setTimeout(func,time);
+  };
+}
 
-createIndexView();
-categoriesList();
+function clickSearchKey(){
+  let debouncesearchKeyword=debounce(searchKeyword(),500);
+  document.addEventListener('scroll', function() {
+    //停止滚动之后开始计算
+    debouncesearchKeyword();
+  });
+}
+let nextPage = null;
+let loadingFlag=false;
+let observer;
+let callback;
+let options;
+
+
+window.onload = ()=>{
+  loadHomePage();
+  categoriesList()
+}
 window.onscroll = function () {
   sticky();
 };
 
-let options = {
-  root: null,
-  rootMargin: "0px",
-  threshold: 0.0,
-};
-let callback = (entries, observer) => {
-  let thirdLi = document.querySelectorAll(".gridItem");
-  entries.forEach((entry) => {
-    if (entry.isIntersecting === true && thirdLi.length != 0) {
-      if (nextPage === null) {
-      } else {
-        createIndexView(
-          (req = getAttractionsData((page = nextPage), (keyword = "")))
-        );
-      }
-    }
-  });
-};
-let observer = new IntersectionObserver(callback, options);
-let target = document.querySelectorAll(".footer")[0];
-observer.observe(target);
 
 document.addEventListener("click", (e) => {
   if (e.target.className != "viewSearch") {
