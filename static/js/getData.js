@@ -82,6 +82,7 @@ function createIndexView(req = getAttractionsData()) {
       let el = document.querySelectorAll(".viewGridContainer")[0];
       let newA = document.createElement("a");
       let newContent = document.createTextNode("沒有結果");
+      newA.id='nonfound';
       newA.appendChild(newContent);
       el.appendChild(newA);
     }
@@ -90,6 +91,10 @@ function createIndexView(req = getAttractionsData()) {
 
 function searchKeyword(observerPass = observer) {
   observerPass.disconnect();
+  const nonfoundNode = document.querySelectorAll("#nonfound");
+  nonfoundNode.forEach((item) => {
+    item.remove();
+  });
   const elements = document.querySelectorAll(".gridItem");
   elements.forEach((item) => {
     item.remove();
