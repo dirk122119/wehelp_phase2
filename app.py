@@ -63,7 +63,7 @@ def attractionsAPI():
 			results=cursor.fetchall()
 		cursor.close()
 		connect_objt.close()
-		if(len(results)!=12 and len(results)!=0):
+		if(len(results)!=12):
 			data=[]
 			for result in results:
 				# mrt table get "Null"
