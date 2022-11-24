@@ -5,14 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{url_for('static', filename='css/sass.css')}}" />
-    <link href="{{url_for('static', filename='css/style.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{url_for('static', filename='css/styleDesktop.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{url_for('static', filename='css/stylePhone.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{url_for('static', filename='css/styleTable.css')}}" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="{{url_for('static', filename='js/getData.js')}}" defer></script>
-    
     <title>Taipei Trip</title>
 </head>
 <body>
-    <nav>
-        <ul class="gridNav">
+        <nav class="gridNav">
             <li class="gridNavBox1"><a href="#home">台北一日遊</a></li>
             <li class="gridNavBox2">
                 <ul>
@@ -21,9 +21,8 @@
                 </ul>
             </li>
             
-        </ul>
-    </nav>
-
+        </nav>
+    <div class="content">
     <div class="banner">
         <div class="bannerContainer">
             <div class="bannerHead">輕鬆享受台北一日悠閒</div>
@@ -38,12 +37,13 @@
         </div>
     </div>
 
+
     <div class="viewFlexContainer">
         <div class="viewGridContainer">
 
         </div>
     </div>
-
+</div>
     <div class="footer">
 
     </div>

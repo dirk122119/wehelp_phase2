@@ -1,3 +1,13 @@
+function sticky() {
+  let navbar=document.querySelectorAll(".gridNav")[0];
+  let navbarHeight=navbar.offsetHeight;
+  if (window.pageYOffset >= navbarHeight) {
+    navbar.classList.add("sticky")
+  } else {
+    navbar.classList.remove("sticky");
+  }
+  }
+
 function getCategoriesData() {
   return fetch("http://54.64.173.185:3000/api/categories").then((response) =>
     response.json()
@@ -146,6 +156,7 @@ let nowPage = 0;
 
 createIndexView();
 categoriesList();
+window.onscroll = function() {sticky()};
 
 let options = {
   root: null,
