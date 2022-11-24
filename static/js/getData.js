@@ -1,5 +1,5 @@
 function sticky() {
-  let navbar = document.querySelectorAll(".gridNav")[0];
+  let navbar = document.querySelectorAll(".navbar")[0];
   let navbarHeight = navbar.offsetHeight;
   if (window.pageYOffset >= navbarHeight) {
     navbar.classList.add("sticky");

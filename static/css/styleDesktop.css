@@ -3,18 +3,48 @@
 
 body{ margin: 0; padding: 0; }
 
-
-.gridNav{
+.navbar{
+    width:100vw;
     height: 54px;
-    position: relative;
-    z-index:1;
-    display: grid;
-    list-style-type: none;
-    grid-template-columns: auto auto;
+    display: flex;
+    justify-content:center;
     background-color: var(--Additional_Color_White);
     opacity:1;
-
+    z-index:1;
 }
+.navbar .navbarContainer{
+    width:1200px;
+    display: flex;
+    justify-content: space-between
+}
+
+.LOGO{
+    margin: 10px 0 10px 0;
+}
+.LOGO a{
+    text-decoration:none;
+    color:var(--Primary_Color_70);
+    font-family:var(--Header_2_Bold_Typeface);
+    font-weight:var(--Header_2_Bold_Weight);
+    font-size:var(--Header_2_Bold_Size);
+    line-height:var(--Header_2_Bold_Line_Height);
+}
+
+.navlink{
+    display: flex;
+}
+.navlink div{
+    margin: 20px 20px 20px 0;
+}
+.navlink a{
+    text-decoration:none;
+    color:var(--Secondary_Color_70);
+    font-family:var(--Body_Med_Typeface);
+    font-weight:var(--Body_Med_Weight);
+    font-size:var(--Body_Med_Size);
+    line-height:var(--Body_Med_Height);
+}
+
 .sticky {
     position: fixed;
     top: 0;
@@ -24,34 +54,8 @@ body{ margin: 0; padding: 0; }
     padding-top: 54px;
   }
 
-.gridNav li{
-    display: inline-block;
-    text-align: center;
-}
-.gridNavBox1{
-    padding:10px;
-}
-.gridNavBox1 a{
-    
-    text-decoration:none;
-    color:var(--Primary_Color_70);
-    font-family:var(--Header_2_Bold_Typeface);
-    font-weight:var(--Header_2_Bold_Weight);
-    font-size:var(--Header_2_Bold_Size);
-    line-height:var(--Header_2_Bold_Line_Height);
-}
 
 
-
-.gridNavBox2 ul li a{
-    text-decoration:none;
-    padding:20px;
-    color:var(--Secondary_Color_70);
-    font-family:var(--Body_Med_Typeface);
-    font-weight:var(--Body_Med_Weight);
-    font-size:var(--Body_Med_Size);
-    line-height:var(--Body_Med_Height);
-}
 .banner{
     background-image:url("../image/welcome.png");
     height: 20vw;
