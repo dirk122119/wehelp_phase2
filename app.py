@@ -63,7 +63,7 @@ def attractionsAPI():
 			results=cursor.fetchall()
 		cursor.close()
 		connect_objt.close()
-		if(len(results)!=12 and len(results)!=0):
+		if(len(results)!=12):
 			data=[]
 			for result in results:
 				# mrt table get "Null"
@@ -83,7 +83,10 @@ def attractionsAPI():
 					"lng":float(result[8]),
 					"images":result[9].split(",")}
 				data.append(responseView)
-			return jsonify({"nextPage":None,"data":data}),200
+			response = make_response(jsonify({"nextPage":None,"data":data}),200)
+			response.headers['content-type'] = 'application/json'
+			response.headers['Access-Control-Allow-Origin'] = '*'
+			return response
 
 		elif(len(results)==12):
 			data=[]
@@ -106,16 +109,31 @@ def attractionsAPI():
 					"images":result[9].split(",")}
 				data.append(responseView)
 			if(int(page)!=totalPage):
-				return jsonify({"nextPage":int(page)+1,"data":data}),200
+				response = make_response(jsonify({"nextPage":int(page)+1,"data":data}),200)
+				response.headers['content-type'] = 'application/json'
+				response.headers['Access-Control-Allow-Origin'] = '*'
+				return response
 			else:
-				return jsonify({"nextPage":None,"data":data}),200
+				response = make_response(jsonify({"nextPage":None,"data":data}),200)
+				response.headers['content-type'] = 'application/json'
+				response.headers['Access-Control-Allow-Origin'] = '*'
+				return response
 			
 		elif(int(page)<0):
-			return jsonify({"error":True,"message":"page >= 0"}),500
+			response = make_response(jsonify({"error":True,"message":"page >= 0"}),500)
+			response.headers['content-type'] = 'application/json'
+			response.headers['Access-Control-Allow-Origin'] = '*'
+			return response
 		elif(int(page)>totalPage):
-			return jsonify({"error":True,"message":"out of range"}),500
+			response = make_response(jsonify({"error":True,"message":"out of range"}),500)
+			response.headers['content-type'] = 'application/json'
+			response.headers['Access-Control-Allow-Origin'] = '*'
+			return response
 		else:
-			return jsonify({"error":True,"message":f"not find keyword : {keyword}"}),500
+			response = make_response(jsonify({"error":True,"message":f"not find keyword : {keyword}"}),mimetype='application/json',status=500)
+			response.headers['content-type'] = 'application/json'
+			response.headers['Access-Control-Allow-Origin'] = '*'
+			return response
 		
 
 
@@ -148,11 +166,17 @@ def attractionIdAPI(attractionId):
 			"images":result[9].split(",")}
 		cursor.close()
 		connect_objt.close()
-		return jsonify({"data":responseView}),200
+		response = make_response(jsonify({"data":responseView}),200)
+		response.headers['content-type'] = 'application/json'
+		response.headers['Access-Control-Allow-Origin'] = '*'
+		return response
 	else:
-		return jsonify({"error":True,"message": "景點編號不正確"}),400
+		response = make_response(jsonify({"error":True,"message": "景點編號不正確"}),400)
+		response.headers['content-type'] = 'application/json'
+		response.headers['Access-Control-Allow-Origin'] = '*'
+		return response
+		
 @app.route("/api/categories")
-
 def categoriesApi():
 	connect_objt=cnx.get_connection()
 	cursor = connect_objt.cursor()
@@ -162,7 +186,14 @@ def categoriesApi():
 	data=[]
 	for item in results:
 		data.append(item[0])
-	return jsonify({"data":data})
+
+	# json.dumps and jsonify difference
+	response = make_response(jsonify({"data":data}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+	# response.headers['content-type'] = 'application/json'
+	# response.headers['Access-Control-Allow-Origin'] = '*'
+	cursor.close()
+	connect_objt.close()
+	return response
 
 
 

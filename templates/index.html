@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/sass.css')}}" />
+    <link href="{{url_for('static', filename='css/styleDesktop.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{url_for('static', filename='css/stylePhone.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{url_for('static', filename='css/styleTable.css')}}" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="{{url_for('static', filename='js/getData.js')}}" defer></script>
+    <title>Taipei Trip</title>
+</head>
+<body>
+
+        <nav class="navbar">
+            <div class="navbarContainer">
+                <div class="LOGO"><a href="#home">台北一日遊</a></div>
+                <div class="navlink">
+                    <div><a href="#news">預定行程</a></div>
+                    <div><a href="#contact">登入/註冊</a></div>
+                </div>
+            </div>
+        </nav>
+
+    <div class="content">
+    <div class="banner">
+        <div class="bannerContainer">
+            <div class="bannerHead">輕鬆享受台北一日悠閒</div>
+            <div class="bannerBody">探索每個角落，體驗城市的深度旅遊行程</div>
+            <div class="searchContainer">
+                <input type="search" id="searchInput" class="viewSearch" placeholder="輸入景點名稱查詢" onclick="showList()">
+                <button id="searchButton" onclick="clickSearchKey()"><img src="{{url_for('static', filename='image/icon_search.png')}}" alt=""></button>
+                <div class="categoriesList">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="viewFlexContainer">
+        <div class="viewGridContainer">
+
+        </div>
+    </div>
+</div>
+    <div class="footer">
+
+    </div>
+</body>
+
+</html>
