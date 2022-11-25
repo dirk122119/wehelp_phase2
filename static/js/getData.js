@@ -146,9 +146,12 @@ function searchKeyword() {
       if (entry.isIntersecting === true && thirdLi.length != 0) {
         if (nextPage === null) {
         } else {
+          if(loadingFlag===false)
+          {
           createIndexView(
             (req = getAttractionsData((page = nextPage), (keyword = keyword)))
           );
+          }
         }
       }
     });
