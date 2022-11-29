@@ -35,7 +35,8 @@ function createIndexView(req = getAttractionsData()) {
       for (let i = 0; i < data["data"].length; i++) {
         let newGridItemDiv = document.createElement("div");
         newGridItemDiv.className = "gridItem";
-
+        let id =data["data"][i]["id"];
+        newGridItemDiv.onclick=()=>{window.location.assign(window.location.href+"attraction/"+id.toString());}
         // view image
         let newImg = document.createElement("img");
         let str = data["data"][i]["images"][0];
@@ -191,14 +192,6 @@ function showList() {
   categoriesListBlock.style.display = "flex";
 }
 
-function debounce(func,time) {
-  var timeout;
-  return ()=>{
-    //清除定时器
-    clearTimeout(timeout);
-    timeout = setTimeout(func,time);
-  };
-}
 
 function clickSearchKey(){
   let debouncesearchKeyword=debounce(searchKeyword(),500);
@@ -206,6 +199,9 @@ function clickSearchKey(){
     //停止滚动之后开始计算
     debouncesearchKeyword();
   });
+}
+function clickGridItem(id){
+  alert(id);
 }
 let nextPage = null;
 let loadingFlag=false;
