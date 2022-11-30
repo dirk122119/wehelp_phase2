@@ -39,7 +39,7 @@ def attractionsAPI():
 	else:
 		connect_objt=cnx.get_connection()
 		cursor = connect_objt.cursor()
-		sql="SET SESSION group_concat_max_len = -1"
+		sql="SET SESSION group_concat_max_len = 1000000000"
 		cursor.execute(sql)
 		sql="SELECT COUNT(*) from view;"
 		cursor.execute(sql)
