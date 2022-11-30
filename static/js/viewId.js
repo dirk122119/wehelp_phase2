@@ -22,11 +22,13 @@ function loadVieInfo(getViewIdData) {
   req.then((data) => {
     if (data["data"].length != 0) {
       createSlide(data["data"]["images"]);
-      createInfo(data["data"],detectFooter);
+      createInfo(data["data"]);
       showSlides(slideIndex);
     } else {
       alert("id error")
     }
+  }).then(()=>{
+    detectFooter();
   });
 }
 function createSlide(urlList) {
@@ -80,7 +82,7 @@ function showSlides(n) {
   dots[slideIndex - 1].className += " active";
 }
 
-function createInfo(data,callback) {
+function createInfo(data) {
   let el = document.querySelectorAll("#tittle")[0];
   el.innerText = data["name"];
   el = document.querySelectorAll("#categoryAndMrt")[0];
@@ -101,7 +103,6 @@ function createInfo(data,callback) {
   el.innerText = data["address"];
   el = document.querySelectorAll("#transportContent")[0];
   el.innerText = data["transport"];
-  callback();
 }
 
 function formOffsetTop(){
@@ -114,13 +115,12 @@ function formOffsetTop(){
 
 function detectFooter(){
   let windowHeight=window.screen.height;
-  let lastContentElement=document.querySelectorAll("#transportContent")[0];
+  let lastContentElement=document.querySelectorAll(".content")[0];
   let lastContentElementOffSet=lastContentElement.offsetTop;
   let lastContentElementheight=lastContentElement.clientHeight;
   let footer=document.querySelectorAll(".footer")[0];
   let footerOffSet=footer.offsetTop;
   let footerHeight=footer.clientHeight;
-
   if(windowHeight>(lastContentElementOffSet+lastContentElementheight+footerHeight+120)){
     footer.style.position="absolute";
     footer.style.top="";
@@ -135,7 +135,6 @@ function detectFooter(){
 window.onload = () => {
   loadVieInfo(getViewIdData());
   formOffsetTop();
-  
 };
 window.onscroll = function () {
   sticky();
@@ -148,8 +147,6 @@ addEventListener("resize", (event) => {
     formOffsetTop();
     detectFooter();
   }
- 
-  
 });
 
 let slideIndex = 1;

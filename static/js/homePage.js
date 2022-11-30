@@ -87,12 +87,12 @@ function createIndexView(req = getAttractionsData()) {
       newA.appendChild(newContent);
       el.appendChild(newA);
     }
-  }).then(()=>{loadingFlag=false;});
+  }).then(()=>{loadingFlag=false;detectFooter();
+  });
 }
 function loadHomePage() {
 
   createIndexView();
-
    options = {
     root: null,
     rootMargin: "0px",
@@ -218,6 +218,7 @@ function detectFooter(){
 }
 let nextPage = null;
 let loadingFlag=false;
+let loadHomePageFlag=false;
 let observer;
 let callback;
 let options;

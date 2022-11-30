@@ -259,7 +259,6 @@
     line-height:var(--Content_Reg_Height);
   }
   
-
   #adressTittle,#transportTittle{
     width: 1180px;
     height: auto;
@@ -281,8 +280,8 @@
     color: var(--Additional_Color_White);
     display: grid;
     place-items: center;
-    position:absolute;
-    bottom: 0;
+    position:relative;
+    top: calc(100vh - 100px);
     font-size:var(--Body_Bold_Size);
   }
 }
