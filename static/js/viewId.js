@@ -27,8 +27,6 @@ function loadVieInfo(getViewIdData) {
     } else {
       alert("id error")
     }
-  }).then(()=>{
-    detectFooter();
   });
 }
 function createSlide(urlList) {
@@ -103,18 +101,19 @@ function createInfo(data) {
   el.innerText = data["address"];
   el = document.querySelectorAll("#transportContent")[0];
   el.innerText = data["transport"];
+  detectFooter();
 }
 
 function formOffsetTop(){
   let formElement=document.querySelectorAll("form")[0];
   let formOffSetTop=formElement.offsetTop;
-  let gridContainer=document.querySelectorAll(".gridContainer")[0].clientHeight;
+  let gridContainer=document.querySelectorAll(".slideshowContainer")[0].clientHeight;
   let height=gridContainer-formOffSetTop
   formElement.style.height=`${height}px`;
 }
 
 function detectFooter(){
-  let windowHeight=window.screen.height;
+  let windowHeight=window.innerHeight;
   let lastContentElement=document.querySelectorAll(".content")[0];
   let lastContentElementOffSet=lastContentElement.offsetTop;
   let lastContentElementheight=lastContentElement.clientHeight;
@@ -140,13 +139,10 @@ window.onscroll = function () {
   sticky();
 };
 addEventListener("resize", (event) => {
-  if(window.screen.width<600){
-    detectFooter();
-  }
-  else{
+
     formOffsetTop();
     detectFooter();
-  }
+  
 });
 
 let slideIndex = 1;

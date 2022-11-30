@@ -205,7 +205,6 @@ function detectFooter(){
   let footer=document.querySelectorAll(".footer")[0];
   let footerOffSet=footer.offsetTop;
   let footerHeight=footer.clientHeight;
-
   if(windowHeight>(lastContentElementOffSet+lastContentElementheight+footerHeight+120)){
     footer.style.position="absolute";
     footer.style.top="";
