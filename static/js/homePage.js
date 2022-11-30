@@ -196,9 +196,7 @@ function showList() {
 
 
 
-function clickGridItem(id){
-  alert(id);
-}
+
 function detectFooter(){
   let windowHeight=window.screen.height;
   let lastContentElement=document.querySelectorAll(".content")[0];
