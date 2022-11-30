@@ -118,6 +118,7 @@ function loadHomePage() {
   observer = new IntersectionObserver(callback, options);
   let target = document.querySelectorAll(".footer")[0];
   observer.observe(target);
+  
 
 }
 
@@ -161,6 +162,7 @@ function searchKeyword() {
   observer = new IntersectionObserver(callback, options);
   let target = document.querySelectorAll(".footer")[0];
   observer.observe(target);
+  detectFooter();
 }
 
 function categoriesList(req = getCategoriesData()) {
@@ -197,6 +199,25 @@ function showList() {
 function clickGridItem(id){
   alert(id);
 }
+function detectFooter(){
+  let windowHeight=window.screen.height;
+  let lastContentElement=document.querySelectorAll(".content")[0];
+  let lastContentElementOffSet=lastContentElement.offsetTop;
+  let lastContentElementheight=lastContentElement.clientHeight;
+  let footer=document.querySelectorAll(".footer")[0];
+  let footerOffSet=footer.offsetTop;
+  let footerHeight=footer.clientHeight;
+
+  if(windowHeight>(lastContentElementOffSet+lastContentElementheight+footerHeight+120)){
+    footer.style.position="absolute";
+    footer.style.top="";
+  }
+  else{
+    
+    footer.style.position="relative";
+    footer.style.top="120px";
+  }
+}
 let nextPage = null;
 let loadingFlag=false;
 let observer;
@@ -219,3 +240,6 @@ document.addEventListener("click", (e) => {
     categoriesListBlock.style.display = "none";
   }
 });
+addEventListener("resize", (event) => {
+  detectFooter();
+})

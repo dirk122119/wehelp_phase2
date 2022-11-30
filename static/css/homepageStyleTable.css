@@ -265,13 +265,15 @@ input{
 }
 
 .footer{
-    margin-top: 100px;
-    background-image:url("../image/footer.png");
-    height: 29vw;
-    width: 100vw;
-    background-position: top;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
+    height: 15vw;
+    width:100vw;
+    background-color: var(--Secondary_Color_50);
+    color: var(--Additional_Color_White);
+    display: grid;
+    place-items: center;
+    position:absolute;
+    bottom: 0;
+    font-size:var(--Body_Bold_Size);
+  }
 
 }
