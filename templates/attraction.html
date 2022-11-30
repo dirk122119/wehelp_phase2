@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='css/sass.css')}}"
+    />
+    <link
+      href="{{url_for('static', filename='css/viewIdStyleDesktop.css')}}"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="{{url_for('static', filename='css/viewIdStylePhone.css')}}"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="{{url_for('static', filename='css/viewIdStyleTable.css')}}"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- <link href="{{url_for('static', filename='css/viewIdStylePhone.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{url_for('static', filename='css/viewIdStyleTable.css')}}" rel="stylesheet" type="text/css" /> -->
+    <script
+      type="text/javascript"
+      src="{{url_for('static', filename='js/viewId.js')}}"
+      defer
+    ></script>
+    <title>Taipei Trip</title>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="navbarContainer">
+        <div class="LOGO"><a href="#home">台北一日遊</a></div>
+        <div class="navlink">
+          <div><a href="#news">預定行程</a></div>
+          <div><a href="#contact">登入/註冊</a></div>
+        </div>
+      </div>
+    </nav>
+    <div class="content">
+      <div class="contentContainer">
+        <div class="gridContainer">
+          <div class="slideshowContainer">
+            <div><img src="{{url_for('static', filename='image/btn_rightArrow.png')}}" class="next" onclick="plusSlides(1)"></div>
+            <div><img src="{{url_for('static', filename='image/btn_leftArrow.png')}}" class="prev" onclick="plusSlides(-1)"></div>
+          </div>
+          <div class="bookContainer">
+            <div id="tittle"></div>
+            <div id="categoryAndMrt"></div>
+            <form action="">
+              <div id="formTittle">訂購導覽行程</div>
+              <div id="formAbstract">
+                以此景點為中心的一日行程，帶您探索城市角落故事
+              </div>
+              <div id="formDate">
+                <label
+                  >選擇日期：<input type="date" value="2022-11-23"
+                /></label>
+              </div>
+              <div id="formPeriod">
+                <label>選擇時間：</label>
+                <input
+                  type="radio"
+                  id="morning"
+                  name="period"
+                  value="morning"
+                  checked
+                />
+                <label for="morning">早上</label>
+                <input
+                  type="radio"
+                  id="afternoon"
+                  name="period"
+                  value="afternoon"
+                />
+                <label for="afternoon">下午</label>
+              </div>
+              <div id="cost"></div>
+              <input id="submit" type="button" value="開始預約行程" />
+            </form>
+          </div>
+        </div>
+        <hr />
+        <div class="infoContainer">
+            <div id="description"></div>
+            <div id="adressTittle">景點地址：</div>
+            <div id="adressContent"></div>
+            <div id="transportTittle">交通方式</div>
+            <div id="transportContent"></div>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+        <div>COPYRIGHT © 2021 台北一日遊</div>
+    </div>
+  </body>
+</html>

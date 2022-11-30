@@ -1,0 +1,287 @@
+@media only screen and (min-width: 1200px) {
+  @import "sass.css";
+
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  .navbar {
+    width: 100vw;
+    height: 54px;
+    display: flex;
+    justify-content: center;
+    background-color: var(--Additional_Color_White);
+    opacity: 1;
+    z-index: 1;
+  }
+  .navbar .navbarContainer {
+    width: 1200px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .LOGO {
+    margin: 10px 0 10px 0;
+  }
+  .LOGO a {
+    text-decoration: none;
+    color: var(--Primary_Color_70);
+    font-family: var(--Header_2_Bold_Typeface);
+    font-weight: var(--Header_2_Bold_Weight);
+    font-size: var(--Header_2_Bold_Size);
+    line-height: var(--Header_2_Bold_Line_Height);
+  }
+
+  .navlink {
+    display: flex;
+  }
+  .navlink div {
+    margin: 20px 20px 20px 0;
+  }
+  .navlink a {
+    text-decoration: none;
+    color: var(--Secondary_Color_70);
+    font-family: var(--Body_Med_Typeface);
+    font-weight: var(--Body_Med_Weight);
+    font-size: var(--Body_Med_Size);
+    line-height: var(--Body_Med_Height);
+  }
+
+  .sticky {
+    position: fixed;
+    top: 0;
+    width: 100%;
+  }
+  .sticky + .content {
+    padding-top: 54px;
+  }
+  .content{
+    position: relative;
+    top:37px;
+    display:grid;
+    place-items: center;
+  }
+  .contentContainer{
+    width: 1200px;
+    
+  }
+  /************************* slider *************************/
+  .gridContainer{
+    display:grid;
+    grid-template-columns:auto auto;
+    gap:30px;
+
+  }
+  .slideshowContainer{
+    position: relative;
+    width:540px;
+    height:406px;
+  }
+  .bookContainer{
+    position:relative;
+    width:600px;
+    height:406px;
+  }
+  .Slides img{
+    width:540px;
+    height:406px;
+    border-radius: 10px 10px 10px 10px;
+    object-fit: cover;
+  }
+  .prev, .next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: 36px;
+    height: 36px;
+    padding: 16px;
+    margin-top: -22px;
+    opacity: .4; 
+    transition: 0.6s ease;
+    user-select: none;
+
+  }
+  .next {
+    right: 10px;
+  }
+  .prev{
+    left:10px;
+  }
+  .prev:hover, .next:hover {
+    opacity: 1; 
+  }
+  .dotContainer{
+    position: absolute;
+    width:100%;
+    top:calc(100% - 30px);
+    text-align:center
+  }
+  .dot {
+    cursor: pointer;
+    height: 12px;
+    width: 12px;
+    margin-left: 12px;
+    background-color: var(--Additional_Color_White);
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.6s ease;
+  }
+  .active, .dot:hover {
+    background-color: var(--Additional_Color_Black);
+  }
+  hr.solid {
+    border-top: 30px solid #bbb;
+  }
+  /************************* form *************************/
+  #tittle{
+    height: 33px;
+    width: 600px;
+    color:var(--Secondary_Color_70);
+    font-family:var(--Header_3_Bold_Typeface);
+    font-weight:var(--Header_3_Bold_Weight);
+    font-size:var(--Header_3_Bold_Size);
+    line-height:var(--Header_3_Bold_Height);
+  }
+  #categoryAndMrt{
+    height: 22px;
+    width: 600px;
+    margin-top:15px;
+    color:var(--Secondary_Color_70);
+    font-family:var(--Body_Med_Typeface);
+    font-weight:var(--Body_Med_Weight);
+    font-size:var(--Body_Med_Size);
+    line-height:var(--Body_Med_Height);
+  }
+  form{
+    width:100%;
+    margin-top: 20px;
+    background-color:var(--Secondary_Color_20);
+    
+  }
+  #formTittle{
+    width: 560px;
+    height: 22px;
+    padding-top: 15px;
+    padding-left: 20px;
+    color:var(--Secondary_Color_70);
+    font-family:var(--Body_Bold_Typeface);
+    font-weight:var(--Body_Bold_Weight);
+    font-size:var(--Body_Bold_Size);
+    line-height:var(--Body_Bold_Height);
+  }
+  #formAbstract{
+    width: 560px;
+    height: 22px;
+    padding-top: 15px;
+    padding-left: 20px;
+    color:var(--Secondary_Color_70);
+    font-family:var(--Body_Med_Typeface);
+    font-weight:var(--Body_Med_Weight);
+    font-size:var(--Body_Med_Size);
+    line-height:var(--Body_Med_Height);
+  }
+
+  #formDate{
+    width: 560px;
+    height: 22px;
+    padding-top: 15px;
+    padding-left: 20px;
+    color:var(--Secondary_Color_70);
+    font-family:var(--Body_Med_Typeface);
+    font-weight:var(--Body_Med_Weight);
+    font-size:var(--Body_Med_Size);
+    line-height:var(--Body_Med_Height);
+  }
+
+  #formPeriod{
+    width: 560px;
+    height: 22px;
+    padding-top: 15px;
+    padding-left: 20px;
+    color:var(--Secondary_Color_70);
+    font-family:var(--Body_Med_Typeface);
+    font-weight:var(--Body_Med_Weight);
+    font-size:var(--Body_Med_Size);
+    line-height:var(--Body_Med_Height);
+  }
+
+  #cost{
+    width: 560px;
+    height: 22px;
+    padding-top: 15px;
+    padding-left: 20px;
+    color:var(--Secondary_Color_70);
+    font-family:var(--Body_Med_Typeface);
+    font-weight:var(--Body_Med_Weight);
+    font-size:var(--Body_Med_Size);
+    line-height:var(--Body_Med_Height);
+  }
+
+  #submit{
+    width: 154px;
+    height: 36px;
+    margin-top: 25px;
+    margin-left: 20px;
+    background-color: var(--Primary_Color_70);
+    border:none;
+    color:var(--Additional_Color_White);
+    font-family:var(--Button_Reg_Typeface);
+    font-weight:var(--Button_Reg_Weight);
+    font-size:var(--Button_Reg_Size);
+    line-height:var(--Button_Reg_Height);
+    border-radius: 10px 10px 10px 10px;
+  }
+  #submit:hover{
+    border-width: 2px;
+    border-style: outset;
+    border-color: #dd1b1b36;
+    border-image: initial;
+    border: 2px solid #000;
+  }
+  hr{
+    position:relative;
+    margin-top:37px;
+    margin-bottom: 50px;
+  }
+  /************************* form *************************/
+  .infoContainer{
+    display:grid;
+    place-items: center;
+  }
+  #description,#adressContent,#transportContent{
+    width: 1180px;
+    height: auto;
+    color:var(--Secondary_Color_70);
+    font-family:var(--Content_Reg_Typeface);
+    font-weight:var(--Content_Reg_Weight);
+    font-size:var(--Content_Reg_Size);
+    line-height:var(--Content_Reg_Height);
+  }
+  
+  #adressTittle,#transportTittle{
+    width: 1180px;
+    height: auto;
+    color:var(--Secondary_Color_70);
+    font-family:var(--Body_Bold_Typeface);
+    font-weight:var(--Body_Bold_Weight);
+    font-size:var(--Body_Bold_Size);
+    line-height:var(--Body_Bold_Height);
+  }
+  #adressTittle,#transportTittle{
+    padding-top: 20px;
+  }
+
+  /* footer */
+  .footer{
+    height: 100px;
+    width:100%;
+    background-color: var(--Secondary_Color_50);
+    color: var(--Additional_Color_White);
+    display: grid;
+    place-items: center;
+    position:relative;
+    top: calc(100vh - 100px);
+    font-size:var(--Body_Bold_Size);
+  }
+}

@@ -35,7 +35,8 @@ function createIndexView(req = getAttractionsData()) {
       for (let i = 0; i < data["data"].length; i++) {
         let newGridItemDiv = document.createElement("div");
         newGridItemDiv.className = "gridItem";
-
+        let id =data["data"][i]["id"];
+        newGridItemDiv.onclick=()=>{window.location.assign(window.location.href+"attraction/"+id.toString());}
         // view image
         let newImg = document.createElement("img");
         let str = data["data"][i]["images"][0];
@@ -86,12 +87,12 @@ function createIndexView(req = getAttractionsData()) {
       newA.appendChild(newContent);
       el.appendChild(newA);
     }
-  }).then(()=>{loadingFlag=false;});
+  }).then(()=>{loadingFlag=false;detectFooter();
+  });
 }
 function loadHomePage() {
 
   createIndexView();
-
    options = {
     root: null,
     rootMargin: "0px",
@@ -117,6 +118,7 @@ function loadHomePage() {
   observer = new IntersectionObserver(callback, options);
   let target = document.querySelectorAll(".footer")[0];
   observer.observe(target);
+  
 
 }
 
@@ -146,9 +148,12 @@ function searchKeyword() {
       if (entry.isIntersecting === true && thirdLi.length != 0) {
         if (nextPage === null) {
         } else {
+          if(loadingFlag===false)
+          {
           createIndexView(
             (req = getAttractionsData((page = nextPage), (keyword = keyword)))
           );
+          }
         }
       }
     });
@@ -157,6 +162,7 @@ function searchKeyword() {
   observer = new IntersectionObserver(callback, options);
   let target = document.querySelectorAll(".footer")[0];
   observer.observe(target);
+  detectFooter();
 }
 
 function categoriesList(req = getCategoriesData()) {
@@ -188,24 +194,31 @@ function showList() {
   categoriesListBlock.style.display = "flex";
 }
 
-function debounce(func,time) {
-  var timeout;
-  return ()=>{
-    //清除定时器
-    clearTimeout(timeout);
-    timeout = setTimeout(func,time);
-  };
-}
 
-function clickSearchKey(){
-  let debouncesearchKeyword=debounce(searchKeyword(),500);
-  document.addEventListener('scroll', function() {
-    //停止滚动之后开始计算
-    debouncesearchKeyword();
-  });
+
+
+function detectFooter(){
+  let windowHeight=window.screen.height;
+  let lastContentElement=document.querySelectorAll(".content")[0];
+  let lastContentElementOffSet=lastContentElement.offsetTop;
+  let lastContentElementheight=lastContentElement.clientHeight;
+  let footer=document.querySelectorAll(".footer")[0];
+  let footerOffSet=footer.offsetTop;
+  let footerHeight=footer.clientHeight;
+
+  if(windowHeight>(lastContentElementOffSet+lastContentElementheight+footerHeight+120)){
+    footer.style.position="absolute";
+    footer.style.top="";
+  }
+  else{
+    
+    footer.style.position="relative";
+    footer.style.top="120px";
+  }
 }
 let nextPage = null;
 let loadingFlag=false;
+let loadHomePageFlag=false;
 let observer;
 let callback;
 let options;
@@ -226,3 +239,6 @@ document.addEventListener("click", (e) => {
     categoriesListBlock.style.display = "none";
   }
 });
+addEventListener("resize", (event) => {
+  detectFooter();
+})

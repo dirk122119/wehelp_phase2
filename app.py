@@ -39,7 +39,7 @@ def attractionsAPI():
 	else:
 		connect_objt=cnx.get_connection()
 		cursor = connect_objt.cursor()
-		sql="SET SESSION group_concat_max_len = 1000000;"
+		sql="SET SESSION group_concat_max_len = 1000000000"
 		cursor.execute(sql)
 		sql="SELECT COUNT(*) from view;"
 		cursor.execute(sql)
@@ -142,6 +142,8 @@ def attractionsAPI():
 def attractionIdAPI(attractionId):
 	connect_objt=cnx.get_connection()
 	cursor = connect_objt.cursor()
+	sql="SET SESSION group_concat_max_len = 10000000000"
+	cursor.execute(sql)
 	sql="SELECT view.numberId,view.name,category.categoryName,view.description,view.address,view.direction,mrt.mrtName,view.latitude,view.longitude,GROUP_CONCAT(image.imageName) FROM view INNER JOIN category ON view.category = category.categoryID INNER JOIN mrt ON view.mrt = mrt.mrtID INNER JOIN image ON view.numberId = image.viewId  WHERE view.numberId= %s GROUP BY view.numberId;"
 	val=(attractionId,)
 	cursor.execute(sql,val)
