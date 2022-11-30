@@ -1,4 +1,4 @@
-@media only screen and (min-width: 1200px) {
+@media only screen and (min-width: 120px) and (max-width: 600px) {
   @import "sass.css";
 
   body {
@@ -16,7 +16,7 @@
     z-index: 1;
   }
   .navbar .navbarContainer {
-    width: 1200px;
+    width: 100vw;
     display: flex;
     justify-content: space-between;
   }
@@ -63,31 +63,33 @@
     place-items: center;
   }
   .contentContainer{
-    width: 1200px;
+    width: 94vw;
     
   }
   /************************* slider *************************/
   .gridContainer{
     display:grid;
-    grid-template-columns:auto auto;
+    grid-template-columns:100vw;
     gap:30px;
 
   }
   .slideshowContainer{
     position: relative;
-    width:540px;
-    height:406px;
+    width:94vw;
+    height: 83vw;
+    height:auto;
   }
   .bookContainer{
     position:relative;
-    width:600px;
-    height:406px;
+    width:94vw;
+    height: 83vw;
+    height:auto;
   }
   .Slides img{
-    width:540px;
-    height:406px;
+    width:94vw;
+    height:auto;
     border-radius: 10px 10px 10px 10px;
-    object-fit: cover;
+    object-fit: contain;
   }
   .prev, .next {
     cursor: pointer;
@@ -136,7 +138,7 @@
   /************************* form *************************/
   #tittle{
     height: 33px;
-    width: 600px;
+    width: 83vw;
     color:var(--Secondary_Color_70);
     font-family:var(--Header_3_Bold_Typeface);
     font-weight:var(--Header_3_Bold_Weight);
@@ -145,7 +147,7 @@
   }
   #categoryAndMrt{
     height: 22px;
-    width: 600px;
+    width: 83vw;
     margin-top:15px;
     color:var(--Secondary_Color_70);
     font-family:var(--Body_Med_Typeface);
@@ -160,8 +162,9 @@
     
   }
   #formTittle{
-    width: 560px;
+    width: 83vw;
     height: 22px;
+    display: inline-block;
     padding-top: 15px;
     padding-left: 20px;
     color:var(--Secondary_Color_70);
@@ -171,10 +174,11 @@
     line-height:var(--Body_Bold_Height);
   }
   #formAbstract{
-    width: 560px;
+    width: 83vw;
     height: 22px;
-    padding-top: 15px;
-    padding-left: 20px;
+    display: inline-block;
+    margin-top: 15px;
+    margin-left:20px;
     color:var(--Secondary_Color_70);
     font-family:var(--Body_Med_Typeface);
     font-weight:var(--Body_Med_Weight);
@@ -183,10 +187,11 @@
   }
 
   #formDate{
-    width: 560px;
+    width: 83vw;
     height: 22px;
-    padding-top: 15px;
-    padding-left: 20px;
+    display: inline-block;
+    margin-top: 15px;
+    margin-left:20px;
     color:var(--Secondary_Color_70);
     font-family:var(--Body_Med_Typeface);
     font-weight:var(--Body_Med_Weight);
@@ -195,10 +200,11 @@
   }
 
   #formPeriod{
-    width: 560px;
+    width: 83vw;
     height: 22px;
-    padding-top: 15px;
-    padding-left: 20px;
+    display: inline-block;
+    margin-top: 15px;
+    margin-left:20px;
     color:var(--Secondary_Color_70);
     font-family:var(--Body_Med_Typeface);
     font-weight:var(--Body_Med_Weight);
@@ -207,10 +213,11 @@
   }
 
   #cost{
-    width: 560px;
+    width: 83vw;
     height: 22px;
-    padding-top: 15px;
-    padding-left: 20px;
+    display: inline-block;
+    margin-top: 15px;
+    margin-left:20px;
     color:var(--Secondary_Color_70);
     font-family:var(--Body_Med_Typeface);
     font-weight:var(--Body_Med_Weight);
@@ -240,17 +247,19 @@
     border: 2px solid #000;
   }
   hr{
+    width:94vw;
     position:relative;
-    margin-top:37px;
+    margin-top:40px;
     margin-bottom: 50px;
   }
   /************************* form *************************/
   .infoContainer{
+    width:94vw;
     display:grid;
     place-items: center;
   }
   #description,#adressContent,#transportContent{
-    width: 1180px;
+    width: 91vw;
     height: auto;
     color:var(--Secondary_Color_70);
     font-family:var(--Content_Reg_Typeface);
@@ -261,7 +270,7 @@
   
 
   #adressTittle,#transportTittle{
-    width: 1180px;
+    width: 91vw;
     height: auto;
     color:var(--Secondary_Color_70);
     font-family:var(--Body_Bold_Typeface);
@@ -272,11 +281,12 @@
   #adressTittle,#transportTittle{
     padding-top: 20px;
   }
+ 
 
   /* footer */
   .footer{
-    height: 100px;
-    width:100%;
+    height: 29vw;
+    width:100vw;
     background-color: var(--Secondary_Color_50);
     color: var(--Additional_Color_White);
     display: grid;

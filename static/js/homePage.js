@@ -193,13 +193,7 @@ function showList() {
 }
 
 
-function clickSearchKey(){
-  let debouncesearchKeyword=debounce(searchKeyword(),500);
-  document.addEventListener('scroll', function() {
-    //停止滚动之后开始计算
-    debouncesearchKeyword();
-  });
-}
+
 function clickGridItem(id){
   alert(id);
 }

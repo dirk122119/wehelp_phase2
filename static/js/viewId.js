@@ -121,9 +121,14 @@ function detectFooter(){
   let footerOffSet=footer.offsetTop;
   let footerHeight=footer.clientHeight;
 
-  if(windowHeight>(lastContentElementOffSet+lastContentElementheight+footerHeight)){}
+  if(windowHeight>(lastContentElementOffSet+lastContentElementheight+footerHeight+120)){
+    footer.style.position="absolute";
+    footer.style.top="";
+  }
   else{
+    
     footer.style.position="relative";
+    footer.style.top="120px";
   }
 }
 
@@ -135,6 +140,17 @@ window.onload = () => {
 window.onscroll = function () {
   sticky();
 };
+addEventListener("resize", (event) => {
+  if(window.screen.width<600){
+    detectFooter();
+  }
+  else{
+    formOffsetTop();
+    detectFooter();
+  }
+ 
+  
+});
 
 let slideIndex = 1;
 let loadFinishFlag=false;
