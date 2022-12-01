@@ -154,6 +154,7 @@
     line-height:var(--Body_Med_Height);
   }
   form{
+    position: relative;
     width:100%;
     margin-top: 20px;
     background-color:var(--Secondary_Color_20);
@@ -193,11 +194,28 @@
     font-size:var(--Body_Med_Size);
     line-height:var(--Body_Med_Height);
   }
-
+  #formDate input[type='date']{
+    border: none;
+  }
+  #formDate input[type='date']::-webkit-datetime-edit-fields-wrapper{
+    width:149px;
+    height: 25px;
+    color:var(--Secondary_Color_70);
+    font-family:var(--Body_Med_Typeface);
+    font-weight:var(--Body_Med_Weight);
+    font-size:var(--Body_Med_Size);
+    line-height:var(--Body_Med_Height);
+    padding:3px 0px 3px 10px;
+  }
+  #formDate input[type='date']::-webkit-calendar-picker-indicator{
+    width: 20px;
+    height: 20px;
+    padding: 3px 10px 3px 59px;
+  }
   #formPeriod{
     width: 560px;
     height: 22px;
-    padding-top: 15px;
+    padding-top: 24px;
     padding-left: 20px;
     display: flex;
     align-content: center;
@@ -211,7 +229,7 @@
 
   }
   #formPeriod input[type='radio']{
-    margin-top: 0px;
+    
     position: relative;
     appearance: none;
     background-color: rgb(255, 255, 255);

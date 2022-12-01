@@ -185,18 +185,35 @@
   }
 
   #formDate{
+    display: inline-block;
     width: 83vw;
     height: 22px;
-    display: inline-block;
-    margin-top: 15px;
-    margin-left:20px;
+    padding-top: 15px;
+    padding-left: 20px;
     color:var(--Secondary_Color_70);
     font-family:var(--Body_Med_Typeface);
     font-weight:var(--Body_Med_Weight);
     font-size:var(--Body_Med_Size);
     line-height:var(--Body_Med_Height);
   }
-
+  #formDate input[type='date']{
+    border: none;
+  }
+  #formDate input[type='date']::-webkit-datetime-edit-fields-wrapper{
+    width:149px;
+    height: 25px;
+    color:var(--Secondary_Color_70);
+    font-family:var(--Body_Med_Typeface);
+    font-weight:var(--Body_Med_Weight);
+    font-size:var(--Body_Med_Size);
+    line-height:var(--Body_Med_Height);
+    padding:3px 0px 3px 10px;
+  }
+  #formDate input[type='date']::-webkit-calendar-picker-indicator{
+    width: 20px;
+    height: 20px;
+    padding: 3px 10px 3px 59px;
+  }
   #formPeriod{
     width: 83vw;
     height: 22px;
