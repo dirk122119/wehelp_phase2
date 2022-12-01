@@ -199,11 +199,37 @@
     height: 22px;
     padding-top: 15px;
     padding-left: 20px;
+    display: flex;
+    align-content: center;
+  }
+  #formPeriod .labelTittle{
+    color:var(--Secondary_Color_70);
+    font-family:var(--Body_Bold_Typeface);
+    font-weight:var(--Body_Bold_Weight);
+    font-size:var(--Body_Bold_Size);
+    line-height:var(--Body_Bold_Height);
+
+  }
+  #formPeriod input[type='radio']{
+    margin-top: 0px;
+    position: relative;
+    appearance: none;
+    background-color: rgb(255, 255, 255);
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+  }
+  #formPeriod input[type='radio']+label{
     color:var(--Secondary_Color_70);
     font-family:var(--Body_Med_Typeface);
     font-weight:var(--Body_Med_Weight);
     font-size:var(--Body_Med_Size);
     line-height:var(--Body_Med_Height);
+  }
+  #formPeriod input[type='radio']:checked {
+    background-color: var(--Primary_Color_70);
+    border: 2px solid var(--Additional_Color_White);
+
   }
 
   #cost{
@@ -230,15 +256,9 @@
     font-weight:var(--Button_Reg_Weight);
     font-size:var(--Button_Reg_Size);
     line-height:var(--Button_Reg_Height);
-    border-radius: 10px 10px 10px 10px;
+    border-radius: 5px 5px 5px 5px;
   }
-  #submit:hover{
-    border-width: 2px;
-    border-style: outset;
-    border-color: #dd1b1b36;
-    border-image: initial;
-    border: 2px solid #000;
-  }
+  
   hr{
     position:relative;
     margin-top:37px;

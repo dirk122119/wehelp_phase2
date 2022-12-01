@@ -198,7 +198,7 @@ function showList() {
 
 
 function detectFooter(){
-  let windowHeight=window.screen.height;
+  let windowHeight=document.documentElement.scrollHeight;
   let lastContentElement=document.querySelectorAll(".content")[0];
   let lastContentElementOffSet=lastContentElement.offsetTop;
   let lastContentElementheight=lastContentElement.clientHeight;
