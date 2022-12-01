@@ -230,6 +230,7 @@ window.onload = ()=>{
 }
 window.onscroll = function () {
   sticky();
+  detectFooter();
 };
 
 
