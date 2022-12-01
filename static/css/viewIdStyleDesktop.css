@@ -225,6 +225,8 @@
     font-weight:var(--Body_Med_Weight);
     font-size:var(--Body_Med_Size);
     line-height:var(--Body_Med_Height);
+    margin-left: 4px;
+    margin-right: 18px;
   }
   #formPeriod input[type='radio']:checked {
     background-color: var(--Primary_Color_70);
@@ -300,7 +302,6 @@
     color: var(--Additional_Color_White);
     display: grid;
     place-items: center;
-    position:relative;
     top: calc(100vh - 100px);
     font-size:var(--Body_Bold_Size);
   }

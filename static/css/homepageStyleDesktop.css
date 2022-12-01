@@ -1,7 +1,9 @@
 @media only screen and (min-width: 1200px){
 @import "sass.css";
 
-body{ margin: 0; padding: 0; }
+body{ margin: 0; 
+    padding: 0; 
+}
 
 .navbar{
     width:100vw;
@@ -272,7 +274,7 @@ input{
     color: var(--Additional_Color_White);
     display: grid;
     place-items: center;
-    position:relative;
+    position: absolute;
     top: calc(100vh - 100px);
     font-size:var(--Body_Bold_Size);
   }

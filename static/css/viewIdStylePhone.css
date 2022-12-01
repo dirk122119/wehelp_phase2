@@ -309,7 +309,6 @@
     color: var(--Additional_Color_White);
     display: grid;
     place-items: center;
-    position:relative;
     top :calc(100vh - 29vw);
     font-size:var(--Body_Bold_Size);
   }
