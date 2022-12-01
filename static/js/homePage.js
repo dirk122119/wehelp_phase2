@@ -87,7 +87,8 @@ function createIndexView(req = getAttractionsData()) {
       newA.appendChild(newContent);
       el.appendChild(newA);
     }
-  }).then(()=>{loadingFlag=false;detectFooter();
+  }).then(()=>{loadingFlag=false; detectFooter();
+  
   });
 }
 function loadHomePage() {
@@ -96,7 +97,7 @@ function loadHomePage() {
    options = {
     root: null,
     rootMargin: "0px",
-    threshold: 0.0,
+    threshold: 0.5,
   };
 
    callback = (entries, observer) => {
@@ -118,7 +119,7 @@ function loadHomePage() {
   observer = new IntersectionObserver(callback, options);
   let target = document.querySelectorAll(".footer")[0];
   observer.observe(target);
-  
+
 
 }
 
@@ -135,7 +136,7 @@ function searchKeyword() {
   keyword = document.querySelectorAll("#searchInput")[0].value;
 
   createIndexView((req = getAttractionsData((page = 0), (keyword = keyword))));
-
+ 
   options = {
     root: null,
     rootMargin: "0px",
@@ -162,7 +163,6 @@ function searchKeyword() {
   observer = new IntersectionObserver(callback, options);
   let target = document.querySelectorAll(".footer")[0];
   observer.observe(target);
-  detectFooter();
 }
 
 function categoriesList(req = getCategoriesData()) {
@@ -194,31 +194,31 @@ function showList() {
   categoriesListBlock.style.display = "flex";
 }
 
-
-
-
-function detectFooter(){
-  let windowHeight=window.screen.height;
-  let lastContentElement=document.querySelectorAll(".content")[0];
-  let lastContentElementOffSet=lastContentElement.offsetTop;
-  let lastContentElementheight=lastContentElement.clientHeight;
-  let footer=document.querySelectorAll(".footer")[0];
-  let footerOffSet=footer.offsetTop;
-  let footerHeight=footer.clientHeight;
-
-  if(windowHeight>(lastContentElementOffSet+lastContentElementheight+footerHeight+120)){
-    footer.style.position="absolute";
-    footer.style.top="";
-  }
-  else{
-    
-    footer.style.position="relative";
-    footer.style.top="120px";
+function detectFooter() {
+  let windowHeight = document.documentElement.scrollHeight;
+  let lastContentElement = document.querySelectorAll(".content")[0];
+  let lastContentElementOffSet = lastContentElement.offsetTop;
+  let lastContentElementheight = lastContentElement.clientHeight;
+  let footer = document.querySelectorAll(".footer")[0];
+  let footerOffSet = footer.offsetTop;
+  let footerHeight = footer.clientHeight;
+  if (
+    windowHeight >
+    lastContentElementOffSet + lastContentElementheight + footerHeight + 120
+  ) {
+    footer.style.position = "absolute";
+    let tops=windowHeight-footerHeight
+    footer.style.top = `${tops}px`;
+  } else {
+    footer.style.position = "relative";
+    footer.style.top = "120px";
   }
 }
+
+
+
 let nextPage = null;
 let loadingFlag=false;
-let loadHomePageFlag=false;
 let observer;
 let callback;
 let options;
@@ -230,6 +230,7 @@ window.onload = ()=>{
 }
 window.onscroll = function () {
   sticky();
+  detectFooter();
 };
 
 
@@ -239,6 +240,4 @@ document.addEventListener("click", (e) => {
     categoriesListBlock.style.display = "none";
   }
 });
-addEventListener("resize", (event) => {
-  detectFooter();
-})
+

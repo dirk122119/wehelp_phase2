@@ -18,17 +18,15 @@ function getViewIdData() {
 }
 
 function loadVieInfo(getViewIdData) {
-  req=getViewIdData;
+  req = getViewIdData;
   req.then((data) => {
     if (data["data"].length != 0) {
       createSlide(data["data"]["images"]);
       createInfo(data["data"]);
       showSlides(slideIndex);
     } else {
-      alert("id error")
+      alert("id error");
     }
-  }).then(()=>{
-    detectFooter();
   });
 }
 function createSlide(urlList) {
@@ -103,32 +101,35 @@ function createInfo(data) {
   el.innerText = data["address"];
   el = document.querySelectorAll("#transportContent")[0];
   el.innerText = data["transport"];
+  detectFooter();
 }
 
-function formOffsetTop(){
-  let formElement=document.querySelectorAll("form")[0];
-  let formOffSetTop=formElement.offsetTop;
-  let gridContainer=document.querySelectorAll(".gridContainer")[0].clientHeight;
-  let height=gridContainer-formOffSetTop
-  formElement.style.height=`${height}px`;
+function formOffsetTop() {
+  let formElement = document.querySelectorAll("form")[0];
+  let formOffSetTop = formElement.offsetTop;
+  let gridContainer = document.querySelectorAll(".slideshowContainer")[0]
+    .clientHeight;
+  let height = gridContainer - formOffSetTop;
+  formElement.style.height = `${height}px`;
 }
 
-function detectFooter(){
-  let windowHeight=window.screen.height;
-  let lastContentElement=document.querySelectorAll(".content")[0];
-  let lastContentElementOffSet=lastContentElement.offsetTop;
-  let lastContentElementheight=lastContentElement.clientHeight;
-  let footer=document.querySelectorAll(".footer")[0];
-  let footerOffSet=footer.offsetTop;
-  let footerHeight=footer.clientHeight;
-  if(windowHeight>(lastContentElementOffSet+lastContentElementheight+footerHeight+120)){
-    footer.style.position="absolute";
-    footer.style.top="";
-  }
-  else{
-    
-    footer.style.position="relative";
-    footer.style.top="120px";
+function detectFooter() {
+  let windowHeight = document.documentElement.scrollHeight;
+  let lastContentElement = document.querySelectorAll(".content")[0];
+  let lastContentElementOffSet = lastContentElement.offsetTop;
+  let lastContentElementheight = lastContentElement.clientHeight;
+  let footer = document.querySelectorAll(".footer")[0];
+  let footerOffSet = footer.offsetTop;
+  let footerHeight = footer.clientHeight;
+  if (
+    windowHeight >
+    lastContentElementOffSet + lastContentElementheight + footerHeight + 120
+  ) {
+    footer.style.position = "absolute";
+    footer.style.top = "";
+  } else {
+    footer.style.position = "relative";
+    footer.style.top = "120px";
   }
 }
 
@@ -140,17 +141,14 @@ window.onscroll = function () {
   sticky();
 };
 addEventListener("resize", (event) => {
-  if(window.screen.width<600){
-    detectFooter();
-  }
-  else{
+  if (document.documentElement.scrollWidth > 600) {
     formOffsetTop();
+    detectFooter();
+  } else {
+    
     detectFooter();
   }
 });
 
 let slideIndex = 1;
-let loadFinishFlag=false;
-
-
-
+let loadFinishFlag = false;
