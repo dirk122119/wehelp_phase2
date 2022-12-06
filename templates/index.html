@@ -9,45 +9,73 @@
     <link href="{{url_for('static', filename='css/homepageStylePhone.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{url_for('static', filename='css/homepageStyleTable.css')}}" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="{{url_for('static', filename='js/homePage.js')}}" defer></script>
+    <script type="text/javascript" src="{{url_for('static', filename='js/member.js')}}" defer></script>
     <title>Taipei Trip</title>
 </head>
 <body>
 
-        <nav class="navbar">
-            <div class="navbarContainer">
-                <div class="LOGO"><a href="#home">台北一日遊</a></div>
-                <div class="navlink">
-                    <div><a href="#news">預定行程</a></div>
-                    <div><a href="#contact">登入/註冊</a></div>
-                </div>
+    <nav class="navbar">
+        <div class="navbarContainer">
+            <div class="LOGO"><a href="/">台北一日遊</a></div>
+            <div class="navlink">
+                <div id="book"><a onclick="jwtCheck()">預定行程</a></div>
+                <div id="login"><a onclick="clickLogin()">登入</a></div>
+                <div id="slash"><a>/</a></div>
+                <div id="register"><a onclick="clickRegist()">註冊</a></div>
             </div>
-        </nav>
+        </div>
+    </nav>
+    <div id="loginModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div>
+                <div class="tittle"><span>登入會員帳號</span>
+                <button class="close" onclick="closeBtn()"></button></div>
+                <div class="inputEmail"><input id="loginEmail" type="email" placeholder="輸入電子信箱"></div>
+                <div class="inputPassword"><input id="loginPassword" type="password" placeholder="輸入密碼"></div>
+                <div class="inputSubmit"><button type="button" onclick="loginAPIBtn()"><span>登入帳戶</span></button></div>
+                <div class="switchRegist"><span>還沒有帳戶?<a onclick="clickRegist()">點此註冊</a></span></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="registModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+                <div class="tittle">
+                    <span>註冊會員帳號</span>
+                    <button class="close" onclick="closeBtn()"></button>
+                </div>
+                <div class="inputUsername"><input id="registUsername" type="text" placeholder="輸入姓名"></div>
+                <div class="inputEmail"><input id="registEmail" type="email" placeholder="輸入電子信箱"></div>
+                <div class="inputPassword"><input id="registPassword" type="password" placeholder="輸入密碼"></div>
+                <div class="inputSubmit"><button type="button" onclick="registerAPIBtn()"><span>註冊新帳戶</span></button></div>
+                <div class="switchLogin"><span>已經有帳戶了?<a onclick="clickLogin()">點此登入</a></span></div>
+        </div>
+    </div>
 
     <div class="content">
-    <div class="banner">
-        <div class="bannerContainer">
-            <div class="bannerHead">輕鬆享受台北一日悠閒</div>
-            <div class="bannerBody">探索每個角落，體驗城市的深度旅遊行程</div>
-            <div class="searchContainer">
-                <input type="search" id="searchInput" class="viewSearch" placeholder="輸入景點名稱查詢" onclick="showList()">
-                <button id="searchButton" onclick="searchKeyword()"><img src="{{url_for('static', filename='image/icon_search.png')}}" alt=""></button>
-                <div class="categoriesList">
+        <div class="banner">
+            <div class="bannerContainer">
+                <div class="bannerHead">輕鬆享受台北一日悠閒</div>
+                <div class="bannerBody">探索每個角落，體驗城市的深度旅遊行程</div>
+                <div class="searchContainer">
+                    <input type="search" id="searchInput" class="viewSearch" placeholder="輸入景點名稱查詢" onclick="showList()">
+                    <button id="searchButton" onclick="searchKeyword()"><img src="{{url_for('static', filename='image/icon_search.png')}}" alt=""></button>
+                    <div class="categoriesList">
 
+                    </div>
                 </div>
+            </div>       
+        </div>
+        <div class="viewFlexContainer">
+            <div class="viewGridContainer">
             </div>
         </div>
     </div>
-
-
-    <div class="viewFlexContainer">
-        <div class="viewGridContainer">
-
-        </div>
+    <div class="footer">
+        <div>COPYRIGHT © 2021 台北一日遊</div>
     </div>
-</div>
-<div class="footer">
-    <div>COPYRIGHT © 2021 台北一日遊</div>
-</div>
 </body>
 
 </html>
