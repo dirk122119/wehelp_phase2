@@ -273,14 +273,13 @@ def loginUserAPI():
 			cursor.close()
 			connect_objt.close()
 			if(tokenDecode["name"]==results[1]):
-				response = make_response(jsonify({"data":{"id":results[0],"name":results[1],"email":results[2]}}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+				response = make_response(jsonify({"data":{"id":results[0],"name":results[1],"email":results[2]}}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*","Access-Control-Allow-Methods":"*"})
 				return response
 			else:
-				response = make_response(jsonify({"data":None}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+				response = make_response(jsonify({"data":None}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*","Access-Control-Allow-Methods":"*"})
 				return response
 		else:
-			response = make_response(jsonify({"data":None}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
-			response.headers['Access-Control-Allow-Origin'] = '*'
+			response = make_response(jsonify({"data":None}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*","Access-Control-Allow-Methods":"*"})
 			return response
 	if(request.method=="DELETE"):
 		token=request.cookies.get('jwt')

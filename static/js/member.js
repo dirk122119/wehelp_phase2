@@ -79,7 +79,7 @@ function loginAPIBtn() {
   const res = fetch("http://54.64.173.185:3000/api/user/auth", {
     method: "PUT",
     body: JSON.stringify({ email: email, password: password }),
-    headers: { "content-type": "application/json"},
+    headers: { "content-type": "application/json"}
   })
     .then(async (response) => {
       if (!response.ok) {
@@ -126,7 +126,7 @@ function registerAPIBtn() {
   const res = fetch("http://54.64.173.185:3000/api/user", {
     method: "POST",
     body: JSON.stringify({ name: name, email: email, password: password }),
-    headers: { "content-type": "application/json" },
+    headers: { "content-type": "application/json" }
   })
     .then(async (response) => {
       if (!response.ok) {
@@ -199,13 +199,13 @@ function createMessage(message, status, mode) {
 function jwtCheck() {
   const res = fetch("http://54.64.173.185:3000/api/user/auth", {
     method: "GET",
-    headers: { "content-type": "application/json" },
+    headers: { "content-type": "application/json" }
   }).then((response) => response.json());
   return res;
 }
 function logout() {
   const res = fetch("http://54.64.173.185:3000/api/user/auth", {
     method: "DELETE",
-    headers: { "content-type": "application/json" },
+    headers: { "content-type": "application/json" }
   }).then(window.location.reload());
 }
