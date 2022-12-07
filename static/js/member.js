@@ -126,7 +126,7 @@ function registerAPIBtn() {
   const res = fetch("http://54.64.173.185:3000/api/user", {
     method: "POST",
     body: JSON.stringify({ name: name, email: email, password: password }),
-    headers: { "content-type": "application/json" }
+    headers: { "content-type": "application/json"}
   })
     .then(async (response) => {
       if (!response.ok) {

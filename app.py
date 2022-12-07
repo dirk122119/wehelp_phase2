@@ -201,13 +201,17 @@ def categoriesAPI():
 	connect_objt.close()
 	return response
 
-@app.route("/api/user",methods=["POST"])
+@app.route("/api/user",methods=["GET","POST"])
 def registerUserAPI():
+
+	if(request.method=="GET"):
+		response = make_response(jsonify({"OK":True,"message":"get it"}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+		return response
 	name = request.get_json()["name"]
 	email= request.get_json()["email"]
 	password = request.get_json()["password"]
 	if not(name) or not(email) or not(password):
-		response = make_response(jsonify({"error":True,"message":"三者不能空白"}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"127.0.0.1:3000","Access-Control-Allow-Methods":"*","Access-Control-Allow-Headers": "*"})
+		response = make_response(jsonify({"error":True,"message":"三者不能空白"}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"*","Access-Control-Allow-Methods":"*","Access-Control-Allow-Headers": "*"})
 		return response
 
 	connect_objt=cnx.get_connection()
