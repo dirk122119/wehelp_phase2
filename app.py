@@ -250,16 +250,20 @@ def loginUserAPI():
 		val=(email,)
 		cursor.execute(sql,val)
 		results=cursor.fetchone()
-		if(check_password_hash(results[3],password)):
-			expTime=datetime.now()+timedelta(days=7)
-			encoded = jwt.encode({"id":results[0],"name": results[1]}, private_key, algorithm="HS256")
-			response = make_response(jsonify({"ok":True}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
-			response.set_cookie(key='jwt', value=encoded, expires=expTime)
-			cursor.close()
-			connect_objt.close()
-			return response
+		if(results!=None):
+			if(check_password_hash(results[3],password)):
+				expTime=datetime.now()+timedelta(days=7)
+				encoded = jwt.encode({"id":results[0],"name": results[1]}, private_key, algorithm="HS256")
+				response = make_response(jsonify({"ok":True}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+				response.set_cookie(key='jwt', value=encoded, expires=expTime)
+				cursor.close()
+				connect_objt.close()
+				return response
+			else:
+				response = make_response(jsonify({"error":True,"message":"信箱或密碼錯誤"}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+				return response
 		else:
-			response = make_response(jsonify({"error":True,"message":"信箱或密碼錯誤"}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+			response = make_response(jsonify({"error":True,"message":"無此信箱"}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
 			return response
 	if(request.method=="GET"):
 		token=request.cookies.get('jwt')
