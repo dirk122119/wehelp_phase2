@@ -44,6 +44,9 @@ body{
 .navlink #book{
     margin: 20px 20px 20px 0;
 }
+.navlink a:hover{
+    cursor: pointer;
+}
 .navlink a{
     text-decoration:none;
     color:var(--Secondary_Color_70);
@@ -291,7 +294,6 @@ input{
 }
 #loginModal .modal-content .inputPassword input{
     position: relative;
-    display: flex;
     width: 280px;
     height: 20px;
     border:1px solid #CCCCCC;
@@ -301,7 +303,7 @@ input{
     font-weight:var(--Body_Med_Weight);
     font-size:var(--Body_Med_Size);
     line-height:var(--Body_Med_Height);
-    justify-content: center;
+    padding: 15px;
 }
 #loginModal .modal-content .inputPassword input::placeholder{
 
@@ -489,7 +491,6 @@ input{
 }
 #registModal .modal-content .inputPassword input{
     position: relative;
-    display: flex;
     width: 280px;
     height: 20px;
     border:1px solid #CCCCCC;
@@ -499,7 +500,7 @@ input{
     font-weight:var(--Body_Med_Weight);
     font-size:var(--Body_Med_Size);
     line-height:var(--Body_Med_Height);
-    justify-content: center;
+    padding: 15px;
 }
 #registModal .modal-content .inputPassword input::placeholder{
 

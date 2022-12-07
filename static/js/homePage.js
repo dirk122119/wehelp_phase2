@@ -15,7 +15,7 @@ function getCategoriesData() {
 }
 
 function getAttractionsData(page = 0, keyword = "") {
-  loadingFlag=true;
+  loadingFlag = true;
   if (keyword == "") {
     return fetch(`http://54.64.173.185:3000/api/attractions?page=${page}`).then(
       (response) => response.json()
@@ -28,90 +28,95 @@ function getAttractionsData(page = 0, keyword = "") {
 }
 
 function createIndexView(req = getAttractionsData()) {
-  req.then((data) => {
-    if (data["data"].length != 0) {
-      nextPage = data["nextPage"];
-      let el = document.querySelectorAll(".viewGridContainer")[0];
-      for (let i = 0; i < data["data"].length; i++) {
-        let newGridItemDiv = document.createElement("div");
-        newGridItemDiv.className = "gridItem";
-        let id =data["data"][i]["id"];
-        newGridItemDiv.onclick=()=>{window.location.assign(window.location.href+"attraction/"+id.toString());}
-        // view image
-        let newImg = document.createElement("img");
-        let str = data["data"][i]["images"][0];
-        newImg.src = "https://" + str;
+  req
+    .then((data) => {
+      if (data["data"].length != 0) {
+        nextPage = data["nextPage"];
+        let el = document.querySelectorAll(".viewGridContainer")[0];
+        for (let i = 0; i < data["data"].length; i++) {
+          let newGridItemDiv = document.createElement("div");
+          newGridItemDiv.className = "gridItem";
+          let id = data["data"][i]["id"];
+          newGridItemDiv.onclick = () => {
+            window.location.assign(
+              window.location.href + "attraction/" + id.toString()
+            );
+          };
+          // view image
+          let newImg = document.createElement("img");
+          let str = data["data"][i]["images"][0];
+          newImg.src = "https://" + str;
 
-        // view tittle
-        let title = data["data"][i]["name"];
-        let newTitleDiv = document.createElement("div");
+          // view tittle
+          let title = data["data"][i]["name"];
+          let newTitleDiv = document.createElement("div");
+          let newA = document.createElement("a");
+          let newContent = document.createTextNode(title);
+          newA.appendChild(newContent);
+          newTitleDiv.appendChild(newA);
+          newTitleDiv.className = "gridItemTitle";
+
+          // view info
+          let newGridInfoDiv = document.createElement("div");
+          newGridInfoDiv.className = "gridItemInfo";
+          // mrt
+          let mrt = data["data"][i]["mrt"];
+          let newGridInfoMrtDiv = document.createElement("div");
+          newGridInfoMrtDiv.className = "mrtName";
+          let newMrtA = document.createElement("a");
+          let newMrtContent = document.createTextNode(mrt);
+          newMrtA.appendChild(newMrtContent);
+          newGridInfoMrtDiv.appendChild(newMrtA);
+          // category
+          let category = data["data"][i]["category"];
+          let newGridInfoCategorytDiv = document.createElement("div");
+          newGridInfoCategorytDiv.className = "categoryName";
+          let newCategorytA = document.createElement("a");
+          let newCategorytContent = document.createTextNode(category);
+          newCategorytA.appendChild(newCategorytContent);
+          newGridInfoCategorytDiv.appendChild(newCategorytA);
+
+          newGridInfoDiv.appendChild(newGridInfoMrtDiv);
+          newGridInfoDiv.appendChild(newGridInfoCategorytDiv);
+
+          newGridItemDiv.appendChild(newImg);
+          newGridItemDiv.appendChild(newTitleDiv);
+          newGridItemDiv.appendChild(newGridInfoDiv);
+          el.appendChild(newGridItemDiv);
+        }
+      } else {
+        let el = document.querySelectorAll(".viewGridContainer")[0];
         let newA = document.createElement("a");
-        let newContent = document.createTextNode(title);
+        let newContent = document.createTextNode("沒有結果");
+        newA.id = "nonfound";
         newA.appendChild(newContent);
-        newTitleDiv.appendChild(newA);
-        newTitleDiv.className = "gridItemTitle";
-
-        // view info
-        let newGridInfoDiv = document.createElement("div");
-        newGridInfoDiv.className = "gridItemInfo";
-        // mrt
-        let mrt = data["data"][i]["mrt"];
-        let newGridInfoMrtDiv = document.createElement("div");
-        newGridInfoMrtDiv.className = "mrtName";
-        let newMrtA = document.createElement("a");
-        let newMrtContent = document.createTextNode(mrt);
-        newMrtA.appendChild(newMrtContent);
-        newGridInfoMrtDiv.appendChild(newMrtA);
-        // category
-        let category = data["data"][i]["category"];
-        let newGridInfoCategorytDiv = document.createElement("div");
-        newGridInfoCategorytDiv.className = "categoryName";
-        let newCategorytA = document.createElement("a");
-        let newCategorytContent = document.createTextNode(category);
-        newCategorytA.appendChild(newCategorytContent);
-        newGridInfoCategorytDiv.appendChild(newCategorytA);
-
-        newGridInfoDiv.appendChild(newGridInfoMrtDiv);
-        newGridInfoDiv.appendChild(newGridInfoCategorytDiv);
-
-        newGridItemDiv.appendChild(newImg);
-        newGridItemDiv.appendChild(newTitleDiv);
-        newGridItemDiv.appendChild(newGridInfoDiv);
-        el.appendChild(newGridItemDiv);
+        el.appendChild(newA);
       }
-    } else {
-      let el = document.querySelectorAll(".viewGridContainer")[0];
-      let newA = document.createElement("a");
-      let newContent = document.createTextNode("沒有結果");
-      newA.id = "nonfound";
-      newA.appendChild(newContent);
-      el.appendChild(newA);
-    }
-  }).then(()=>{loadingFlag=false; detectFooter();
-  
-  });
+    })
+    .then(() => {
+      loadingFlag = false;
+      detectFooter();
+    });
 }
 function loadHomePage() {
-
   createIndexView();
-   options = {
+  options = {
     root: null,
     rootMargin: "0px",
     threshold: 0.5,
   };
 
-   callback = (entries, observer) => {
+  callback = (entries, observer) => {
     let thirdLi = document.querySelectorAll(".gridItem");
     entries.forEach((entry) => {
       if (entry.isIntersecting === true && thirdLi.length != 0) {
         if (nextPage === null) {
         } else {
-          if(loadingFlag===false)
-          {
-          createIndexView(
-            (req = getAttractionsData((page = nextPage), (keyword = "")))
-          );
-        }
+          if (loadingFlag === false) {
+            createIndexView(
+              (req = getAttractionsData((page = nextPage), (keyword = "")))
+            );
+          }
         }
       }
     });
@@ -119,8 +124,6 @@ function loadHomePage() {
   observer = new IntersectionObserver(callback, options);
   let target = document.querySelectorAll(".footer")[0];
   observer.observe(target);
-
-
 }
 
 function searchKeyword() {
@@ -136,7 +139,7 @@ function searchKeyword() {
   keyword = document.querySelectorAll("#searchInput")[0].value;
 
   createIndexView((req = getAttractionsData((page = 0), (keyword = keyword))));
- 
+
   options = {
     root: null,
     rootMargin: "0px",
@@ -149,11 +152,10 @@ function searchKeyword() {
       if (entry.isIntersecting === true && thirdLi.length != 0) {
         if (nextPage === null) {
         } else {
-          if(loadingFlag===false)
-          {
-          createIndexView(
-            (req = getAttractionsData((page = nextPage), (keyword = keyword)))
-          );
+          if (loadingFlag === false) {
+            createIndexView(
+              (req = getAttractionsData((page = nextPage), (keyword = keyword)))
+            );
           }
         }
       }
@@ -207,7 +209,7 @@ function detectFooter() {
     lastContentElementOffSet + lastContentElementheight + footerHeight + 120
   ) {
     footer.style.position = "absolute";
-    let tops=windowHeight-footerHeight
+    let tops = windowHeight - footerHeight;
     footer.style.top = `${tops}px`;
   } else {
     footer.style.position = "relative";
@@ -215,23 +217,19 @@ function detectFooter() {
   }
 }
 
-
-
-
 let nextPage = null;
-let loadingFlag=false;
+let loadingFlag = false;
 let observer;
 let callback;
 let options;
 
-
-window.onload = ()=>{
+window.onload = () => {
   loadHomePage();
   categoriesList();
+
   const res = jwtCheck();
   res.then((response) => {
     if (response["data"] === null) {
-      
     } else {
       const login = document.querySelectorAll("#login")[0];
       const slash = document.querySelectorAll("#slash")[0];
@@ -252,12 +250,11 @@ window.onload = ()=>{
       nav.appendChild(newDiv);
     }
   });
-}
+};
 window.onscroll = function () {
   sticky();
   detectFooter();
 };
-
 
 document.addEventListener("click", (e) => {
   if (e.target.className != "viewSearch") {
@@ -265,4 +262,3 @@ document.addEventListener("click", (e) => {
     categoriesListBlock.style.display = "none";
   }
 });
-

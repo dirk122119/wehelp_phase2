@@ -30,24 +30,69 @@
       src="{{url_for('static', filename='js/viewId.js')}}"
       defer
     ></script>
+    <script
+      type="text/javascript"
+      src="{{url_for('static', filename='js/member.js')}}"
+      defer
+    ></script>
     <title>Taipei Trip</title>
   </head>
   <body>
     <nav class="navbar">
       <div class="navbarContainer">
         <div class="LOGO"><a href="#home">台北一日遊</a></div>
-        <div class="navlink">
-          <div><a href="#news">預定行程</a></div>
-          <div><a href="#contact">登入/註冊</a></div>
-        </div>
+          <div class="navlink">
+            <div id="book"><a onclick="jwtCheck()">預定行程</a></div>
+            <div id="login"><a onclick="clickLogin()">登入</a></div>
+            <div id="slash"><a>/</a></div>
+            <div id="register"><a onclick="clickRegist()">註冊</a></div>
+          </div>
       </div>
     </nav>
+    <div id="loginModal" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+              <div class="tittle"><span>登入會員帳號</span>
+              <button class="close" onclick="closeBtn()"></button></div>
+              <div class="inputEmail"><input id="loginEmail" type="email" placeholder="輸入電子信箱"></div>
+              <div class="inputPassword"><input id="loginPassword" type="password" placeholder="輸入密碼"></div>
+              <div class="inputSubmit"><button type="button" onclick="loginAPIBtn()"><span>登入帳戶</span></button></div>
+              <div class="switchRegist"><span>還沒有帳戶?<a onclick="clickRegist()">點此註冊</a></span></div>
+      </div>
+  </div>
+
+  <div id="registModal" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+              <div class="tittle">
+                  <span>註冊會員帳號</span>
+                  <button class="close" onclick="closeBtn()"></button>
+              </div>
+              <div class="inputUsername"><input id="registUsername" type="text" placeholder="輸入姓名"></div>
+              <div class="inputEmail"><input id="registEmail" type="email" placeholder="輸入電子信箱"></div>
+              <div class="inputPassword"><input id="registPassword" type="password" placeholder="輸入密碼"></div>
+              <div class="inputSubmit"><button type="button" onclick="registerAPIBtn()"><span>註冊新帳戶</span></button></div>
+              <div class="switchLogin"><span>已經有帳戶了?<a onclick="clickLogin()">點此登入</a></span></div>
+      </div>
+  </div>
     <div class="content">
       <div class="contentContainer">
         <div class="gridContainer">
           <div class="slideshowContainer">
-            <div><img src="{{url_for('static', filename='image/btn_rightArrow.png')}}" class="next" onclick="plusSlides(1)"></div>
-            <div><img src="{{url_for('static', filename='image/btn_leftArrow.png')}}" class="prev" onclick="plusSlides(-1)"></div>
+            <div>
+              <img
+                src="{{url_for('static', filename='image/btn_rightArrow.png')}}"
+                class="next"
+                onclick="plusSlides(1)"
+              />
+            </div>
+            <div>
+              <img
+                src="{{url_for('static', filename='image/btn_leftArrow.png')}}"
+                class="prev"
+                onclick="plusSlides(-1)"
+              />
+            </div>
           </div>
           <div class="bookContainer">
             <div id="tittle"></div>
@@ -79,7 +124,6 @@
                   value="afternoon"
                 />
                 <label for="afternoon">下午</label>
-                
               </div>
               <div id="cost"></div>
               <input id="submit" type="button" value="開始預約行程" />
@@ -88,16 +132,16 @@
         </div>
         <hr />
         <div class="infoContainer">
-            <div id="description"></div>
-            <div id="adressTittle">景點地址：</div>
-            <div id="adressContent"></div>
-            <div id="transportTittle">交通方式</div>
-            <div id="transportContent"></div>
+          <div id="description"></div>
+          <div id="adressTittle">景點地址：</div>
+          <div id="adressContent"></div>
+          <div id="transportTittle">交通方式</div>
+          <div id="transportContent"></div>
         </div>
       </div>
     </div>
     <div class="footer">
-        <div>COPYRIGHT © 2021 台北一日遊</div>
+      <div>COPYRIGHT © 2021 台北一日遊</div>
     </div>
   </body>
 </html>
