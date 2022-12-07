@@ -136,6 +136,29 @@ function detectFooter() {
 window.onload = () => {
   loadVieInfo(getViewIdData());
   formOffsetTop();
+  const res = jwtCheck();
+  res.then((response) => {
+    if (response["data"] === null) {
+    } else {
+      const login = document.querySelectorAll("#login")[0];
+      const slash = document.querySelectorAll("#slash")[0];
+      const register = document.querySelectorAll("#register")[0];
+      const nav = document.querySelectorAll(".navlink")[0];
+      login.remove();
+      slash.remove();
+      register.remove();
+
+      let newDiv = document.createElement("div");
+      let newA = document.createElement("a");
+      let newContent = document.createTextNode("登出系統");
+      newA.onclick = () => {
+        logout();
+      };
+      newA.appendChild(newContent);
+      newDiv.appendChild(newA);
+      nav.appendChild(newDiv);
+    }
+  });
 };
 window.onscroll = function () {
   sticky();
