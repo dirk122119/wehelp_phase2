@@ -196,7 +196,6 @@ input{
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
     left: 0;
     top: 0;
     width: 100%; /* Full width */
@@ -214,7 +213,7 @@ input{
     height: 275px;
     border-radius: 6px;
     position: relative; 
-    top:10px;
+    top:80px;
     left: 50%;
     transform: translate(-50%,0);
     }
@@ -223,7 +222,7 @@ input{
     position: absolute;
     top: 0;
     right: 0;
-    bottom: 265px;
+    bottom: calc(100% - 10px);
     left: 0;
     z-index: -1;
     margin: 0;
@@ -252,8 +251,12 @@ input{
     height: 16px;
     top:2px;
     right:2px;
-
 }
+
+#loginModal .modal-content .close:hover{
+    cursor: pointer;
+}
+
 #loginModal .modal-content .inputEmail{
     position: absolute;
     width: 310px;
@@ -340,6 +343,17 @@ input{
     font-size:var(--Body_Reg_Size);
     line-height:var(--Body_Reg_Height);
 }
+
+#loginModal .modal-content .message{
+    position:absolute;
+    display: flex;
+    width: 310px;
+    height: 22px;
+    top:238px;
+    left:15px;
+    justify-content: center;
+}
+
 #loginModal .modal-content .switchRegist{
     position:absolute;
     display: flex;
@@ -370,7 +384,7 @@ input{
     height: 332px;
     border-radius: 10px;
     position: relative; 
-    top:10px;
+    top:80px;
     left: 50%;
     transform: translate(-50%, 0);
 }
@@ -409,7 +423,9 @@ input{
     height: 16px;
     top:2px;
     right:2px;
-
+}
+#registModal .modal-content .close:hovor{
+    cursor: pointer;
 }
 #registModal .modal-content .inputUsername{
     position: absolute;

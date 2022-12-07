@@ -231,7 +231,7 @@ window.onload = ()=>{
   const res = jwtCheck();
   res.then((response) => {
     if (response["data"] === null) {
-      console.log("no match");
+      
     } else {
       const login = document.querySelectorAll("#login")[0];
       const slash = document.querySelectorAll("#slash")[0];
@@ -243,7 +243,7 @@ window.onload = ()=>{
 
       let newDiv = document.createElement("div");
       let newA = document.createElement("a");
-      let newContent = document.createTextNode("登出");
+      let newContent = document.createTextNode("登出系統");
       newA.onclick = () => {
         logout();
       };

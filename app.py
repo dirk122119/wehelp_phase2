@@ -257,6 +257,9 @@ def loginUserAPI():
 			cursor.close()
 			connect_objt.close()
 			return response
+		else:
+			response = make_response(jsonify({"error":True,"message":"信箱或密碼錯誤"}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+			return response
 	if(request.method=="GET"):
 		token=request.cookies.get('jwt')
 		if(token):
