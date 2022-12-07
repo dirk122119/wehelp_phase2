@@ -201,12 +201,9 @@ def categoriesAPI():
 	connect_objt.close()
 	return response
 
-@app.route("/api/user",methods=["GET","POST"])
+@app.route("/api/user",methods=["POST"])
 def registerUserAPI():
 
-	if(request.method=="GET"):
-		response = make_response(jsonify({"OK":True,"message":"get it"}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
-		return response
 	name = request.get_json()["name"]
 	email= request.get_json()["email"]
 	password = request.get_json()["password"]
@@ -222,7 +219,7 @@ def registerUserAPI():
 	result=cursor.fetchone()
 	
 	if(result!=None):
-		response = make_response(jsonify({"error":True,"message":"重複的email"}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"*","Access-Control-Allow-Methods":"*","Access-Control-Allow-Headers": "*"})
+		response = make_response(jsonify({"error":True,"message":"重複的email"}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
 		cursor.close()
 		connect_objt.close()
 		return response
@@ -234,7 +231,7 @@ def registerUserAPI():
 		connect_objt.commit()
 		cursor.close()
 		connect_objt.close()
-		response = make_response(jsonify({"ok":True}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*","Access-Control-Allow-Methods":"*","Access-Control-Allow-Headers": "*"})
+		response = make_response(jsonify({"ok":True}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
 		return response
 
 @app.route("/api/user/auth",methods=["GET","PUT","DELETE"])
@@ -277,13 +274,13 @@ def loginUserAPI():
 			cursor.close()
 			connect_objt.close()
 			if(tokenDecode["name"]==results[1]):
-				response = make_response(jsonify({"data":{"id":results[0],"name":results[1],"email":results[2]}}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*","Access-Control-Allow-Methods":"*"})
+				response = make_response(jsonify({"data":{"id":results[0],"name":results[1],"email":results[2]}}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
 				return response
 			else:
-				response = make_response(jsonify({"data":None}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*","Access-Control-Allow-Methods":"*"})
+				response = make_response(jsonify({"data":None}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
 				return response
 		else:
-			response = make_response(jsonify({"data":None}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*","Access-Control-Allow-Methods":"*"})
+			response = make_response(jsonify({"data":None}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
 			return response
 	if(request.method=="DELETE"):
 		token=request.cookies.get('jwt')

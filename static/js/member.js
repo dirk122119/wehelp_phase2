@@ -76,11 +76,15 @@ function loginAPIBtn() {
     form.style.height = `${form.clientHeight - 30}px`;
     switchLogin.style.top = `${switchLogin.offsetTop - 30}px`;
   }
-  const res = fetch("http://54.64.173.185:3000/api/user/auth", {
+  var myHeaders = new Headers();
+  myHeaders.append("content-type", "application/json");
+
+  var requestOptions = {
     method: "PUT",
+    headers: myHeaders,
     body: JSON.stringify({ email: email, password: password }),
-    headers: { "content-type": "application/json" },
-  })
+  };
+  const res = fetch("http://54.64.173.185:3000/api/user/auth",requestOptions)
     .then(async (response) => {
       if (!response.ok) {
         data = await response.json();
@@ -130,12 +134,10 @@ function registerAPIBtn() {
   var myHeaders = new Headers();
   myHeaders.append("content-type", "application/json");
 
-
   var requestOptions = {
     method: "POST",
     headers: myHeaders,
     body: JSON.stringify({ name: name, email: email, password: password }),
-    redirect: "follow",
   };
   const res = fetch("http://54.64.173.185:3000/api/user",requestOptions)
     .then(async (response) => {
@@ -207,14 +209,17 @@ function createMessage(message, status, mode) {
 }
 
 function jwtCheck() {
-  const res = fetch("http://54.64.173.185:3000/api/user/auth", {
-    method: "GET",
-  }).then((response) => response.json());
+  
+  const res = fetch("http://54.64.173.185:3000/api/user/auth").then((response) => response.json());
   return res;
 }
 function logout() {
-  const res = fetch("http://54.64.173.185:3000/api/user/auth", {
+  var myHeaders = new Headers();
+  myHeaders.append("content-type", "application/json");
+
+  var requestOptions = {
     method: "DELETE",
-    headers: { "content-type": "application/json" },
-  }).then(window.location.reload());
+    headers: myHeaders,
+  };
+  const res = fetch("http://54.64.173.185:3000/api/user/auth",requestOptions).then(window.location.reload());
 }
