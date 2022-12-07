@@ -280,6 +280,7 @@ def loginUserAPI():
 				return response
 		else:
 			response = make_response(jsonify({"data":None}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+			response.headers['Access-Control-Allow-Origin'] = '*'
 			return response
 	if(request.method=="DELETE"):
 		token=request.cookies.get('jwt')

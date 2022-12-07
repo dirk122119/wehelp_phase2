@@ -41,7 +41,7 @@ function closeBtn() {
     "#registModal .modal-content .message"
   )[0];
   if (messageRegister) {
-    registerModal.remove();
+    messageRegister.remove();
     const switchRegist = document.querySelectorAll(
       "#registModal .modal-content .switchLogin"
     )[0];
@@ -76,10 +76,10 @@ function loginAPIBtn() {
     form.style.height = `${form.clientHeight - 30}px`;
     switchLogin.style.top = `${switchLogin.offsetTop - 30}px`;
   }
-  const res = fetch("/api/user/auth", {
+  const res = fetch("http://54.64.173.185:3000/api/user/auth", {
     method: "PUT",
     body: JSON.stringify({ email: email, password: password }),
-    headers: { "content-type": "application/json" },
+    headers: { "content-type": "application/json"},
   })
     .then(async (response) => {
       if (!response.ok) {
@@ -123,7 +123,7 @@ function registerAPIBtn() {
     form.style.height = `${form.clientHeight - 30}px`;
     switchRegist.style.top = `${switchRegist.offsetTop - 30}px`;
   }
-  const res = fetch("/api/user", {
+  const res = fetch("http://54.64.173.185:3000/api/user", {
     method: "POST",
     body: JSON.stringify({ name: name, email: email, password: password }),
     headers: { "content-type": "application/json" },
@@ -197,14 +197,14 @@ function createMessage(message, status, mode) {
 }
 
 function jwtCheck() {
-  const res = fetch("/api/user/auth", {
+  const res = fetch("http://54.64.173.185:3000/api/user/auth", {
     method: "GET",
     headers: { "content-type": "application/json" },
   }).then((response) => response.json());
   return res;
 }
 function logout() {
-  const res = fetch("/api/user/auth", {
+  const res = fetch("http://54.64.173.185:3000/api/user/auth", {
     method: "DELETE",
     headers: { "content-type": "application/json" },
   }).then(window.location.reload());
