@@ -123,7 +123,7 @@ function registerAPIBtn() {
     form.style.height = `${form.clientHeight - 30}px`;
     switchRegist.style.top = `${switchRegist.offsetTop - 30}px`;
   }
-  const res = fetch("/api/user", {
+  const res = fetch("http://54.64.173.185:3000/api/user", {
     method: "POST",
     body: JSON.stringify({ name: name, email: email, password: password }),
     headers: { "content-type": "application/json" }

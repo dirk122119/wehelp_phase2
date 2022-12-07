@@ -207,7 +207,7 @@ def registerUserAPI():
 	email= request.get_json()["email"]
 	password = request.get_json()["password"]
 	if not(name) or not(email) or not(password):
-		response = make_response(jsonify({"error":True,"message":"三者不能空白"}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"*","Access-Control-Allow-Methods":"*","Access-Control-Allow-Headers": "Content-Type"})
+		response = make_response(jsonify({"error":True,"message":"三者不能空白"}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"*","Access-Control-Allow-Methods":"*","Access-Control-Allow-Headers": "*"})
 		return response
 
 	connect_objt=cnx.get_connection()
@@ -218,7 +218,7 @@ def registerUserAPI():
 	result=cursor.fetchone()
 	
 	if(result!=None):
-		response = make_response(jsonify({"error":True,"message":"重複的email"}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"*","Access-Control-Allow-Methods":"*","Access-Control-Allow-Headers": "Content-Type"})
+		response = make_response(jsonify({"error":True,"message":"重複的email"}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"*","Access-Control-Allow-Methods":"*","Access-Control-Allow-Headers": "*"})
 		cursor.close()
 		connect_objt.close()
 		return response
@@ -230,7 +230,7 @@ def registerUserAPI():
 		connect_objt.commit()
 		cursor.close()
 		connect_objt.close()
-		response = make_response(jsonify({"ok":True}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*","Access-Control-Allow-Methods":"*","Access-Control-Allow-Headers": "Content-Type"})
+		response = make_response(jsonify({"ok":True}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*","Access-Control-Allow-Methods":"*","Access-Control-Allow-Headers": "*"})
 		return response
 
 @app.route("/api/user/auth",methods=["GET","PUT","DELETE"])
