@@ -221,5 +221,5 @@ function logout() {
     method: "DELETE",
     headers: myHeaders,
   };
-  const res = fetch("http://54.64.173.185:3000/api/user/auth",requestOptions).then((data)=>{console.log(data);window.location.reload()});
+  const res = fetch("http://54.64.173.185:3000/api/user/auth",requestOptions).then((data)=>{window.location.reload()});
 }
