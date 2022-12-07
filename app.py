@@ -249,8 +249,8 @@ def loginUserAPI():
 		sql="SELECT * from membership where email=%s;"
 		val=(email,)
 		cursor.execute(sql,val)
-		results=cursor.fetchone()
-		if(results!=None):
+		result=cursor.fetchone()
+		if(result!=None):
 			if(check_password_hash(results[3],password)):
 				expTime=datetime.now()+timedelta(days=7)
 				encoded = jwt.encode({"id":results[0],"name": results[1]}, private_key, algorithm="HS256")
@@ -274,11 +274,11 @@ def loginUserAPI():
 			sql="SELECT * from membership where id=%s;"
 			val=(tokenDecode["id"],)
 			cursor.execute(sql,val)
-			results=cursor.fetchone()
+			result=cursor.fetchone()
 			cursor.close()
 			connect_objt.close()
-			if(tokenDecode["name"]==results[1]):
-				response = make_response(jsonify({"data":{"id":results[0],"name":results[1],"email":results[2]}}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+			if(tokenDecode["name"]==result[1]):
+				response = make_response(jsonify({"data":{"id":result[0],"name":result[1],"email":result[2]}}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
 				return response
 			else:
 				response = make_response(jsonify({"data":None}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
