@@ -211,9 +211,7 @@ def registerUserAPI():
 	email= request.get_json()["email"]
 	password = request.get_json()["password"]
 	if not(name) or not(email) or not(password):
-		response = make_response(jsonify({"error":True,"message":"三者不能空白"}),400)
-		response.headers['Access-Control-Allow-Origin'] = '*'
-		response.headers['content-type'] = 'application/json'
+		response = make_response(jsonify({"error":True,"message":"三者不能空白"}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
 		return response
 
 	connect_objt=cnx.get_connection()

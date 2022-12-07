@@ -3,22 +3,22 @@ function clickLogin() {
   let registerModal = document.querySelectorAll("#registModal")[0];
   loginModal.style.display = "inline-block";
   registerModal.style.display = "none";
-  document.getElementById("loginEmail").value="";
-  document.getElementById("loginPassword").value="";
-  document.getElementById("registUsername").value="";
-  document.getElementById("registEmail").value="";
-  document.getElementById("registPassword").value="";
+  document.getElementById("loginEmail").value = "";
+  document.getElementById("loginPassword").value = "";
+  document.getElementById("registUsername").value = "";
+  document.getElementById("registEmail").value = "";
+  document.getElementById("registPassword").value = "";
 }
 function clickRegist() {
   let loginModal = document.querySelectorAll("#loginModal")[0];
   let registerModal = document.querySelectorAll("#registModal")[0];
   loginModal.style.display = "none";
   registerModal.style.display = "inline-block";
-  document.getElementById("loginEmail").value="";
-  document.getElementById("loginPassword").value="";
-  document.getElementById("registUsername").value="";
-  document.getElementById("registEmail").value="";
-  document.getElementById("registPassword").value="";
+  document.getElementById("loginEmail").value = "";
+  document.getElementById("loginPassword").value = "";
+  document.getElementById("registUsername").value = "";
+  document.getElementById("registEmail").value = "";
+  document.getElementById("registPassword").value = "";
 }
 
 function closeBtn() {
@@ -52,11 +52,11 @@ function closeBtn() {
   }
   loginModal.style.display = "none";
   registerModal.style.display = "none";
-  document.getElementById("loginEmail").value="";
-  document.getElementById("loginPassword").value="";
-  document.getElementById("registUsername").value="";
-  document.getElementById("registEmail").value="";
-  document.getElementById("registPassword").value="";
+  document.getElementById("loginEmail").value = "";
+  document.getElementById("loginPassword").value = "";
+  document.getElementById("registUsername").value = "";
+  document.getElementById("registEmail").value = "";
+  document.getElementById("registPassword").value = "";
 }
 
 function loginAPIBtn() {
@@ -70,7 +70,7 @@ function loginAPIBtn() {
     const switchLogin = document.querySelectorAll(
       "#loginModal .modal-content .switchRegist"
     )[0];
-    console.log(switchLogin)
+    console.log(switchLogin);
     const form = document.querySelectorAll("#loginModal .modal-content ")[0];
 
     form.style.height = `${form.clientHeight - 30}px`;
@@ -79,7 +79,7 @@ function loginAPIBtn() {
   const res = fetch("http://54.64.173.185:3000/api/user/auth", {
     method: "PUT",
     body: JSON.stringify({ email: email, password: password }),
-    headers: { "content-type": "application/json"}
+    headers: { "content-type": "application/json" },
   })
     .then(async (response) => {
       if (!response.ok) {
@@ -93,8 +93,11 @@ function loginAPIBtn() {
     })
     .then((data) => {
       createMessage("登入成功", 200, "login");
-      window.setTimeout(()=>{window.location.reload(),3000})
-    }).catch((error) => {
+      window.setTimeout(() => {
+        window.location.reload(), 3000;
+      });
+    })
+    .catch((error) => {
       switch (error.status) {
         case 400:
           createMessage(error.response["message"], error.status, "login");
@@ -123,11 +126,18 @@ function registerAPIBtn() {
     form.style.height = `${form.clientHeight - 30}px`;
     switchRegist.style.top = `${switchRegist.offsetTop - 30}px`;
   }
-  const res = fetch("http://54.64.173.185:3000/api/user", {
+
+  var myHeaders = new Headers();
+  myHeaders.append("content-type", "application/json");
+
+
+  var requestOptions = {
     method: "POST",
+    headers: myHeaders,
     body: JSON.stringify({ name: name, email: email, password: password }),
-    headers: { "content-type": "application/json"}
-  })
+    redirect: "follow",
+  };
+  const res = fetch("http://54.64.173.185:3000/api/user",requestOptions)
     .then(async (response) => {
       if (!response.ok) {
         data = await response.json();
@@ -198,13 +208,13 @@ function createMessage(message, status, mode) {
 
 function jwtCheck() {
   const res = fetch("http://54.64.173.185:3000/api/user/auth", {
-    method: "GET"
+    method: "GET",
   }).then((response) => response.json());
   return res;
 }
 function logout() {
   const res = fetch("http://54.64.173.185:3000/api/user/auth", {
     method: "DELETE",
-    headers: { "content-type": "application/json" }
+    headers: { "content-type": "application/json" },
   }).then(window.location.reload());
 }
