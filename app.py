@@ -1,7 +1,11 @@
 from flask import *
+from werkzeug.security import generate_password_hash,check_password_hash
 import mysql.connector
 from sqlFunction import create_connection_pool
+import jwt
+from datetime import datetime,timedelta
 
+private_key="0xjwt"
 app=Flask(__name__)
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
@@ -179,7 +183,7 @@ def attractionIdAPI(attractionId):
 		return response
 		
 @app.route("/api/categories")
-def categoriesApi():
+def categoriesAPI():
 	connect_objt=cnx.get_connection()
 	cursor = connect_objt.cursor()
 	sql="SELECT categoryName from category;"
@@ -197,7 +201,102 @@ def categoriesApi():
 	connect_objt.close()
 	return response
 
+@app.route("/api/user",methods=["POST"])
+def registerUserAPI():
 
+	name = request.get_json()["name"]
+	email= request.get_json()["email"]
+	password = request.get_json()["password"]
+	if not(name) or not(email) or not(password):
+		response = make_response(jsonify({"error":True,"message":"三者不能空白"}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+		return response
 
+	connect_objt=cnx.get_connection()
+	cursor = connect_objt.cursor()
+	sql="SELECT * from membership where email=%s;"
+	val=(email,)
+	cursor.execute(sql,val)
+	result=cursor.fetchone()
+	
+	if(result!=None):
+		response = make_response(jsonify({"error":True,"message":"重複的email"}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+		cursor.close()
+		connect_objt.close()
+		return response
+	else:
+		passwordHashed=generate_password_hash(password=password)
+		sql="insert into membership (name,email,password) values (%s,%s,%s);"
+		val=(name,email,passwordHashed)
+		cursor.execute(sql,val)
+		connect_objt.commit()
+		cursor.close()
+		connect_objt.close()
+		response = make_response(jsonify({"ok":True}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+		return response
+
+@app.route("/api/user/auth",methods=["GET","PUT","DELETE"])
+def loginUserAPI():
+	if(request.method=="PUT"):
+		# response = make_response(jsonify({"ok":True}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+		email= request.get_json()["email"]
+		password = request.get_json()["password"]
+		passwordHashed=generate_password_hash(password=password)
+		if not(email) or not(password):
+			response = make_response(jsonify({"error":True,"message":"兩者不能空白"}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+			return response
+		connect_objt=cnx.get_connection()
+		cursor = connect_objt.cursor()
+		sql="SELECT * from membership where email=%s;"
+		val=(email,)
+		cursor.execute(sql,val)
+		result=cursor.fetchone()
+		if(result!=None):
+			if(check_password_hash(result[3],password)):
+				expTime=datetime.now()+timedelta(days=7)
+				encoded = jwt.encode({"id":result[0],"name": result[1]}, private_key, algorithm="HS256")
+				response = make_response(jsonify({"ok":True}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+				response.set_cookie(key='jwt', value=encoded, expires=expTime)
+				cursor.close()
+				connect_objt.close()
+				return response
+			else:
+				response = make_response(jsonify({"error":True,"message":"信箱或密碼錯誤"}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+				return response
+		else:
+			response = make_response(jsonify({"error":True,"message":"無此信箱"}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+			return response
+	if(request.method=="GET"):
+		token=request.cookies.get('jwt')
+		if(token):
+			tokenDecode=jwt.decode(token,private_key,algorithms="HS256")
+			connect_objt=cnx.get_connection()
+			cursor = connect_objt.cursor()
+			sql="SELECT * from membership where id=%s;"
+			val=(tokenDecode["id"],)
+			cursor.execute(sql,val)
+			result=cursor.fetchone()
+			cursor.close()
+			connect_objt.close()
+			if(tokenDecode["name"]==result[1]):
+				response = make_response(jsonify({"data":{"id":result[0],"name":result[1],"email":result[2]}}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+				return response
+			else:
+				response = make_response(jsonify({"data":None}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+				return response
+		else:
+			response = make_response(jsonify({"data":None}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+			return response
+	if(request.method=="DELETE"):
+		token=request.cookies.get('jwt')
+		if(token):
+			tokenDecode=jwt.decode(token,private_key,algorithms="HS256")
+			expTime=datetime.now()-timedelta(days=2)
+			encoded = jwt.encode({"id":tokenDecode["id"],"name": tokenDecode["name"]}, private_key, algorithm="HS256")
+			response = make_response(jsonify({"ok":True}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+			response.set_cookie(key='jwt', value=encoded, expires=expTime)
+			return response
+		else:
+			response = make_response(jsonify({"ok":True}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+			return response
 app.debug=True
 app.run("0.0.0.0",port=3000)

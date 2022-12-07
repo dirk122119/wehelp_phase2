@@ -37,7 +37,13 @@
     display: flex;
   }
   .navlink div {
+    margin: 20px 0 20px 0;
+  }
+  .navlink #book {
     margin: 20px 20px 20px 0;
+  }
+  .navlink a:hover {
+    cursor: pointer;
   }
   .navlink a {
     text-decoration: none;
@@ -56,39 +62,414 @@
   .sticky + .content {
     padding-top: 54px;
   }
-  .content{
+  .content {
     position: relative;
-    display:grid;
+    display: grid;
     place-items: center;
   }
-  .contentContainer{
+  .contentContainer {
     width: 94vw;
-    
   }
-  /************************* slider *************************/
-  .gridContainer{
-    display:grid;
-    grid-template-columns:100vw;
-    gap:30px;
+  /************************loginModal************************/
 
+  .modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0, 0.4); /* Fallback color */
   }
-  .slideshowContainer{
+
+  #loginModal .modal-content {
+    background-color: var(--Additional_Color_White);
+    /* border-image: var(--Additional_Color_Dark_Cyan_Gradient_0deg) 1; */
+    display: flex;
+    justify-content: center;
+    width: 340px;
+    height: 275px;
+    border-radius: 6px;
     position: relative;
-    width:94vw;
-    height:auto;
+    top: 80px;
+    left: 50%;
+    transform: translate(-50%, 0);
   }
-  .bookContainer{
-    position:relative;
-    width:94vw;
-    height:auto;
+  #loginModal .modal-content:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: calc(100% - 10px);
+    left: 0;
+    z-index: -1;
+    margin: 0;
+    border-radius: 6px 6px 0 0;
+    background-image: var(--Additional_Color_Dark_Cyan_Gradient_0deg);
   }
-  .Slides img{
-    width:94vw;
-    height:auto;
+  #loginModal .modal-content .tittle {
+    position: absolute;
+    display: flex;
+    top: 25px;
+    left: 15px;
+    width: 310px;
+    height: 27px;
+    color: var(--Secondary_Color_70);
+    font-family: var(--Header_3_Bold_Typeface);
+    font-weight: var(--Header_3_Bold_Weight);
+    font-size: var(--Header_3_Bold_Size);
+    line-height: var(--Header_3_Bold_Height);
+    justify-content: center;
+  }
+  #loginModal .modal-content .close {
+    all: unset;
+    background-image: url("../image/icon_close.png");
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 2px;
+    right: 2px;
+  }
+
+  #loginModal .modal-content .close:hover {
+    cursor: pointer;
+  }
+
+  #loginModal .modal-content .inputEmail {
+    position: absolute;
+    width: 310px;
+    height: 47px;
+    top: 67px;
+    left: 15px;
+  }
+  #loginModal .modal-content .inputEmail input {
+    position: relative;
+    width: 280px;
+    height: 20px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    color: var(--Secondary_Color_50);
+    font-family: var(--Body_Med_Typeface);
+    font-weight: var(--Body_Med_Weight);
+    font-size: var(--Body_Med_Size);
+    line-height: var(--Body_Med_Height);
+    justify-content: center;
+    padding: 15px;
+  }
+  #loginModal .modal-content .inputEmail input::placeholder {
+    color: var(--Secondary_Color_50);
+    font-family: var(--Body_Med_Typeface);
+    font-weight: var(--Body_Med_Weight);
+    font-size: var(--Body_Med_Size);
+    line-height: var(--Body_Med_Height);
+  }
+  #loginModal .modal-content .inputPassword {
+    position: absolute;
+    width: 310px;
+    height: 47px;
+    top: 124px;
+    left: 15px;
+  }
+  #loginModal .modal-content .inputPassword input {
+    position: relative;
+    width: 280px;
+    height: 20px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    color: var(--Secondary_Color_50);
+    font-family: var(--Body_Med_Typeface);
+    font-weight: var(--Body_Med_Weight);
+    font-size: var(--Body_Med_Size);
+    line-height: var(--Body_Med_Height);
+    padding: 15px;
+  }
+  #loginModal .modal-content .inputPassword input::placeholder {
+    color: var(--Secondary_Color_50);
+    font-family: var(--Body_Med_Typeface);
+    font-weight: var(--Body_Med_Weight);
+    font-size: var(--Body_Med_Size);
+    line-height: var(--Body_Med_Height);
+  }
+
+  #loginModal .modal-content .inputSubmit {
+    position: absolute;
+    width: 310px;
+    height: 47px;
+    top: 181px;
+    left: 15px;
+  }
+  #loginModal .modal-content .inputSubmit button {
+    background-color: var(--Primary_Color_70);
+    width: 310px;
+    height: 47px;
+    top: 181px;
+    left: 15px;
+    border: none;
+    border-radius: 5px;
+  }
+  #loginModal .modal-content .inputSubmit button:hover {
+    cursor: pointer;
+  }
+  #loginModal .modal-content .inputSubmit button span {
+    width: 270px;
+    height: 27px;
+    color: var(--Additional_Color_White);
+    font-family: var(--Body_Reg_Typeface);
+    font-weight: var(--Body_Reg_Weight);
+    font-size: var(--Body_Reg_Size);
+    line-height: var(--Body_Reg_Height);
+  }
+
+  #loginModal .modal-content .message {
+    position: absolute;
+    display: flex;
+    width: 310px;
+    height: 22px;
+    top: 238px;
+    left: 15px;
+    justify-content: center;
+  }
+
+  #loginModal .modal-content .switchRegist {
+    position: absolute;
+    display: flex;
+    width: 310px;
+    height: 22px;
+    top: 238px;
+    left: 15px;
+    justify-content: center;
+  }
+  #loginModal .modal-content .switchRegist span {
+    color: var(--Secondary_Color_70);
+    font-family: var(--Body_Med_Typeface);
+    font-weight: var(--Body_Med_Weight);
+    font-size: var(--Body_Med_Size);
+    line-height: var(--Body_Med_Height);
+  }
+  #loginModal .modal-content .switchRegist span a:hover {
+    cursor: pointer;
+  }
+
+  /************************registModal************************/
+  #registModal .modal-content {
+    background-color: var(--Additional_Color_White);
+    /* border-image: var(--Additional_Color_Dark_Cyan_Gradient_0deg) 1; */
+    display: flex;
+    justify-content: center;
+    width: 340px;
+    height: 332px;
+    border-radius: 10px;
+    position: relative;
+    top: 80px;
+    left: 50%;
+    transform: translate(-50%, 0);
+  }
+
+  #registModal .modal-content::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: calc(100% - 10px);
+    left: 0;
+    z-index: -1;
+    margin: 0px;
+    border-radius: 6px 6px 0 0;
+    background-image: var(--Additional_Color_Dark_Cyan_Gradient_0deg);
+  }
+  #registModal .modal-content .tittle {
+    position: absolute;
+    display: flex;
+    top: 25px;
+    left: 15px;
+    width: 310px;
+    height: 27px;
+    color: var(--Secondary_Color_70);
+    font-family: var(--Header_3_Bold_Typeface);
+    font-weight: var(--Header_3_Bold_Weight);
+    font-size: var(--Header_3_Bold_Size);
+    line-height: var(--Header_3_Bold_Height);
+    justify-content: center;
+  }
+  #registModal .modal-content .close {
+    all: unset;
+    background-image: url("../image/icon_close.png");
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 2px;
+    right: 2px;
+  }
+  #registModal .modal-content .close:hovor {
+    cursor: pointer;
+  }
+  #registModal .modal-content .inputUsername {
+    position: absolute;
+    width: 310px;
+    height: 47px;
+    top: 67px;
+    left: 15px;
+  }
+  #registModal .modal-content .inputUsername input {
+    position: relative;
+    width: 280px;
+    height: 20px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    color: var(--Secondary_Color_50);
+    font-family: var(--Body_Med_Typeface);
+    font-weight: var(--Body_Med_Weight);
+    font-size: var(--Body_Med_Size);
+    line-height: var(--Body_Med_Height);
+    justify-content: center;
+    padding: 15px;
+  }
+  #registModal .modal-content .inputUsername input::placeholder {
+    color: var(--Secondary_Color_50);
+    font-family: var(--Body_Med_Typeface);
+    font-weight: var(--Body_Med_Weight);
+    font-size: var(--Body_Med_Size);
+    line-height: var(--Body_Med_Height);
+  }
+  #registModal .modal-content .inputEmail {
+    position: absolute;
+    width: 310px;
+    height: 47px;
+    top: 124px;
+    left: 15px;
+  }
+  #registModal .modal-content .inputEmail input {
+    position: relative;
+    width: 280px;
+    height: 20px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    color: var(--Secondary_Color_50);
+    font-family: var(--Body_Med_Typeface);
+    font-weight: var(--Body_Med_Weight);
+    font-size: var(--Body_Med_Size);
+    line-height: var(--Body_Med_Height);
+    justify-content: center;
+    padding: 15px;
+  }
+  #registModal .modal-content .inputEmail input::placeholder {
+    color: var(--Secondary_Color_50);
+    font-family: var(--Body_Med_Typeface);
+    font-weight: var(--Body_Med_Weight);
+    font-size: var(--Body_Med_Size);
+    line-height: var(--Body_Med_Height);
+  }
+  #registModal .modal-content .inputPassword {
+    position: absolute;
+    width: 310px;
+    height: 47px;
+    top: 181px;
+    left: 15px;
+  }
+  #registModal .modal-content .inputPassword input {
+    position: relative;
+    width: 280px;
+    height: 20px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    color: var(--Secondary_Color_50);
+    font-family: var(--Body_Med_Typeface);
+    font-weight: var(--Body_Med_Weight);
+    font-size: var(--Body_Med_Size);
+    line-height: var(--Body_Med_Height);
+    padding: 15px;
+  }
+  #registModal .modal-content .inputPassword input::placeholder {
+    color: var(--Secondary_Color_50);
+    font-family: var(--Body_Med_Typeface);
+    font-weight: var(--Body_Med_Weight);
+    font-size: var(--Body_Med_Size);
+    line-height: var(--Body_Med_Height);
+  }
+
+  #registModal .modal-content .inputSubmit {
+    position: absolute;
+    width: 310px;
+    height: 47px;
+    top: 238px;
+    left: 15px;
+  }
+  #registModal .modal-content .inputSubmit button {
+    background-color: var(--Primary_Color_70);
+    width: 310px;
+    height: 47px;
+    top: 181px;
+    left: 15px;
+    border: none;
+    border-radius: 5px;
+  }
+  #registModal .modal-content .inputSubmit button:hover {
+    cursor: pointer;
+  }
+  #registModal .modal-content .inputSubmit button span {
+    width: 270px;
+    height: 27px;
+    color: var(--Additional_Color_White);
+    font-family: var(--Body_Reg_Typeface);
+    font-weight: var(--Body_Reg_Weight);
+    font-size: var(--Body_Reg_Size);
+    line-height: var(--Body_Reg_Height);
+  }
+  #registModal .modal-content .message {
+    position: absolute;
+    display: flex;
+    width: 310px;
+    height: 22px;
+    top: 295px;
+    left: 15px;
+    justify-content: center;
+  }
+  #registModal .modal-content .switchLogin {
+    position: absolute;
+    display: flex;
+    width: 310px;
+    height: 22px;
+    top: 295px;
+    left: 15px;
+    justify-content: center;
+  }
+  #registModal .modal-content .switchLogin span {
+    color: var(--Secondary_Color_70);
+    font-family: var(--Body_Med_Typeface);
+    font-weight: var(--Body_Med_Weight);
+    font-size: var(--Body_Med_Size);
+    line-height: var(--Body_Med_Height);
+  }
+  #registModal .modal-content .switchLogin span a:hover {
+    cursor: pointer;
+  }
+
+  /************************* slider *************************/
+  .gridContainer {
+    display: grid;
+    grid-template-columns: 100vw;
+    gap: 30px;
+  }
+  .slideshowContainer {
+    position: relative;
+    width: 94vw;
+    height: auto;
+  }
+  .bookContainer {
+    position: relative;
+    width: 94vw;
+    height: auto;
+  }
+  .Slides img {
+    width: 94vw;
+    height: auto;
     border-radius: 10px 10px 10px 10px;
     object-fit: contain;
   }
-  .prev, .next {
+  .prev,
+  .next {
     cursor: pointer;
     position: absolute;
     top: 50%;
@@ -96,25 +477,25 @@
     height: 36px;
     padding: 16px;
     margin-top: -22px;
-    opacity: .4; 
+    opacity: 0.4;
     transition: 0.6s ease;
     user-select: none;
-
   }
   .next {
     right: 10px;
   }
-  .prev{
-    left:10px;
+  .prev {
+    left: 10px;
   }
-  .prev:hover, .next:hover {
-    opacity: 1; 
+  .prev:hover,
+  .next:hover {
+    opacity: 1;
   }
-  .dotContainer{
+  .dotContainer {
     position: absolute;
-    width:100%;
-    top:calc(100% - 30px);
-    text-align:center
+    width: 100%;
+    top: calc(100% - 30px);
+    text-align: center;
   }
   .dot {
     cursor: pointer;
@@ -126,95 +507,95 @@
     display: inline-block;
     transition: background-color 0.6s ease;
   }
-  .active, .dot:hover {
+  .active,
+  .dot:hover {
     background-color: var(--Additional_Color_Black);
   }
   hr.solid {
     border-top: 30px solid #bbb;
   }
   /************************* form *************************/
-  #tittle{
+  #tittle {
     height: 33px;
     width: 83vw;
-    color:var(--Secondary_Color_70);
-    font-family:var(--Header_3_Bold_Typeface);
-    font-weight:var(--Header_3_Bold_Weight);
-    font-size:var(--Header_3_Bold_Size);
-    line-height:var(--Header_3_Bold_Height);
+    color: var(--Secondary_Color_70);
+    font-family: var(--Header_3_Bold_Typeface);
+    font-weight: var(--Header_3_Bold_Weight);
+    font-size: var(--Header_3_Bold_Size);
+    line-height: var(--Header_3_Bold_Height);
   }
-  #categoryAndMrt{
+  #categoryAndMrt {
     height: 22px;
     width: 83vw;
-    margin-top:15px;
-    color:var(--Secondary_Color_70);
-    font-family:var(--Body_Med_Typeface);
-    font-weight:var(--Body_Med_Weight);
-    font-size:var(--Body_Med_Size);
-    line-height:var(--Body_Med_Height);
+    margin-top: 15px;
+    color: var(--Secondary_Color_70);
+    font-family: var(--Body_Med_Typeface);
+    font-weight: var(--Body_Med_Weight);
+    font-size: var(--Body_Med_Size);
+    line-height: var(--Body_Med_Height);
   }
-  form{
-    width:100%;
+  form {
+    width: 100%;
     height: 83vw;
     margin-top: 20px;
-    background-color:var(--Secondary_Color_20);
-    
+    background-color: var(--Secondary_Color_20);
   }
-  #formTittle{
+  #formTittle {
     width: 83vw;
     height: 22px;
     display: inline-block;
     padding-top: 15px;
     padding-left: 20px;
-    color:var(--Secondary_Color_70);
-    font-family:var(--Body_Bold_Typeface);
-    font-weight:var(--Body_Bold_Weight);
-    font-size:var(--Body_Bold_Size);
-    line-height:var(--Body_Bold_Height);
+    color: var(--Secondary_Color_70);
+    font-family: var(--Body_Bold_Typeface);
+    font-weight: var(--Body_Bold_Weight);
+    font-size: var(--Body_Bold_Size);
+    line-height: var(--Body_Bold_Height);
   }
-  #formAbstract{
+  #formAbstract {
     width: 83vw;
     height: 22px;
     display: inline-block;
     margin-top: 15px;
-    margin-left:20px;
-    color:var(--Secondary_Color_70);
-    font-family:var(--Body_Med_Typeface);
-    font-weight:var(--Body_Med_Weight);
-    font-size:var(--Body_Med_Size);
-    line-height:var(--Body_Med_Height);
+    margin-left: 20px;
+    color: var(--Secondary_Color_70);
+    font-family: var(--Body_Med_Typeface);
+    font-weight: var(--Body_Med_Weight);
+    font-size: var(--Body_Med_Size);
+    line-height: var(--Body_Med_Height);
   }
 
-  #formDate{
+  #formDate {
     display: inline-block;
     width: 83vw;
     height: 22px;
     padding-top: 15px;
     padding-left: 20px;
-    color:var(--Secondary_Color_70);
-    font-family:var(--Body_Med_Typeface);
-    font-weight:var(--Body_Med_Weight);
-    font-size:var(--Body_Med_Size);
-    line-height:var(--Body_Med_Height);
+    color: var(--Secondary_Color_70);
+    font-family: var(--Body_Med_Typeface);
+    font-weight: var(--Body_Med_Weight);
+    font-size: var(--Body_Med_Size);
+    line-height: var(--Body_Med_Height);
   }
-  #formDate input[type='date']{
+  #formDate input[type="date"] {
     border: none;
   }
-  #formDate input[type='date']::-webkit-datetime-edit-fields-wrapper{
-    width:149px;
+  #formDate input[type="date"]::-webkit-datetime-edit-fields-wrapper {
+    width: 149px;
     height: 25px;
-    color:var(--Secondary_Color_70);
-    font-family:var(--Body_Med_Typeface);
-    font-weight:var(--Body_Med_Weight);
-    font-size:var(--Body_Med_Size);
-    line-height:var(--Body_Med_Height);
-    padding:3px 0px 3px 10px;
+    color: var(--Secondary_Color_70);
+    font-family: var(--Body_Med_Typeface);
+    font-weight: var(--Body_Med_Weight);
+    font-size: var(--Body_Med_Size);
+    line-height: var(--Body_Med_Height);
+    padding: 3px 0px 3px 10px;
   }
-  #formDate input[type='date']::-webkit-calendar-picker-indicator{
+  #formDate input[type="date"]::-webkit-calendar-picker-indicator {
     width: 20px;
     height: 20px;
     padding: 3px 10px 3px 59px;
   }
-  #formPeriod{
+  #formPeriod {
     width: 83vw;
     height: 22px;
     padding-top: 15px;
@@ -222,15 +603,14 @@
     display: flex;
     align-content: center;
   }
-  #formPeriod .labelTittle{
-    color:var(--Secondary_Color_70);
-    font-family:var(--Body_Bold_Typeface);
-    font-weight:var(--Body_Bold_Weight);
-    font-size:var(--Body_Bold_Size);
-    line-height:var(--Body_Bold_Height);
-
+  #formPeriod .labelTittle {
+    color: var(--Secondary_Color_70);
+    font-family: var(--Body_Bold_Typeface);
+    font-weight: var(--Body_Bold_Weight);
+    font-size: var(--Body_Bold_Size);
+    line-height: var(--Body_Bold_Height);
   }
-  #formPeriod input[type='radio']{
+  #formPeriod input[type="radio"] {
     margin-top: 0px;
     position: relative;
     appearance: none;
@@ -239,94 +619,94 @@
     width: 22px;
     height: 22px;
   }
-  #formPeriod input[type='radio']+label{
-    color:var(--Secondary_Color_70);
-    font-family:var(--Body_Med_Typeface);
-    font-weight:var(--Body_Med_Weight);
-    font-size:var(--Body_Med_Size);
-    line-height:var(--Body_Med_Height);
+  #formPeriod input[type="radio"] + label {
+    color: var(--Secondary_Color_70);
+    font-family: var(--Body_Med_Typeface);
+    font-weight: var(--Body_Med_Weight);
+    font-size: var(--Body_Med_Size);
+    line-height: var(--Body_Med_Height);
   }
-  #formPeriod input[type='radio']:checked {
+  #formPeriod input[type="radio"]:checked {
     background-color: var(--Primary_Color_70);
     border: 2px solid var(--Additional_Color_White);
-
   }
 
-
-  #cost{
+  #cost {
     width: 83vw;
     height: 22px;
     display: inline-block;
     margin-top: 15px;
-    margin-left:20px;
-    color:var(--Secondary_Color_70);
-    font-family:var(--Body_Med_Typeface);
-    font-weight:var(--Body_Med_Weight);
-    font-size:var(--Body_Med_Size);
-    line-height:var(--Body_Med_Height);
+    margin-left: 20px;
+    color: var(--Secondary_Color_70);
+    font-family: var(--Body_Med_Typeface);
+    font-weight: var(--Body_Med_Weight);
+    font-size: var(--Body_Med_Size);
+    line-height: var(--Body_Med_Height);
   }
 
-  #submit{
+  #submit {
     width: 154px;
     height: 36px;
     margin-top: 25px;
     margin-left: 20px;
     background-color: var(--Primary_Color_70);
-    border:none;
-    color:var(--Additional_Color_White);
-    font-family:var(--Button_Reg_Typeface);
-    font-weight:var(--Button_Reg_Weight);
-    font-size:var(--Button_Reg_Size);
-    line-height:var(--Button_Reg_Height);
+    border: none;
+    color: var(--Additional_Color_White);
+    font-family: var(--Button_Reg_Typeface);
+    font-weight: var(--Button_Reg_Weight);
+    font-size: var(--Button_Reg_Size);
+    line-height: var(--Button_Reg_Height);
     border-radius: 5px 5px 5px 5px;
   }
-  
-  hr{
-    width:94vw;
-    position:relative;
-    margin-top:40px;
+
+  hr {
+    width: 94vw;
+    position: relative;
+    margin-top: 40px;
     margin-bottom: 50px;
   }
   /************************* form *************************/
-  .infoContainer{
-    width:94vw;
-    display:grid;
+  .infoContainer {
+    width: 94vw;
+    display: grid;
     place-items: center;
   }
-  #description,#adressContent,#transportContent{
+  #description,
+  #adressContent,
+  #transportContent {
     width: 91vw;
     height: auto;
-    color:var(--Secondary_Color_70);
-    font-family:var(--Content_Reg_Typeface);
-    font-weight:var(--Content_Reg_Weight);
-    font-size:var(--Content_Reg_Size);
-    line-height:var(--Content_Reg_Height);
+    color: var(--Secondary_Color_70);
+    font-family: var(--Content_Reg_Typeface);
+    font-weight: var(--Content_Reg_Weight);
+    font-size: var(--Content_Reg_Size);
+    line-height: var(--Content_Reg_Height);
   }
-  
 
-  #adressTittle,#transportTittle{
+  #adressTittle,
+  #transportTittle {
     width: 91vw;
     height: auto;
-    color:var(--Secondary_Color_70);
-    font-family:var(--Body_Bold_Typeface);
-    font-weight:var(--Body_Bold_Weight);
-    font-size:var(--Body_Bold_Size);
-    line-height:var(--Body_Bold_Height);
+    color: var(--Secondary_Color_70);
+    font-family: var(--Body_Bold_Typeface);
+    font-weight: var(--Body_Bold_Weight);
+    font-size: var(--Body_Bold_Size);
+    line-height: var(--Body_Bold_Height);
   }
-  #adressTittle,#transportTittle{
+  #adressTittle,
+  #transportTittle {
     padding-top: 20px;
   }
- 
 
   /* footer */
-  .footer{
+  .footer {
     height: 29vw;
-    width:100vw;
+    width: 100vw;
     background-color: var(--Secondary_Color_50);
     color: var(--Additional_Color_White);
     display: grid;
     place-items: center;
-    top :calc(100vh - 29vw);
-    font-size:var(--Body_Bold_Size);
+    top: calc(100vh - 29vw);
+    font-size: var(--Body_Bold_Size);
   }
 }
