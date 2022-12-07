@@ -198,8 +198,7 @@ function createMessage(message, status, mode) {
 
 function jwtCheck() {
   const res = fetch("http://54.64.173.185:3000/api/user/auth", {
-    method: "GET",
-    headers: { "content-type": "application/json" }
+    method: "GET"
   }).then((response) => response.json());
   return res;
 }
