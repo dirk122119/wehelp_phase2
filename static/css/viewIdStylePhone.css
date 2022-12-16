@@ -151,7 +151,7 @@
     border: none;
   }
   #formDate input[type="date"]::-webkit-datetime-edit-fields-wrapper {
-    width: 149px;
+    
     height: 25px;
     color: var(--Secondary_Color_70);
     font-family: var(--Body_Med_Typeface);

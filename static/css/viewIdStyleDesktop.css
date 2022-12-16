@@ -148,9 +148,10 @@
   }
   #formDate input[type='date']{
     border: none;
+    -webkit-padding-start: 0px;
   }
   #formDate input[type='date']::-webkit-datetime-edit-fields-wrapper{
-    width:149px;
+    display: inline-block;
     height: 25px;
     color:var(--Secondary_Color_70);
     font-family:var(--Body_Med_Typeface);
@@ -163,7 +164,9 @@
     width: 20px;
     height: 20px;
     padding: 3px 10px 3px 59px;
+
   }
+
   #formPeriod{
     width: 560px;
     height: 22px;
