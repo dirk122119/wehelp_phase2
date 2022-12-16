@@ -110,7 +110,15 @@ class myNav extends HTMLElement {
     this.book.id = "book";
     this.bookA = document.createElement("a");
     this.bookA.textContent = "預定行程";
-    this.bookA.href="/booking"
+    this.bookA.onclick=()=>{
+      if (this.getAttribute("jwt") === "no") {
+        const loginModal = document.querySelectorAll("my-loginmodal")[0];
+        loginModal.setAttribute("display", "yes");
+      }
+      else{
+        window.location.href="/booking";
+      }
+    }
     this.book.appendChild(this.bookA);
     this.navlink.appendChild(this.book);
 
