@@ -1,6 +1,7 @@
 from flask import *
 from werkzeug.security import generate_password_hash,check_password_hash
 import mysql.connector
+# from mysql.connector.errors import Error
 from sqlFunction import create_connection_pool
 import jwt
 from datetime import datetime,timedelta
@@ -298,5 +299,83 @@ def loginUserAPI():
 		else:
 			response = make_response(jsonify({"ok":True}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
 			return response
+@app.route("/api/booking",methods=["GET","POST","DELETE"])
+def bookingAPI():
+	token=request.cookies.get('jwt')
+	
+	if(token):
+		tokenDecode=jwt.decode(token,private_key,algorithms="HS256")
+		userId=tokenDecode["id"]
+		if(request.method=="GET"):
+			connect_objt=cnx.get_connection()
+			cursor = connect_objt.cursor()
+			sql="SET SESSION group_concat_max_len = 10000000000"
+			cursor.execute(sql)
+			sql="with added_row_number AS(SELECT membership.name,view.numberId,view.name as viewName,view.address,image.imageName,booking.date,booking.time,booking.price,booking.id,ROW_NUMBER() OVER(PARTITION BY booking.id) AS row_numb FROM booking INNER JOIN view ON booking.attractionId = view.numberId INNER JOIN membership ON booking.userId = membership.id Left JOIN image ON booking.attractionId = image.viewId WHERE booking.userId= %s) "
+			sql=sql+"SELECT * FROM added_row_number where row_numb = 1;"
+			val=(userId,)
+			cursor.execute(sql,val)
+			results=cursor.fetchall()
+			bookingList=[]
+			for item in results:
+				jsonfile={
+					"attraction":{
+						"id":item[1],
+						"name":item[2],
+						"address":item[3],
+						"image":item[4].split(",")[0]
+					},
+					"date":item[5].strftime("%Y-%m-%d"),
+					"time":item[6],
+					"price":item[7],
+					"bookingId":item[8]
+					}
+				bookingList.append(jsonfile)
+			response = make_response(jsonify({"data":bookingList,"userId":userId}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+			cursor.close()
+			connect_objt.close()
+			return response
+		if(request.method=="POST"):
+			attractionId = request.get_json()["attractionId"]
+			date = request.get_json()["date"]
+			time = request.get_json()["time"]
+			price = request.get_json()["price"]
+
+			connect_objt=cnx.get_connection()
+			cursor = connect_objt.cursor()
+			try:
+				sql="insert into booking (attractionId,date,time,price,userId) values (%s,%s,%s,%s,%s);"
+				val=(attractionId,date,time,price,userId)
+				cursor.execute(sql,val)
+				connect_objt.commit()
+				cursor.close()
+				connect_objt.close()
+				response = make_response(jsonify({"ok":True}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+			except mysql.connector.Error as e:
+				response = make_response(jsonify({"error":True,"message":e.msg}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+			except :
+				response = make_response(jsonify({"error":True,"message":"伺服器內部錯誤"}),500,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+			finally:
+				return response
+		if(request.method=="DELETE"):
+			try:
+				bookingId = request.get_json()["bookingId"]
+				connect_objt=cnx.get_connection()
+				cursor = connect_objt.cursor()
+				sql="DELETE FROM booking where id=%s;"
+				val=(bookingId,)
+				cursor.execute(sql,val)
+				connect_objt.commit()
+				response = make_response(jsonify({"ok":True}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+			except mysql.connector.Error as e:
+				response = make_response(jsonify({"error":True,"message":e.msg}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+			except :
+				response = make_response(jsonify({"error":True,"message":"伺服器內部錯誤"}),500,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+			finally:
+				return response
+
+	else:
+		response = make_response(jsonify({"error":True,"message":"未登入系統"}),403,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+		return response
 app.debug=True
 app.run("0.0.0.0",port=3000)

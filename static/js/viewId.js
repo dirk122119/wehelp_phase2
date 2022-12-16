@@ -11,7 +11,7 @@ function sticky() {
 function getViewIdData() {
   const url = window.location.href;
   const strCopy = url.split("/");
-  let id = strCopy[strCopy.length - 1];
+  const id = strCopy[strCopy.length - 1];
   return fetch(`http://54.64.173.185:3000/api/attraction/${id}`).then(
     (response) => response.json()
   );
@@ -133,32 +133,54 @@ function detectFooter() {
   }
 }
 
+function bookingTrip() {
+  const url = window.location.href;
+  const strCopy = url.split("/");
+  const attractionId = strCopy[strCopy.length - 1];
+  const date = document.querySelectorAll("#formDate input")[0].value;
+  const period = document.querySelectorAll(
+    "#formPeriod input[name='period']:checked"
+  )[0].value;
+  const price = period === "morning" ? 2000 : 2500;
+
+  const myHeaders = new Headers();
+  myHeaders.append("content-type", "application/json");
+
+  var requestOptions = {
+    method: "POST",
+    headers: myHeaders,
+    body: JSON.stringify({
+      attractionId: attractionId,
+      date: date,
+      time: period,
+      price: price,
+    }),
+  };
+  const res = fetch("/api/booking", requestOptions)
+    .then(async (response) => {
+      if (!response.ok) {
+        let data = await response.json();
+        let err = new Error("HTTP status code: " + response.status);
+        err.response = data;
+        err.status = response.status;
+        throw err;
+      }
+      return response.json();
+    })
+    .then((response) => {
+      console.log(response);
+      window.location.href="/booking"
+    }).catch((error)=>{switch (error.status) {
+      case 403:
+        const loginModal = document.querySelectorAll("my-loginmodal")[0];
+        loginModal.setAttribute("display", "yes");
+        break;
+     }});
+}
+
 window.onload = () => {
   loadVieInfo(getViewIdData());
   formOffsetTop();
-  const res = jwtCheck();
-  res.then((response) => {
-    if (response["data"] === null) {
-    } else {
-      const login = document.querySelectorAll("#login")[0];
-      const slash = document.querySelectorAll("#slash")[0];
-      const register = document.querySelectorAll("#register")[0];
-      const nav = document.querySelectorAll(".navlink")[0];
-      login.remove();
-      slash.remove();
-      register.remove();
-
-      let newDiv = document.createElement("div");
-      let newA = document.createElement("a");
-      let newContent = document.createTextNode("登出系統");
-      newA.onclick = () => {
-        logout();
-      };
-      newA.appendChild(newContent);
-      newDiv.appendChild(newA);
-      nav.appendChild(newDiv);
-    }
-  });
 };
 window.onscroll = function () {
   sticky();
@@ -168,7 +190,6 @@ addEventListener("resize", (event) => {
     formOffsetTop();
     detectFooter();
   } else {
-    
     detectFooter();
   }
 });
