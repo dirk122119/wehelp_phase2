@@ -80,6 +80,9 @@ class bookingPage extends HTMLElement {
         top:0px;
         right:10px;
     }
+    .deleteButton:hover{
+      cursor:pointer;
+    }
 		.hr{
 			width:1197px;
 
@@ -404,7 +407,6 @@ class bookingPage extends HTMLElement {
     this.deleteButton = document.createElement("button");
     this.deleteButton.className = "deleteButton";
     this.deleteButton.onclick = () => {
-      alert(`刪除 bookingId : ${bookingIndex}`);
       this.deleteBooking(bookingIndex);
     };
 
