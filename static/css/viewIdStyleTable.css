@@ -219,6 +219,9 @@
     font-size: var(--Body_Med_Size);
     line-height: var(--Body_Med_Height);
   }
+  #cost:hover{
+    cursor: pointer;
+  }
 
   #submit {
     width: 154px;

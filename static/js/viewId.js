@@ -169,6 +169,7 @@ function bookingTrip() {
     })
     .then((response) => {
       console.log(response);
+      window.location.href="/booking"
     }).catch((error)=>{switch (error.status) {
       case 403:
         const loginModal = document.querySelectorAll("my-loginmodal")[0];
