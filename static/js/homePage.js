@@ -1,12 +1,3 @@
-function sticky() {
-  let navbar = document.querySelectorAll(".navbar")[0];
-  let navbarHeight = navbar.offsetHeight;
-  if (window.pageYOffset >= navbarHeight) {
-    navbar.classList.add("sticky");
-  } else {
-    navbar.classList.remove("sticky");
-  }
-}
 
 function getCategoriesData() {
   return fetch("http://54.64.173.185:3000/api/categories").then((response) =>
@@ -226,39 +217,15 @@ let options;
 window.onload = () => {
   loadHomePage();
   categoriesList();
-
-  const res = jwtCheck();
-  res.then((response) => {
-    if (response["data"] === null) {
-    } else {
-      const login = document.querySelectorAll("#login")[0];
-      const slash = document.querySelectorAll("#slash")[0];
-      const register = document.querySelectorAll("#register")[0];
-      const nav = document.querySelectorAll(".navlink")[0];
-      login.remove();
-      slash.remove();
-      register.remove();
-
-      let newDiv = document.createElement("div");
-      let newA = document.createElement("a");
-      let newContent = document.createTextNode("登出系統");
-      newA.onclick = () => {
-        logout();
-      };
-      newA.appendChild(newContent);
-      newDiv.appendChild(newA);
-      nav.appendChild(newDiv);
-    }
-  });
 };
 window.onscroll = function () {
   sticky();
   detectFooter();
 };
-
 document.addEventListener("click", (e) => {
   if (e.target.className != "viewSearch") {
     let categoriesListBlock = document.querySelectorAll(".categoriesList")[0];
     categoriesListBlock.style.display = "none";
   }
 });
+

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='css/sass.css')}}"
+    />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.2.0/redux.min.js"
+      integrity="sha512-1/8Tj23BRrWnKZXeBruk6wTnsMJbi/lJsk9bsRgVwb6j5q39n0A00gFjbCTaDo5l5XrPVv4DZXftrJExhRF/Ug=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script type="module" defer>
+      import {
+        myNav,
+        sticky,
+        jwtCheck,
+        logout,
+      } from "{{url_for('static', filename='js/Components/myNav.mjs')}}";
+
+      import{checkRwd} from "{{url_for('static', filename='js/checkRwd.mjs')}}";
+      import { myLoginModal } from "{{url_for('static', filename='js/Components/myLoginModal.mjs')}}";
+      import { myRegisterModal } from "{{url_for('static', filename='js/Components/myRegisterModal.mjs')}}";
+      import { bookingPage } from "{{url_for('static', filename='js/Components/booking.mjs')}}";
+      import { footer } from "{{url_for('static', filename='js/Components/footer.mjs')}}";
+
+      window.customElements.define("my-nav", myNav);
+      window.customElements.define("my-loginmodal", myLoginModal);
+      window.customElements.define("my-registermodal", myRegisterModal);
+      window.customElements.define("my-bookingpage", bookingPage);
+      window.customElements.define("my-footer", footer);
+
+      window.onscroll = () => {
+        sticky();
+      };
+      window.onresize = () => {
+        let rwd = checkRwd();
+        const nav = document.querySelectorAll("my-nav")[0];
+        const bookingpage = document.querySelectorAll("my-bookingpage")[0];
+        nav.setAttribute("rwd", rwd);
+        bookingpage.setAttribute("rwd", rwd);
+      };
+     
+
+      const res = await jwtCheck();
+      console.log(res)
+      const mybookingPage = document.querySelectorAll("my-bookingpage")[0];
+      if(res!==null){
+        mybookingPage.setAttribute("username", res[0]);
+        mybookingPage.setAttribute("email", res[1]);
+      }
+      else{
+        mybookingPage.setAttribute("username", res);
+        mybookingPage.setAttribute("email", res);
+      }
+      let rwd = checkRwd();
+      const nav = document.querySelectorAll("my-nav")[0];
+      const bookingpage = document.querySelectorAll("my-bookingpage")[0];
+      nav.setAttribute("rwd", rwd);
+      bookingpage.setAttribute("rwd", rwd);
+      
+    </script>
+    <title>Taipei Trip</title>
+  </head>
+  <body>
+    <my-nav sticky="no" jwt="no"></my-nav>
+    <my-loginmodal></my-loginmodal>
+    <my-registermodal></my-registermodal>
+    <my-bookingpage></my-bookingpage>
+    <my-footer></my-footer>
+  </body>
+</html>
