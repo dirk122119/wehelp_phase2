@@ -1,4 +1,6 @@
-class bookingPage extends HTMLElement {
+
+
+class bookingPage2 extends HTMLElement {
   static style = `
     .bookingPageContainer{
         display:flex;
@@ -236,15 +238,22 @@ class bookingPage extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
-    this.loginModal = document.querySelectorAll("my-loginmodal")[0];
-    this.render();
-    this.styling();
   }
   static get observedAttributes() {
-    return ["rwd"];
+    return ["username", "email", "rwd"];
   }
   attributeChangedCallback(name, oldvalue, newvalue) {
-    
+    if (name === "username") {
+     
+      if (newvalue === "null") {
+        const loginModal = document.querySelectorAll("my-loginmodal")[0];
+        loginModal.setAttribute("display", "yes");
+      } else {
+        this.render();
+        this.styling();
+        console.log("username render");
+      }
+    }
     if (name === "rwd" && oldvalue !== null) {
       
       if (oldvalue != newvalue) {
@@ -275,8 +284,6 @@ class bookingPage extends HTMLElement {
             item["bookingId"]
           );
           this.totalCost = this.totalCost + item["price"];
-          const price = document.querySelectorAll(".orderInfo")[0];
-          price.textContent=`總價：新台幣${this.totalCost}元`
         });
         const len = response["data"].length;
         return len;
@@ -433,12 +440,172 @@ class bookingPage extends HTMLElement {
       this.imagContainer.style.height = "53vw";
     }
   }
-  
+  userInfoFunction(username, email) {
+    if (this.userInfoContainer) {
+      this.userInfoContainer.remove();
+    }
+    this.userInfoContainer = document.createElement("div");
+    this.userInfoContainer.className = "userInfoContainer";
+
+    this.userInfo = document.createElement("div");
+    this.userInfo.className = "userInfoCard";
+
+    this.userInfoTitle = document.createElement("div");
+    this.userInfoTitle.className = "userInfoTitle";
+    this.userInfoTitleSpan = document.createElement("span");
+    this.userInfoTitleSpan.textContent = "您的聯絡資訊";
+    this.userInfoTitle.appendChild(this.userInfoTitleSpan);
+
+    this.userName = document.createElement("div");
+    this.userName.className = "user";
+    this.userNameLabel = document.createElement("label");
+    this.userNameLabel.className = "label";
+    this.userNameLabel.for = "userNameInput";
+    this.userNameLabel.textContent = "聯絡姓名：";
+    this.userNameInput = document.createElement("input");
+    this.userNameInput.id = "userNameInput";
+    this.userNameInput.className = "input";
+    this.userNameInput.value = `${username}`;
+    this.userName.appendChild(this.userNameLabel);
+    this.userName.appendChild(this.userNameInput);
+
+    this.userEmail = document.createElement("div");
+    this.userEmail.className = "user";
+    this.userEmailLabel = document.createElement("label");
+    this.userEmailLabel.className = "label";
+    this.userEmailLabel.for = "userEmailInput";
+    this.userEmailLabel.textContent = "聯絡信箱：";
+    this.userEmailInput = document.createElement("input");
+    this.userEmailInput.id = "userEmailInput";
+    this.userEmailInput.className = "input";
+    this.userEmailInput.value = `${email}`;
+    this.userEmail.appendChild(this.userEmailLabel);
+    this.userEmail.appendChild(this.userEmailInput);
+
+    this.userPhone = document.createElement("div");
+    this.userPhone.className = "user";
+    this.userPhoneLabel = document.createElement("label");
+    this.userPhoneLabel.className = "label";
+    this.userPhoneLabel.for = "userPhoneInput";
+    this.userPhoneLabel.textContent = "手機號碼：";
+    this.userPhoneInput = document.createElement("input");
+    this.userPhoneInput.id = "userPhoneInput";
+    this.userPhoneInput.className = "input";
+    this.userPhone.appendChild(this.userPhoneLabel);
+    this.userPhone.appendChild(this.userPhoneInput);
+
+    this.userMessage = document.createElement("div");
+    this.userMessage.className = "userMessage";
+    this.userMessageSpan = document.createElement("span");
+    this.userMessageSpan.textContent =
+      "請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。";
+    this.userMessage.appendChild(this.userMessageSpan);
+
+    this.userInfo.appendChild(this.userInfoTitle);
+    this.userInfo.appendChild(this.userName);
+    this.userInfo.appendChild(this.userEmail);
+    this.userInfo.appendChild(this.userPhone);
+    this.userInfo.appendChild(this.userMessage);
+    this.userInfoContainer.appendChild(this.userInfo);
+    this.shadowRoot.appendChild(this.userInfoContainer);
+
+    if (this.getAttribute("rwd") !== "desktop") {
+      this.userInfo.style.paddingLeft = "10px";
+      this.userInfo.style.paddingRight = "10px";
+      this.userMessageSpan.style.lineHeight = "23px";
+    }
+  }
+  creditCardInfoFunction() {
+    if (this.creditCardInfoContainer) {
+      this.creditCardInfoContainer.remove();
+    }
+    this.creditCardInfoContainer = document.createElement("div");
+    this.creditCardInfoContainer.className = "creditCardInfoContainer";
+
+    this.creditCardInfo = document.createElement("div");
+    this.creditCardInfo.className = "creditCardInfoCard";
+
+    this.creditCardInfoTitle = document.createElement("div");
+    this.creditCardInfoTitle.className = "creditCardInfoTitle";
+    this.creditCardInfoTitleSpan = document.createElement("span");
+    this.creditCardInfoTitleSpan.textContent = "信用卡付款資訊";
+    this.creditCardInfoTitle.appendChild(this.creditCardInfoTitleSpan);
+
+    this.cardNumber = document.createElement("div");
+    this.cardNumber.className = "tpfield";
+    this.cardNumber.id="card-number"
+
+    this.expNumber = document.createElement("div");
+    this.expNumber.className = "tpfield";
+    this.expNumber.id="card-expiration-date";
+    
+    
+
+    
+
+    this.cvvNumber = document.createElement("div");
+    this.cvvNumber.className = "tpfield";
+    this.cvvNumber.id="card-ccv";
+    
+
+    this.creditCardInfo.appendChild(this.creditCardInfoTitle);
+    this.creditCardInfo.appendChild(this.cardNumber);
+    this.creditCardInfo.appendChild(this.expNumber);
+    this.creditCardInfo.appendChild(this.cvvNumber);
+    this.creditCardInfoContainer.appendChild(this.creditCardInfo);
+    this.shadowRoot.appendChild(this.creditCardInfoContainer);
+
+    if (this.getAttribute("rwd") !== "desktop") {
+      this.creditCardInfo.style.paddingLeft = "10px";
+    }
+  }
   async render() {
+    if (this.bookingPageContainer) {
+      this.bookingPageContainer.remove();
+    }
+
+    const mybookingPage = document.querySelectorAll("my-bookingpage")[0];
+    this.bookingPageContainer = document.createElement("div");
+    this.bookingPageContainer.className = "bookingPageContainer";
+    this.booktitle = document.createElement("div");
+    this.booktitle.className = "booktitle";
+    this.booktitleSpan = document.createElement("span");
+    this.booktitleSpan.textContent = `您好，${mybookingPage.getAttribute(
+      "username"
+    )}，待預定行程如下：`;
+    this.booktitle.appendChild(this.booktitleSpan);
+    this.bookingPageContainer.appendChild(this.booktitle);
+    this.shadowRoot.appendChild(this.bookingPageContainer);
 
     await this.getBookingInfo();
     if (this.cardContainer) {
+      this.hr = document.createElement("hr");
+      this.hr.className = "hr";
+      this.shadowRoot.appendChild(this.hr);
 
+      this.userInfoFunction(
+        mybookingPage.getAttribute("username"),
+        mybookingPage.getAttribute("email")
+      );
+
+      this.userHr = document.createElement("hr");
+      this.userHr.className = "hr";
+      this.shadowRoot.appendChild(this.userHr);
+
+      this.creditCardInfoFunction();
+      this.creditCardHr = document.createElement("hr");
+      this.creditCardHr.className = "hr";
+
+      if (this.getAttribute("rwd") !== "desktop") {
+        this.booktitle.style.paddingLeft = "10px";
+        this.hr.style.width = "calc(100vw - 20px)";
+        this.userHr.style.width = "calc(100vw - 20px)";
+        this.creditCardHr.style.width = "calc(100vw - 20px)";
+      }
+
+      this.shadowRoot.appendChild(this.creditCardHr);
+
+      this.orderFunction();
     } else {
       this.noBookingContainer = document.createElement("div");
       this.noBookingContainer.className = "noBookingContainer";
@@ -451,9 +618,8 @@ class bookingPage extends HTMLElement {
       this.noBookingContainer.appendChild(this.noBooking);
       this.shadowRoot.appendChild(this.noBookingContainer);
     }
-    this.setAttribute("totalCost",this.totalCost)
     
   }
 }
 
-export { bookingPage };
+export { bookingPage2 };
