@@ -20,10 +20,11 @@
     line-height: var(--Button_Bold_Line_Height);
   }
   hr {
+    display:none;
     width: 1198px;
   }
   .userInfoContainer {
-    display: flex;
+    display: none;
     justify-content: center;
     margin-top: 44px;
     margin-bottom: 45px;
@@ -76,7 +77,7 @@
     line-height: var(--Body_Bold_Line_Height);
   }
   .creditCardInfoContainer {
-    display: flex;
+    display: none;
     justify-content: center;
     margin-top: 44px;
     margin-bottom: 40px;
@@ -142,7 +143,7 @@
   }
 
   .orderContainer {
-    display: flex;
+    display: none;
     justify-content: center;
     margin-top: 44px;
     margin-bottom: 40px;
@@ -171,5 +172,374 @@
     position: absolute;
     top: 39px;
     right: 10px;
+    border-radius: 5px 5px 5px 5px;
   }
+}
+
+@media only screen and (min-width: 600px) and (max-width: 1199px){
+    @import "sass.css";
+    body {
+        margin: 0;
+        padding: 0;
+      }
+      .bookingPageContainer {
+        display: flex;
+        justify-content: center;
+        margin-top: 46px;
+        margin-bottom: 35px;
+      }
+    
+      .booktitle {
+        width: 1000px;
+        color: var(--Secondary_Color_70);
+        font-family: var(--Button_Bold_Typeface);
+        font-weight: var(--Button_Bold_Weight);
+        font-size: var(--Button_Bold_Size);
+        line-height: var(--Button_Bold_Line_Height);
+        padding-left: 10px;
+      }
+      hr {
+        display:none;
+        width: calc(100vw - 20px);
+        
+      }
+      .userInfoContainer {
+        display: none;
+        justify-content: center;
+        margin-top: 44px;
+        margin-bottom: 45px;
+      }
+      .userInfoCard {
+        width: 1000px;
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+      .userInfoTitle {
+        height: 16px;
+        color: var(--Secondary_Color_70);
+        font-family: var(--Button_Bold_Typeface);
+        font-weight: var(--Button_Bold_Weight);
+        font-size: var(--Button_Bold_Size);
+        line-height: var(--Button_Bold_Line_Height);
+        margin-bottom: 24px;
+      }
+      .user {
+        height: 38px;
+        margin-bottom: 15px;
+      }
+      .user label {
+        color: var(--Secondary_Color_70);
+        font-family: var(--Body_Med_Typeface);
+        font-weight: var(--Body_Med_Weight);
+        font-size: var(--Body_Med_Size);
+        line-height: var(--Body_Med_Line_Height);
+      }
+      .user input {
+        width: 180px;
+        height: 16px;
+        padding: 0;
+        border: 1px solid var(--Secondary_Color_20);
+        border-radius: 5px;
+      }
+      .user input:valid {
+        padding: 10px;
+        color: var(--Additional_Color_Black);
+        font-family: var(--Body_Med_Typeface);
+        font-weight: var(--Body_Med_Weight);
+        font-size: var(--Body_Med_Size);
+        line-height: var(--Body_Med_Line_Height);
+      }
+      .userMessage {
+        padding-top: 5px;
+        height: 14px;
+        color: var(--Secondary_Color_70);
+        font-family: var(--Body_Bold_Typeface);
+        font-weight: var(--Body_Bold_Weight);
+        font-size: var(--Body_Bold_Size);
+        line-height: 23px;
+      }
+      .creditCardInfoContainer {
+        display: none;
+        justify-content: center;
+        margin-top: 44px;
+        margin-bottom: 40px;
+      }
+      .creditCardInfoCard {
+        position: relative;
+        width: 1000px;
+        padding-left: 10px;
+      }
+      .creditCardInfoTitle {
+        height: 16px;
+        color: var(--Secondary_Color_70);
+        font-family: var(--Button_Bold_Typeface);
+        font-weight: var(--Button_Bold_Weight);
+        font-size: var(--Button_Bold_Size);
+        line-height: var(--Button_Bold_Line_Height);
+        margin-bottom: 24px;
+      }
+      .labelblock {
+        display: inline-block;
+        position: relative;
+      }
+      .creditCard .label {
+        display: flex;
+        height: 38px;
+        margin-bottom: 15px;
+        color: var(--Secondary_Color_70);
+        font-family: var(--Body_Med_Typeface);
+        font-weight: var(--Body_Med_Weight);
+        font-size: var(--Body_Med_Size);
+        line-height: var(--Body_Med_Line_Height);
+        align-items: center;
+      }
+    
+      #card-number {
+        position: absolute;
+        top: 40px;
+        left: 94px;
+        width: 202px;
+        height: 38px;
+        padding: 0;
+        border: 1px solid var(--Secondary_Color_20);
+        border-radius: 5px;
+      }
+      #card-expiration-date {
+        position: absolute;
+        top: 93px;
+        left: 94px;
+        width: 202px;
+        height: 38px;
+        padding: 0;
+        border: 1px solid var(--Secondary_Color_20);
+        border-radius: 5px;
+      }
+      #card-ccv {
+        position: absolute;
+        top: 146px;
+        left: 94px;
+        width: 202px;
+        height: 38px;
+        padding: 0;
+        border: 1px solid var(--Secondary_Color_20);
+        border-radius: 5px;
+      }
+    
+      .orderContainer {
+        display: none;
+        justify-content: center;
+        margin-top: 44px;
+        margin-bottom: 40px;
+        height: 100px;
+      }
+      .ordercard {
+        position: relative;
+        width: 1000px;
+      }
+      .orderInfo {
+        height: 14px;
+        color: var(--Secondary_Color_70);
+        font-family: var(--Body_Bold_Typeface);
+        font-weight: var(--Body_Bold_Weight);
+        font-size: var(--Body_Bold_Size);
+        line-height: var(--Body_Bold_Line_Height);
+        position: absolute;
+        right: 10px;
+      }
+      .orderButton {
+        width: 173px;
+        height: 36px;
+        color: var(--Additional_Color_White);
+        background-color: var(--Primary_Color_70);
+        border: none;
+        position: absolute;
+        top: 39px;
+        right: 10px;
+        border-radius: 5px 5px 5px 5px;
+      }
+
+}
+
+@media only screen and (min-width: 120px) and (max-width: 599px){
+    @import "sass.css";
+    body {
+        margin: 0;
+        padding: 0;
+      }
+      .bookingPageContainer {
+        display: flex;
+        justify-content: center;
+        margin-top: 46px;
+        margin-bottom: 35px;
+      }
+    
+      .booktitle {
+        width: 1000px;
+        color: var(--Secondary_Color_70);
+        font-family: var(--Button_Bold_Typeface);
+        font-weight: var(--Button_Bold_Weight);
+        font-size: var(--Button_Bold_Size);
+        line-height: var(--Button_Bold_Line_Height);
+        padding-left: 10px;
+      }
+      hr {
+        display:none;
+        width: calc(100vw - 20px);
+        
+      }
+      .userInfoContainer {
+        display: none;
+        justify-content: center;
+        margin-top: 44px;
+        margin-bottom: 45px;
+      }
+      .userInfoCard {
+        width: 1000px;
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+      .userInfoTitle {
+        height: 16px;
+        color: var(--Secondary_Color_70);
+        font-family: var(--Button_Bold_Typeface);
+        font-weight: var(--Button_Bold_Weight);
+        font-size: var(--Button_Bold_Size);
+        line-height: var(--Button_Bold_Line_Height);
+        margin-bottom: 24px;
+      }
+      .user {
+        height: 38px;
+        margin-bottom: 15px;
+      }
+      .user label {
+        color: var(--Secondary_Color_70);
+        font-family: var(--Body_Med_Typeface);
+        font-weight: var(--Body_Med_Weight);
+        font-size: var(--Body_Med_Size);
+        line-height: var(--Body_Med_Line_Height);
+      }
+      .user input {
+        width: 180px;
+        height: 16px;
+        padding: 0;
+        border: 1px solid var(--Secondary_Color_20);
+        border-radius: 5px;
+      }
+      .user input:valid {
+        padding: 10px;
+        color: var(--Additional_Color_Black);
+        font-family: var(--Body_Med_Typeface);
+        font-weight: var(--Body_Med_Weight);
+        font-size: var(--Body_Med_Size);
+        line-height: var(--Body_Med_Line_Height);
+      }
+      .userMessage {
+        padding-top: 5px;
+        height: 14px;
+        color: var(--Secondary_Color_70);
+        font-family: var(--Body_Bold_Typeface);
+        font-weight: var(--Body_Bold_Weight);
+        font-size: var(--Body_Bold_Size);
+        line-height: 23px;
+      }
+      .creditCardInfoContainer {
+        display: none;
+        justify-content: center;
+        margin-top: 44px;
+        margin-bottom: 40px;
+      }
+      .creditCardInfoCard {
+        position: relative;
+        width: 1000px;
+        padding-left: 10px;
+      }
+      .creditCardInfoTitle {
+        height: 16px;
+        color: var(--Secondary_Color_70);
+        font-family: var(--Button_Bold_Typeface);
+        font-weight: var(--Button_Bold_Weight);
+        font-size: var(--Button_Bold_Size);
+        line-height: var(--Button_Bold_Line_Height);
+        margin-bottom: 24px;
+      }
+      .labelblock {
+        display: inline-block;
+        position: relative;
+      }
+      .creditCard .label {
+        display: flex;
+        height: 38px;
+        margin-bottom: 15px;
+        color: var(--Secondary_Color_70);
+        font-family: var(--Body_Med_Typeface);
+        font-weight: var(--Body_Med_Weight);
+        font-size: var(--Body_Med_Size);
+        line-height: var(--Body_Med_Line_Height);
+        align-items: center;
+      }
+    
+      #card-number {
+        position: absolute;
+        top: 40px;
+        left: 94px;
+        width: 202px;
+        height: 38px;
+        padding: 0;
+        border: 1px solid var(--Secondary_Color_20);
+        border-radius: 5px;
+      }
+      #card-expiration-date {
+        position: absolute;
+        top: 93px;
+        left: 94px;
+        width: 202px;
+        height: 38px;
+        padding: 0;
+        border: 1px solid var(--Secondary_Color_20);
+        border-radius: 5px;
+      }
+      #card-ccv {
+        position: absolute;
+        top: 146px;
+        left: 94px;
+        width: 202px;
+        height: 38px;
+        padding: 0;
+        border: 1px solid var(--Secondary_Color_20);
+        border-radius: 5px;
+      }
+    
+      .orderContainer {
+        display: none;
+        justify-content: center;
+        margin-top: 44px;
+        margin-bottom: 40px;
+        height: 100px;
+      }
+      .ordercard {
+        position: relative;
+        width: 1000px;
+      }
+      .orderInfo {
+        height: 14px;
+        color: var(--Secondary_Color_70);
+        font-family: var(--Body_Bold_Typeface);
+        font-weight: var(--Body_Bold_Weight);
+        font-size: var(--Body_Bold_Size);
+        line-height: var(--Body_Bold_Line_Height);
+        position: absolute;
+        right: 10px;
+      }
+      .orderButton {
+        width: 173px;
+        height: 36px;
+        color: var(--Additional_Color_White);
+        background-color: var(--Primary_Color_70);
+        border: none;
+        position: absolute;
+        top: 39px;
+        right: 10px;
+        border-radius: 5px 5px 5px 5px;
+      }
+
 }

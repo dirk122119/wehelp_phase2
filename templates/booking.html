@@ -65,7 +65,11 @@
         window.location.href = "/";
       } else {
         const bookingtitle = document.querySelectorAll(".booktitle span")[0];
+        const userName = document.querySelectorAll("#userNameInput")[0];
+        const userEmail = document.querySelectorAll("#userEmailInput")[0];
         bookingtitle.textContent = `您好，${res[0]}，待預定行程如下：`;
+        userName.value = res[0];
+        userEmail.value = res[1];
       }
       let rwd = checkRwd();
       const nav = document.querySelectorAll("my-nav")[0];

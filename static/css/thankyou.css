@@ -1,0 +1,94 @@
+@media only screen and (min-width: 1200px) {
+  @import "sass.css";
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  .contentContainer {
+    display: flex;
+    justify-content: center;
+    margin-top: 46px;
+    margin-bottom: 35px;
+  }
+  .content {
+    height: calc(100vh - 235px);
+  }
+  .contentTitle {
+    color: var(--Secondary_Color_70);
+    font-family: var(--Button_Bold_Typeface);
+    font-weight: var(--Button_Bold_Weight);
+    font-size: var(--Button_Bold_Size);
+    line-height: var(--Button_Bold_Line_Height);
+    margin-bottom: 30px;
+  }
+  .orderNumber {
+    color: var(--Secondary_Color_70);
+    font-family: var(--Body_Med_Typeface);
+    font-weight: var(--Body_Med_Weight);
+    font-size: var(--Body_Med_Size);
+    line-height: var(--Body_Med_Line_Height);
+  }
+}
+
+@media only screen and (min-width: 120px) and (max-width: 599px) {
+  @import "sass.css";
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  .contentContainer {
+    display: flex;
+    justify-content: center;
+    margin-top: 46px;
+    margin-bottom: 35px;
+  }
+  .content {
+    height: calc(100vh - 235px);
+  }
+  .contentTitle {
+    color: var(--Secondary_Color_70);
+    font-family: var(--Button_Bold_Typeface);
+    font-weight: var(--Button_Bold_Weight);
+    font-size: var(--Button_Bold_Size);
+    line-height: var(--Button_Bold_Line_Height);
+    margin-bottom: 30px;
+  }
+  .orderNumber {
+    color: var(--Secondary_Color_70);
+    font-family: var(--Body_Med_Typeface);
+    font-weight: var(--Body_Med_Weight);
+    font-size: var(--Body_Med_Size);
+    line-height: var(--Body_Med_Line_Height);
+  }
+}
+@media only screen and (min-width: 600px) and (max-width: 1199px) {
+  @import "sass.css";
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  .contentContainer {
+    display: flex;
+    justify-content: center;
+    margin-top: 46px;
+    margin-bottom: 35px;
+  }
+  .content {
+    height: calc(100vh - 235px);
+  }
+  .contentTitle {
+    color: var(--Secondary_Color_70);
+    font-family: var(--Button_Bold_Typeface);
+    font-weight: var(--Button_Bold_Weight);
+    font-size: var(--Button_Bold_Size);
+    line-height: var(--Button_Bold_Line_Height);
+    margin-bottom: 30px;
+  }
+  .orderNumber {
+    color: var(--Secondary_Color_70);
+    font-family: var(--Body_Med_Typeface);
+    font-weight: var(--Body_Med_Weight);
+    font-size: var(--Body_Med_Size);
+    line-height: var(--Body_Med_Line_Height);
+  }
+}

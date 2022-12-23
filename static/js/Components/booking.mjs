@@ -246,20 +246,24 @@ class bookingPage extends HTMLElement {
   attributeChangedCallback(name, oldvalue, newvalue) {
     
     if (name === "rwd" && oldvalue !== null) {
-      
+      console.log(name, oldvalue, newvalue)
       if (oldvalue != newvalue) {
-        let parent = this.shadowRoot;
-        while (parent.firstChild) {
-          parent.removeChild(parent.firstChild);
+        if(oldvalue === "phone" && newvalue ==="desktop"){
+        }
+        else{
+          let parent = this.shadowRoot;
+          while (parent.firstChild) {
+            parent.removeChild(parent.firstChild);
+          }
+          this.styling();
+          this.render();
         }
        
-        this.styling();
-        this.render();
         
       }
     }
   }
-  async getBookingInfo() {
+  async getBookingInfo() {  
     const res = await fetch("api/booking")
       .then((response) => response.json())
       .then((response) => {
@@ -272,8 +276,10 @@ class bookingPage extends HTMLElement {
             item["time"],
             item["price"],
             item["attraction"]["address"],
-            item["bookingId"]
+            item["bookingId"],
+            item["attraction"]["id"]
           );
+          this.deleteButton.setAttribute("bookId",item["bookingId"])
           this.totalCost = this.totalCost + item["price"];
           const price = document.querySelectorAll(".orderInfo")[0];
           price.textContent=`總價：新台幣${this.totalCost}元`
@@ -302,37 +308,7 @@ class bookingPage extends HTMLElement {
     this.stylesheet.textContent = bookingPage.style;
     this.shadowRoot.appendChild(this.stylesheet);
   }
-  orderFunction() {
-    if (this.orderContainer) {
-      this.orderContainer.remove();
-    }
-    this.orderContainer = document.createElement("div");
-    this.orderContainer.className = "orderContainer";
-
-    this.order = document.createElement("div");
-    this.order.className = "ordercard";
-
-    this.orderSpace = document.createElement("div");
-    this.order.appendChild(this.orderSpace);
-
-    this.orderInfo = document.createElement("div");
-    this.orderInfo.className = "orderInfo";
-    this.orderInfoSpan = document.createElement("span");
-    this.orderInfoSpan.textContent = `總價：新台幣${this.totalCost}元`;
-    this.orderInfo.appendChild(this.orderInfoSpan);
-
-    this.orderButton = document.createElement("button");
-    this.orderButton.className = "orderButton";
-    this.orderButton.textContent = "確認訂購與付款";
-    this.orderButton.onclick = () => {
-      alert("購買");
-    };
-    this.order.appendChild(this.orderInfo);
-    this.order.appendChild(this.orderButton);
-    this.orderContainer.appendChild(this.order);
-    this.shadowRoot.appendChild(this.orderContainer);
-  }
-  bookingCard(src, view, date, period, price, address, bookingIndex) {
+  bookingCard(src, view, date, period, price, address, bookingIndex,viewId) {
     this.cardContainer = document.createElement("div");
     this.cardContainer.className = "cardContainer";
 
@@ -347,6 +323,7 @@ class bookingPage extends HTMLElement {
 
     this.infoContainer = document.createElement("div");
     this.infoContainer.className = "infoContainer";
+    this.infoContainer.setAttribute("viewId",viewId);
 
     this.tripInfo = document.createElement("div");
     this.tripInfo.className = "infoTitle";
@@ -438,8 +415,20 @@ class bookingPage extends HTMLElement {
 
     await this.getBookingInfo();
     if (this.cardContainer) {
-
+      const userInfo = document.querySelectorAll(".userInfoContainer")[0];
+      const cardInfo = document.querySelectorAll(".creditCardInfoContainer")[0];
+      const orderContainer = document.querySelectorAll(".orderContainer")[0];
+      const hrlist=document.querySelectorAll("hr");
+      userInfo.style.display="flex"
+      cardInfo.style.display="flex"
+      orderContainer.style.display="flex"
+      hrlist[0].style.display="flex"
+      hrlist[1].style.display="flex"
+      
     } else {
+      if(this.noBookingContainer){
+        this.noBookingContainer.remove()
+      }
       this.noBookingContainer = document.createElement("div");
       this.noBookingContainer.className = "noBookingContainer";
       this.noBooking = document.createElement("div");

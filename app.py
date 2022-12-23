@@ -1,10 +1,12 @@
 from flask import *
+import json
+import requests
 from werkzeug.security import generate_password_hash,check_password_hash
 import mysql.connector
 # from mysql.connector.errors import Error
 from sqlFunction import create_connection_pool
 import jwt
-from datetime import datetime,timedelta
+from datetime import datetime,timedelta,time
 
 private_key="0xjwt"
 app=Flask(__name__)
@@ -374,6 +376,109 @@ def bookingAPI():
 			finally:
 				return response
 
+	else:
+		response = make_response(jsonify({"error":True,"message":"未登入系統"}),403,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+		return response
+
+@app.route("/api/orders/",methods=["POST"])
+def orderAPI():
+	token=request.cookies.get('jwt')
+	if(token):
+		tokenDecode=jwt.decode(token,private_key,algorithms="HS256")
+		userId=tokenDecode["id"]
+		try:
+			get =request.get_json()
+			now = datetime.now()
+			orderNumber = now.strftime("%Y%m%d%H%M%S%f")[:-4]
+			connect_objt=cnx.get_connection()
+			cursor = connect_objt.cursor()
+			for item in get["order"]["trip"]:
+				sql="insert into orders (number,price,attractionId,date,time,contactName,contactEmail,contactPhone,status,userId) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"
+				val=(orderNumber,get["order"]["price"],item["attraction"]["id"],item["date"],item["time"],get["contact"]["name"],get["contact"]["email"],get["contact"]["phone"],1,userId)
+				cursor.execute(sql,val)
+				connect_objt.commit()
+			sql="DELETE FROM booking where userId=%s;"
+			val=(userId,)
+			cursor.execute(sql,val)
+			connect_objt.commit()
+			cursor.close()
+			connect_objt.close()
+			url = 'https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime'
+			headers = {"Content-Type": "application/json","x-api-key":"partner_g8cB64Avg5NLdNSDY2At9BZoXZJrX1q7pzYUi4tf6YfdVtQoQtKKDXAt"}
+			data={
+					"prime": get["prime"],
+					"partner_key": "partner_g8cB64Avg5NLdNSDY2At9BZoXZJrX1q7pzYUi4tf6YfdVtQoQtKKDXAt",
+					"merchant_id": "dirk122119_ESUN",
+					"details":"TapPay Test",
+					"amount": get["order"]["price"],
+					"cardholder": {
+						"phone_number": "+886912345678",
+						"name": "王小明",
+						"email": "LittleMing@Wang.com",
+						"zip_code": "100",
+						"address": "台北市天龍區芝麻街1號1樓",
+						"national_id": "A123456789"
+					},
+					"remember": True
+					}
+			jsonData=json.dumps(data)
+			response = requests.post(url, data=jsonData, headers=headers).json()
+			if(response["status"]==0):
+				connect_objt=cnx.get_connection()
+				cursor = connect_objt.cursor()
+				sql="insert into pays (rec_trade_id,message,orderNumber) values (%s,%s,%s);"
+				val=(response["rec_trade_id"],response["msg"],orderNumber)
+				cursor.execute(sql,val)
+				connect_objt.commit()
+				sql="update orders set status = %s where number = %s"
+				val=(0,orderNumber)
+				cursor.execute(sql,val)
+				connect_objt.commit()
+				cursor.close()
+				connect_objt.close()
+				response = make_response(jsonify({"data":{"number":orderNumber,"payment":{"status":0,"message":"付款成功"}}}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+			else:
+				connect_objt=cnx.get_connection()
+				cursor = connect_objt.cursor()
+				sql="insert into pays (rec_trade_id,message,orderNumber) values (%s,%s,%s);"
+				val=(response["rec_trade_id"],response["msg"],orderNumber)
+				cursor.execute(sql,val)
+				connect_objt.commit()
+				cursor.close()
+				connect_objt.close()
+				response = make_response(jsonify({"error":True,"message":response["msg"],"number":orderNumber}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+		except mysql.connector.Error as e:
+			response = make_response(jsonify({"error":True,"message":e.msg}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+		except :
+			response = make_response(jsonify({"error":True,"message":"伺服器內部錯誤"}),500,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+		finally:
+			return response
+	else:
+		response = make_response(jsonify({"error":True,"message":"未登入系統"}),403,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+		return response
+@app.route("/api/orders/<numberId>",methods=["GET","POST"])
+def orderGetAPI(numberId):
+	token=request.cookies.get('jwt')
+	if(token):
+		tokenDecode=jwt.decode(token,private_key,algorithms="HS256")
+		userId=tokenDecode["id"]
+		connect_objt=cnx.get_connection()
+		cursor = connect_objt.cursor()
+		sql="with added_row_number AS(SELECT view.name as viewName,view.numberId,view.address,image.imageName,orders.number,orders.price,orders.date,orders.time,orders.contactName,orders.contactEmail,orders.contactPhone,orders.status,ROW_NUMBER() OVER(PARTITION BY orders.id) AS row_numb FROM orders INNER JOIN view ON orders.attractionId = view.numberId INNER JOIN image ON orders.attractionId = image.viewId WHERE orders.number= %s)"
+		sql=sql+"SELECT * FROM added_row_number where row_numb = 1;"
+		val=(numberId,)
+		cursor.execute(sql,val)
+		results=cursor.fetchall()
+		if(len(results)>0):
+			tripList=[]
+			for item in results:
+				tripList.append({"attraction":{"id":item[1],"name":item[0],"address":item[2],"image":item[3]},"date":item[6],"time":item[7]})
+			cursor.close()
+			connect_objt.close()
+			response = make_response(jsonify({"data":{"number":numberId,"price":item[5],"trip":tripList,"contact":{"name":item[8],"email":item[9],"phone":item[10]},"status":item[11]}}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+		else:
+			response = make_response(jsonify({"error":True,"message":"找不到此筆訂單"}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+		return response
 	else:
 		response = make_response(jsonify({"error":True,"message":"未登入系統"}),403,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
 		return response
