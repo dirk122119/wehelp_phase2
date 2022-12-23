@@ -380,7 +380,7 @@ def bookingAPI():
 		response = make_response(jsonify({"error":True,"message":"未登入系統"}),403,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
 		return response
 
-@app.route("/api/orders/",methods=["POST"])
+@app.route("/api/orders",methods=["POST"])
 def orderAPI():
 	token=request.cookies.get('jwt')
 	if(token):
@@ -472,7 +472,7 @@ def orderGetAPI(numberId):
 		if(len(results)>0):
 			tripList=[]
 			for item in results:
-				tripList.append({"attraction":{"id":item[1],"name":item[0],"address":item[2],"image":item[3]},"date":item[6],"time":item[7]})
+				tripList.append({"attraction":{"id":item[1],"name":item[0],"address":item[2],"image":item[3]},"date":item[6].strftime("%Y-%m-%d"),"time":item[7]})
 			cursor.close()
 			connect_objt.close()
 			response = make_response(jsonify({"data":{"number":numberId,"price":item[5],"trip":tripList,"contact":{"name":item[8],"email":item[9],"phone":item[10]},"status":item[11]}}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})

@@ -128,10 +128,12 @@ function clickOrder() {
       const res = fetch("/api/orders", requestOptions).then((response)=>response.json()).then((response)=>{
         if(response["data"]){
             // 付款成功
+            console.log(response)
             window.location.href=`/thankyou?number=${response["data"]["number"]}`
         }
         else{
             // 付款失敗
+            console.log(response)
             window.location.href=`/thankyou?number=${response["number"]}`
         }
       })
