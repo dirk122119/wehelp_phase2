@@ -168,7 +168,6 @@ function bookingTrip() {
       return response.json();
     })
     .then((response) => {
-      console.log(response);
       window.location.href="/booking"
     }).catch((error)=>{switch (error.status) {
       case 403:
