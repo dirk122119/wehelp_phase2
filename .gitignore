@@ -2,7 +2,8 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
+# js file
+static/js/setting.js
 # C extensions
 *.so
 

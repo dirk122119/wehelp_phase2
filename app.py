@@ -7,8 +7,11 @@ import mysql.connector
 from sqlFunction import create_connection_pool
 import jwt
 from datetime import datetime,timedelta,time
+from dotenv import load_dotenv,dotenv_values
+import os
 
-private_key="0xjwt"
+load_dotenv()
+private_key=os.getenv('jwtKey')
 app=Flask(__name__)
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
@@ -407,8 +410,8 @@ def orderAPI():
 			headers = {"Content-Type": "application/json","x-api-key":"partner_g8cB64Avg5NLdNSDY2At9BZoXZJrX1q7pzYUi4tf6YfdVtQoQtKKDXAt"}
 			data={
 					"prime": get["prime"],
-					"partner_key": "partner_g8cB64Avg5NLdNSDY2At9BZoXZJrX1q7pzYUi4tf6YfdVtQoQtKKDXAt",
-					"merchant_id": "dirk122119_ESUN",
+					"partner_key": os.getenv('TapPay_partner_key'),
+					"merchant_id": os.getenv('TapPay_merchant_id'),
 					"details":"TapPay Test",
 					"amount": get["order"]["price"],
 					"cardholder": {
