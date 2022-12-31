@@ -191,10 +191,34 @@ class myLoginModal extends HTMLElement {
   }
 
   attributeChangedCallback(name, oldvalue, newvalue) {
-    
     if (name === "display") {
       this.render();
     }
+  }
+  validateEmail() {
+    const validityState = this.emailInput.validity;
+    if (validityState.valueMissing) {
+      this.emailInput.setCustomValidity("欄位不能空白");
+    } else if (validityState.patternMismatch) {
+      this.emailInput.setCustomValidity("請填寫正確信箱");
+    } else {
+      this.emailInput.setCustomValidity("");
+    }
+
+    this.emailInput.reportValidity();
+    return validityState.valid;
+  }
+
+  validatePassword() {
+    const validityState = this.passwordInput.validity;
+    if (validityState.valueMissing) {
+      this.passwordInput.setCustomValidity("欄位不能空白");
+    } else {
+      this.passwordInput.setCustomValidity("");
+    }
+
+    this.passwordInput.reportValidity();
+    return validityState.valid;
   }
 
   closeBtn() {
@@ -202,51 +226,55 @@ class myLoginModal extends HTMLElement {
     loginModal.setAttribute("display", "no");
   }
   loginBtn() {
-    const myHeaders = new Headers();
-    myHeaders.append("content-type", "application/json");
+    const validatePassword = this.validatePassword();
+    const validEmail = this.validateEmail();
+    if (validatePassword && validEmail) {
+      const myHeaders = new Headers();
+      myHeaders.append("content-type", "application/json");
 
-    var requestOptions = {
-      method: "PUT",
-      headers: myHeaders,
-      body: JSON.stringify({
-        email: this.emailInput.value,
-        password: this.passwordInput.value,
-      }),
-    };
-    const res = fetch("/api/user/auth", requestOptions)
-      .then(async (response) => {
-        if (!response.ok) {
-          let data = await response.json();
-          let err = new Error("HTTP status code: " + response.status);
-          err.response = data;
-          err.status = response.status;
-          throw err;
-        }
-        return response.json();
-      })
-      .then((data) => {
-        this.render("登入成功", 200)
-        window.setTimeout(() => {
-          window.location.reload(), 3000;
+      var requestOptions = {
+        method: "PUT",
+        headers: myHeaders,
+        body: JSON.stringify({
+          email: this.emailInput.value,
+          password: this.passwordInput.value,
+        }),
+      };
+      const res = fetch("/api/user/auth", requestOptions)
+        .then(async (response) => {
+          if (!response.ok) {
+            let data = await response.json();
+            let err = new Error("HTTP status code: " + response.status);
+            err.response = data;
+            err.status = response.status;
+            throw err;
+          }
+          return response.json();
+        })
+        .then((data) => {
+          this.render("登入成功", 200);
+          window.setTimeout(() => {
+            window.location.reload(), 3000;
+          });
+        })
+        .catch((error) => {
+          switch (error.status) {
+            case 400:
+              this.render(error.response["message"], error.status);
+              break;
+            case 500:
+              this.render(error.response["message"], error.status);
+              break;
+          }
         });
-      })
-      .catch((error) => {
-        switch (error.status) {
-          case 400:
-            this.render(error.response["message"],error.status)
-            break;
-          case 500:
-            this.render(error.response["message"],error.status)
-            break;
-        }
-      });
+    }
   }
   styling() {
     this.stylesheet = document.createElement("style");
     this.stylesheet.textContent = myLoginModal.style;
     this.shadowRoot.appendChild(this.stylesheet);
   }
-  render(message="",status="") {
+  render(message = "", status = "") {
     if (this.loginModal) {
       this.loginModal.remove();
     }
@@ -279,7 +307,12 @@ class myLoginModal extends HTMLElement {
     this.emailInput = document.createElement("input");
     this.emailInput.id = "loginEmail";
     this.emailInput.type = "email";
+    this.emailInput.setAttribute("required", "");
+    this.emailInput.setAttribute("pattern","^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$")
     this.emailInput.placeholder = "輸入電子信箱";
+    this.emailInput.onkeyup=()=>{
+      this.validateEmail();
+    }
     this.email.appendChild(this.emailInput);
 
     this.password = document.createElement("div");
@@ -287,7 +320,11 @@ class myLoginModal extends HTMLElement {
     this.passwordInput = document.createElement("input");
     this.passwordInput.id = "loginPassword";
     this.passwordInput.type = "password";
+    this.passwordInput.setAttribute("required", "");
     this.passwordInput.placeholder = "輸入密碼";
+    this.passwordInput.onkeyup=()=>{
+      this.validatePassword();
+    }
     this.password.appendChild(this.passwordInput);
 
     this.submit = document.createElement("div");
@@ -325,7 +362,7 @@ class myLoginModal extends HTMLElement {
     this.loginModal.appendChild(this.modalContent);
     this.shadowRoot.appendChild(this.loginModal);
 
-    if(message){
+    if (message) {
       this.message = document.createElement("div");
       if (status === 200) {
         this.message.style.color = "green";
@@ -334,11 +371,13 @@ class myLoginModal extends HTMLElement {
       }
       this.messageSpan = document.createElement("span");
       this.messageContent = document.createTextNode(message);
-      this.messageSpan.id="loginMessage"
-      this.messageSpan.appendChild(this.messageContent)
-      this.message.appendChild(this.messageSpan)
-      this.modalContent.insertBefore(this.message,this.submit)
-      this.modalContent.style.height = `${ this.modalContent.clientHeight + 30}px`;
+      this.messageSpan.id = "loginMessage";
+      this.messageSpan.appendChild(this.messageContent);
+      this.message.appendChild(this.messageSpan);
+      this.modalContent.insertBefore(this.message, this.submit);
+      this.modalContent.style.height = `${
+        this.modalContent.clientHeight + 30
+      }px`;
       this.switchRegister.style.top = `${this.switchRegister.offsetTop + 30}px`;
     }
   }

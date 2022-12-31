@@ -39,9 +39,11 @@
       import{checkRwd} from "{{url_for('static', filename='js/checkRwd.mjs')}}";
       import{myLoginModal} from "{{url_for('static', filename='js/Components/myLoginModal.mjs')}}";
       import{myRegisterModal} from "{{url_for('static', filename='js/Components/myRegisterModal.mjs')}}";
+      import{loading} from "{{url_for('static', filename='js/Components/loading.mjs')}}";
       window.customElements.define("my-nav", myNav);
       window.customElements.define("my-loginmodal", myLoginModal);
       window.customElements.define("my-registermodal", myRegisterModal);
+      window.customElements.define("my-loading", loading);
       window.onscroll = () => {sticky()};
       window.onresize = ()=>{
         let rwd = checkRwd();
@@ -52,6 +54,9 @@
       const nav = document.querySelectorAll("my-nav")[0]
       nav.setAttribute("rwd",rwd)
       jwtCheck();
+
+      const today = new Date().toISOString().split('T')[0];
+      document.querySelectorAll("#chooseDate")[0].setAttribute('min',today)
     </script>
     <title>Taipei Trip</title>
   </head>
@@ -59,7 +64,7 @@
     <my-nav sticky="no" jwt="no"></my-nav>
     <my-loginmodal></my-loginmodal>
     <my-registermodal ></my-registermodal>
-
+    <my-loading display="no"></my-loading>
     <div class="content">
       <div class="contentContainer">
         <div class="gridContainer">
@@ -90,7 +95,7 @@
               <div id="formDate">
                 <label
                   >選擇日期：</label>
-                  <input type="date" value="2022-11-23"
+                  <input id="chooseDate" type="date"
                 />
               </div>
               <div id="formPeriod">

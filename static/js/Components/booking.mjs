@@ -263,10 +263,13 @@ class bookingPage extends HTMLElement {
       }
     }
   }
-  async getBookingInfo() {  
+  async getBookingInfo() { 
+    const loading = document.querySelectorAll("my-loading")[0]
+    loading.setAttribute("display","yes")
     const res = await fetch("api/booking")
       .then((response) => response.json())
       .then((response) => {
+        loading.setAttribute("display","no")
         this.totalCost = 0;
         response["data"].forEach((item) => {
           this.bookingCard(

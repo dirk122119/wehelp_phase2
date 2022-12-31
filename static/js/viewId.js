@@ -9,6 +9,8 @@ function sticky() {
 }
 
 function getViewIdData() {
+  const loading = document.querySelectorAll("my-loading")[0]
+  loading.setAttribute("display","yes")
   const url = window.location.href;
   const strCopy = url.split("/");
   const id = strCopy[strCopy.length - 1];
@@ -18,8 +20,10 @@ function getViewIdData() {
 }
 
 function loadVieInfo(getViewIdData) {
+  const loading = document.querySelectorAll("my-loading")[0]
   req = getViewIdData;
   req.then((data) => {
+    loading.setAttribute("display","no")
     if (data["data"].length != 0) {
       createSlide(data["data"]["images"]);
       createInfo(data["data"]);
@@ -137,44 +141,52 @@ function bookingTrip() {
   const url = window.location.href;
   const strCopy = url.split("/");
   const attractionId = strCopy[strCopy.length - 1];
-  const date = document.querySelectorAll("#formDate input")[0].value;
+  const date = document.querySelectorAll("#formDate input")[0];
   const period = document.querySelectorAll(
     "#formPeriod input[name='period']:checked"
   )[0].value;
   const price = period === "morning" ? 2000 : 2500;
+  if (date.value) {
+    const myHeaders = new Headers();
+    myHeaders.append("content-type", "application/json");
 
-  const myHeaders = new Headers();
-  myHeaders.append("content-type", "application/json");
-
-  var requestOptions = {
-    method: "POST",
-    headers: myHeaders,
-    body: JSON.stringify({
-      attractionId: attractionId,
-      date: date,
-      time: period,
-      price: price,
-    }),
-  };
-  const res = fetch("/api/booking", requestOptions)
-    .then(async (response) => {
-      if (!response.ok) {
-        let data = await response.json();
-        let err = new Error("HTTP status code: " + response.status);
-        err.response = data;
-        err.status = response.status;
-        throw err;
-      }
-      return response.json();
-    })
-    .then((response) => {
-      window.location.href="/booking"
-    }).catch((error)=>{switch (error.status) {
-      case 403:
-        const loginModal = document.querySelectorAll("my-loginmodal")[0];
-        loginModal.setAttribute("display", "yes");
-        break;
-     }});
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: JSON.stringify({
+        attractionId: attractionId,
+        date: date.value,
+        time: period,
+        price: price,
+      }),
+    };
+    const res = fetch("/api/booking", requestOptions)
+      .then(async (response) => {
+        if (!response.ok) {
+          let data = await response.json();
+          let err = new Error("HTTP status code: " + response.status);
+          err.response = data;
+          err.status = response.status;
+          throw err;
+        }
+        return response.json();
+      })
+      .then((response) => {
+        window.location.href = "/booking";
+      })
+      .catch((error) => {
+        switch (error.status) {
+          case 403:
+            const loginModal = document.querySelectorAll("my-loginmodal")[0];
+            loginModal.setAttribute("display", "yes");
+            break;
+        }
+      });
+  }
+  else{
+    date.setCustomValidity("欄位不能空白");
+    date.reportValidity();
+  }
 }
 
 window.onload = () => {

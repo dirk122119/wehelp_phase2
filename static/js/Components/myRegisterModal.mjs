@@ -216,10 +216,50 @@ class myRegisterModal extends HTMLElement {
   }
 
   attributeChangedCallback(name, oldvalue, newvalue) {
-    console.log(name, oldvalue, newvalue);
     if (name === "display") {
       this.render();
     }
+  }
+  validateUserName() {
+    const validityState = this.usernameInput.validity;
+    if (validityState.valueMissing) {
+      this.usernameInput.setCustomValidity("欄位不能空白");
+    } else {
+      this.usernameInput.setCustomValidity("");
+    }
+
+    this.usernameInput.reportValidity();
+    return validityState.valid
+  }
+
+  validateEmail() {
+    const validityState = this.emailInput.validity;
+    if (validityState.valueMissing) {
+      this.emailInput.setCustomValidity("欄位不能空白");
+    }else if(validityState.patternMismatch){
+      this.emailInput.setCustomValidity("請填寫正確信箱");
+    } 
+    else {
+      this.emailInput.setCustomValidity("");
+    }
+
+    this.emailInput.reportValidity();
+    return validityState.valid
+  }
+  validatePassword(){
+    const validityState = this.passwordInput.validity;
+    console.log(validityState)
+    if (validityState.valueMissing) {
+      this.passwordInput.setCustomValidity("欄位不能空白");
+    }else if(validityState.patternMismatch){
+      this.passwordInput.setCustomValidity("密碼至少需要一個大寫英文字母和一個小寫英文字母與數字，且長度大於6");
+    } 
+    else {
+      this.passwordInput.setCustomValidity("");
+    }
+
+    this.passwordInput.reportValidity();
+    return validityState.valid
   }
 
   closeBtn() {
@@ -227,50 +267,58 @@ class myRegisterModal extends HTMLElement {
     registerModal.setAttribute("display", "no");
   }
   registerBtn() {
-    const myHeaders = new Headers();
-    myHeaders.append("content-type", "application/json");
+    // check input
+    const validatePassword=this.validatePassword();
+    const validUserName=this.validateUserName();
+    const validEmail=this.validateEmail();
+    console.log(this.validatePassword.validity);
+    if (validatePassword && validUserName && validEmail) {
+      // post api
+      const myHeaders = new Headers();
+      myHeaders.append("content-type", "application/json");
 
-    var requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: JSON.stringify({
-        "name":this.usernameInput.value,
-        "email": this.emailInput.value,
-        "password": this.passwordInput.value,
-      }),
-    };
-    const res = fetch("/api/user", requestOptions)
-      .then(async (response) => {
-        console.log(response)
-        if (!response.ok) {
-          let data = await response.json();
-          let err = new Error("HTTP status code: " + response.status);
-          err.response = data;
-          err.status = response.status;
-          throw err;
-        }
-        return response.json();
-      })
-      .then((data) => {
-        this.render("註冊成功", 200)
-      })
-      .catch((error) => {
-        switch (error.status) {
-          case 400:
-            this.render(error.response["message"],error.status)
-            break;
-          case 500:
-            this.render(error.response["message"],error.status)
-            break;
-        }
-      });
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: JSON.stringify({
+          name: this.usernameInput.value,
+          email: this.emailInput.value,
+          password: this.passwordInput.value,
+        }),
+      };
+      const res = fetch("/api/user", requestOptions)
+        .then(async (response) => {
+          console.log(response);
+          if (!response.ok) {
+            let data = await response.json();
+            let err = new Error("HTTP status code: " + response.status);
+            err.response = data;
+            err.status = response.status;
+            throw err;
+          }
+          return response.json();
+        })
+        .then((data) => {
+          this.render("註冊成功", 200);
+        })
+        .catch((error) => {
+          switch (error.status) {
+            case 400:
+              this.render(error.response["message"], error.status);
+              break;
+            case 500:
+              this.render(error.response["message"], error.status);
+              break;
+          }
+        });
+    }
   }
   styling() {
     this.stylesheet = document.createElement("style");
     this.stylesheet.textContent = myRegisterModal.style;
     this.shadowRoot.appendChild(this.stylesheet);
   }
-  render(message="",status="") {
+  render(message = "", status = "") {
     if (this.registerModal) {
       this.registerModal.remove();
     }
@@ -303,7 +351,11 @@ class myRegisterModal extends HTMLElement {
     this.usernameInput = document.createElement("input");
     this.usernameInput.id = "registUsername";
     this.usernameInput.type = "text";
+    this.usernameInput.setAttribute("required", "");
     this.usernameInput.placeholder = "輸入姓名";
+    this.usernameInput.onkeyup=()=>{
+      this.validateUserName();
+    }
     this.username.appendChild(this.usernameInput);
 
     this.email = document.createElement("div");
@@ -311,7 +363,12 @@ class myRegisterModal extends HTMLElement {
     this.emailInput = document.createElement("input");
     this.emailInput.id = "registEmail";
     this.emailInput.type = "email";
+    this.emailInput.setAttribute("required", "");
+    this.emailInput.setAttribute("pattern","^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$")
     this.emailInput.placeholder = "輸入電子信箱";
+    this.emailInput.onkeyup=()=>{
+      this.validateEmail();
+    }
     this.email.appendChild(this.emailInput);
 
     this.password = document.createElement("div");
@@ -319,7 +376,12 @@ class myRegisterModal extends HTMLElement {
     this.passwordInput = document.createElement("input");
     this.passwordInput.id = "registPassword";
     this.passwordInput.type = "password";
+    this.passwordInput.setAttribute("required", "");
+    this.passwordInput.setAttribute("pattern","^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$")
     this.passwordInput.placeholder = "輸入密碼";
+    this.passwordInput.onkeyup=()=>{
+     this.validatePassword();
+    }
     this.password.appendChild(this.passwordInput);
 
     this.submit = document.createElement("div");
@@ -343,7 +405,7 @@ class myRegisterModal extends HTMLElement {
     this.switchLoginA.onclick = () => {
       const loginModal = document.querySelectorAll("my-loginmodal")[0];
       const registerModal = document.querySelectorAll("my-registermodal")[0];
-     
+
       registerModal.setAttribute("display", "no");
       loginModal.setAttribute("display", "yes");
     };
@@ -359,7 +421,7 @@ class myRegisterModal extends HTMLElement {
     this.registerModal.appendChild(this.modalContent);
     this.shadowRoot.appendChild(this.registerModal);
 
-    if(message){
+    if (message) {
       this.message = document.createElement("div");
       if (status === 200) {
         this.message.style.color = "green";
@@ -368,11 +430,13 @@ class myRegisterModal extends HTMLElement {
       }
       this.messageSpan = document.createElement("span");
       this.messageContent = document.createTextNode(message);
-      this.messageSpan.id="registMessage"
-      this.messageSpan.appendChild(this.messageContent)
-      this.message.appendChild(this.messageSpan)
-      this.modalContent.insertBefore(this.message,this.submit)
-      this.modalContent.style.height = `${ this.modalContent.clientHeight + 30}px`;
+      this.messageSpan.id = "registMessage";
+      this.messageSpan.appendChild(this.messageContent);
+      this.message.appendChild(this.messageSpan);
+      this.modalContent.insertBefore(this.message, this.submit);
+      this.modalContent.style.height = `${
+        this.modalContent.clientHeight + 30
+      }px`;
       this.switchLogin.style.top = `${this.switchLogin.offsetTop + 30}px`;
     }
   }

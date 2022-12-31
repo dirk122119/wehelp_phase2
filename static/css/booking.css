@@ -58,15 +58,21 @@
     padding: 0;
     border: 1px solid var(--Secondary_Color_20);
     border-radius: 5px;
-  }
-  .user input:valid {
-    padding: 10px;
     color: var(--Additional_Color_Black);
     font-family: var(--Body_Med_Typeface);
     font-weight: var(--Body_Med_Weight);
     font-size: var(--Body_Med_Size);
     line-height: var(--Body_Med_Line_Height);
   }
+  .user input:valid {
+    padding: 10px;
+    
+  }
+  .user input:invalid {
+    padding: 10px;
+    
+  }
+
   .userMessage {
     padding-top: 5px;
     height: 14px;
@@ -243,14 +249,19 @@
         padding: 0;
         border: 1px solid var(--Secondary_Color_20);
         border-radius: 5px;
-      }
-      .user input:valid {
-        padding: 10px;
         color: var(--Additional_Color_Black);
         font-family: var(--Body_Med_Typeface);
         font-weight: var(--Body_Med_Weight);
         font-size: var(--Body_Med_Size);
         line-height: var(--Body_Med_Line_Height);
+      }
+      .user input:valid {
+        padding: 10px;
+        
+      }
+      .user input:invalid {
+        padding: 10px;
+        
       }
       .userMessage {
         padding-top: 5px;
@@ -429,14 +440,19 @@
         padding: 0;
         border: 1px solid var(--Secondary_Color_20);
         border-radius: 5px;
-      }
-      .user input:valid {
-        padding: 10px;
         color: var(--Additional_Color_Black);
         font-family: var(--Body_Med_Typeface);
         font-weight: var(--Body_Med_Weight);
         font-size: var(--Body_Med_Size);
         line-height: var(--Body_Med_Line_Height);
+      }
+      .user input:valid {
+        padding: 10px;
+        
+      }
+      .user input:invalid {
+        padding: 10px;
+        
       }
       .userMessage {
         padding-top: 5px;
