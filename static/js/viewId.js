@@ -149,7 +149,6 @@ function bookingTrip() {
   if (date.value) {
     const myHeaders = new Headers();
     myHeaders.append("content-type", "application/json");
-
     var requestOptions = {
       method: "POST",
       headers: myHeaders,
