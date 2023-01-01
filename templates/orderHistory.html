@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='css/sass.css')}}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='css/orderHistory.css')}}"
+    />
+    <script type="module" defer>
+      import {
+        myNav,
+        sticky,
+        jwtCheck,
+        logout,
+      } from "{{url_for('static', filename='js/Components/myNav.mjs')}}";
+
+      import { checkRwd } from "{{url_for('static', filename='js/checkRwd.mjs')}}";
+      import { myLoginModal } from "{{url_for('static', filename='js/Components/myLoginModal.mjs')}}";
+      import { myRegisterModal } from "{{url_for('static', filename='js/Components/myRegisterModal.mjs')}}";
+      import { loading } from "{{url_for('static', filename='js/Components/loading.mjs')}}";
+      import {orderHistoryCard} from "{{url_for('static', filename='js/Components/orderHistory.mjs')}}"
+      import { footer } from "{{url_for('static', filename='js/Components/footer.mjs')}}";
+
+      window.customElements.define("my-nav", myNav);
+      window.customElements.define("my-loginmodal", myLoginModal);
+      window.customElements.define("my-registermodal", myRegisterModal);
+      window.customElements.define("my-loading", loading);
+      window.customElements.define("my-orderhistorycard", orderHistoryCard);
+      window.customElements.define("my-footer", footer);
+
+      window.onscroll = () => {
+        sticky();
+      };
+      window.onresize = () => {
+        let rwd = checkRwd();
+        const nav = document.querySelectorAll("my-nav")[0];
+        nav.setAttribute("rwd", rwd);
+      };
+      const res = await jwtCheck();
+      if (res === null) {
+        window.location.href = "/";
+      } else {
+        const helloUserTitle = document.querySelectorAll(".helloUserTitle span")[0];
+        helloUserTitle.textContent =`您好，${res[0]}，您的歷史訂單如下：`;
+      }
+      let rwd = checkRwd();
+      const nav = document.querySelectorAll("my-nav")[0];
+      nav.setAttribute("rwd", rwd);
+    </script>
+    <title>Taipei Trip</title>
+  </head>
+  <body>
+    <my-nav sticky="no" jwt="no"></my-nav>
+    <my-loginmodal></my-loginmodal>
+    <my-registermodal></my-registermodal>
+    <my-loading></my-loading>
+    <div class="historyOrderPageContainer">
+        <div class="helloUserTitle"><span></span></div>
+    </div>
+    <my-orderhistorycard></my-orderhistorycard>
+    <my-footer></my-footer>
+  </body>
+</html>

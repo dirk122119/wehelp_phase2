@@ -39,6 +39,11 @@ def booking():
 def thankyou():
 	return render_template("thankyou.html")
 
+@app.route("/orderHistory")
+def historyOrder():
+	return render_template("orderHistory.html")
+
+
 # API
 @app.route("/api/attractions")
 def attractionsAPI():
@@ -508,6 +513,40 @@ def orderGetAPI(numberId):
 			response = make_response(jsonify({"data":{"number":numberId,"price":item[5],"trip":tripList,"contact":{"name":item[8],"email":item[9],"phone":item[10]},"status":item[11]}}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
 		else:
 			response = make_response(jsonify({"error":True,"message":"找不到此筆訂單"}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+		return response
+	else:
+		response = make_response(jsonify({"error":True,"message":"未登入系統"}),403,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+		return response
+@app.route("/api/historyOrders/<userId>")
+def historyOrdersAPI(userId):
+	token=request.cookies.get('jwt')
+	if(token):
+		tokenDecode=jwt.decode(token,private_key,algorithms="HS256")
+		userId=tokenDecode["id"]
+		connect_objt=cnx.get_connection()
+		cursor = connect_objt.cursor()
+		sql="SELECT DISTINCT(orders.number) FROM orders WHERE userId= %s;"
+		val=(userId,)
+		cursor.execute(sql,val)
+		getAllHistoryOrder=cursor.fetchall()
+		if(len(getAllHistoryOrder)>0):
+			orderList=[]
+			for ordernumber in getAllHistoryOrder:
+				sql="with added_row_number AS(SELECT view.name as viewName,view.numberId,view.address,image.imageName,orders.number,orders.price,orders.date,orders.time,orders.contactName,orders.contactEmail,orders.contactPhone,orders.status,ROW_NUMBER() OVER(PARTITION BY orders.id) AS row_numb FROM orders INNER JOIN view ON orders.attractionId = view.numberId INNER JOIN image ON orders.attractionId = image.viewId WHERE orders.number= %s)"
+				sql=sql+"SELECT * FROM added_row_number where row_numb = 1;"
+				val=(ordernumber[0],)
+				cursor.execute(sql,val)
+				orderViews=cursor.fetchall()
+				if(len(orderViews)>0):
+					tripList=[]
+					for item in orderViews:
+						tripList.append({"attraction":{"id":item[1],"name":item[0],"address":item[2],"image":item[3]},"date":item[6].strftime("%Y-%m-%d"),"time":item[7],"contact":{"name":item[8],"email":item[9],"phone":item[10]}})
+					orderList.append({"orderNumber":item[4],"status":item[11],"trip":tripList})
+			cursor.close()
+			connect_objt.close()	
+			response = make_response(jsonify({"data":{"userId":userId,"orderList":orderList}}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+		else:
+			response = make_response(jsonify({"error":True,"message":"找不到歷史訂單"}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
 		return response
 	else:
 		response = make_response(jsonify({"error":True,"message":"未登入系統"}),403,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})

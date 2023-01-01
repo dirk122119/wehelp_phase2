@@ -119,8 +119,9 @@ function clickOrder() {
             element.childNodes[0].childNodes[1].childNodes[1].childNodes[0]
               .childNodes[1].textContent;
           let orderTime =
-            (element.childNodes[0].childNodes[1].childNodes[2].childNodes[0].childNodes[1].textContent =
-              "早" ? "morning" : "afternoon");
+            (element.childNodes[0].childNodes[1].childNodes[2].childNodes[0].childNodes[1].textContent ===
+              "早上9點到下午4點" ? "morning" : "afternoon");
+
           let bookingId =
             element.childNodes[0].childNodes[1].childNodes[5].getAttribute(
               "bookid"
