@@ -41,12 +41,14 @@
       import { myLoginModal } from "{{url_for('static', filename='js/Components/myLoginModal.mjs')}}";
       import { myRegisterModal } from "{{url_for('static', filename='js/Components/myRegisterModal.mjs')}}";
       import { bookingPage } from "{{url_for('static', filename='js/Components/booking.mjs')}}";
+      import {loading} from "{{url_for('static', filename='js/Components/loading.mjs')}}";
       import { footer } from "{{url_for('static', filename='js/Components/footer.mjs')}}";
 
       window.customElements.define("my-nav", myNav);
       window.customElements.define("my-loginmodal", myLoginModal);
       window.customElements.define("my-registermodal", myRegisterModal);
       window.customElements.define("my-bookingpage", bookingPage);
+      window.customElements.define("my-loading", loading);
       window.customElements.define("my-footer", footer);
 
       window.onscroll = () => {
@@ -83,6 +85,7 @@
     <my-nav sticky="no" jwt="no"></my-nav>
     <my-loginmodal></my-loginmodal>
     <my-registermodal></my-registermodal>
+    <my-loading></my-loading>
     <div class="bookingPageContainer">
       <div class="booktitle"><span></span></div>
     </div>
@@ -96,15 +99,15 @@
 
         <div class="user">
           <label for="userNameInput" class="label">聯絡姓名：</label>
-          <input type="text" id="userNameInput" class="input" />
+          <input type="text" id="userNameInput" class="input" required />
         </div>
         <div class="user">
           <label for="userEmailInput" class="label">聯絡信箱：</label>
-          <input type="text" id="userEmailInput" class="input" />
+          <input type="text" id="userEmailInput" class="input" required />
         </div>
         <div class="user">
           <label for="userPhoneInput" class="label">手機號碼：</label>
-          <input type="text" id="userPhoneInput" class="input" />
+          <input type="text" id="userPhoneInput" class="input" required />
         </div>
         <div class="userMessage">
           <span

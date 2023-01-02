@@ -7,6 +7,8 @@ function getCategoriesData() {
 
 function getAttractionsData(page = 0, keyword = "") {
   loadingFlag = true;
+  const loading = document.querySelectorAll("my-loading")[0]
+  loading.setAttribute("display","yes")
   if (keyword == "") {
     return fetch(`http://54.64.173.185:3000/api/attractions?page=${page}`).then(
       (response) => response.json()
@@ -19,9 +21,12 @@ function getAttractionsData(page = 0, keyword = "") {
 }
 
 function createIndexView(req = getAttractionsData()) {
+  const loading = document.querySelectorAll("my-loading")[0]
+  
   req
     .then((data) => {
       if (data["data"].length != 0) {
+        loading.setAttribute("display","no")
         nextPage = data["nextPage"];
         let el = document.querySelectorAll(".viewGridContainer")[0];
         for (let i = 0; i < data["data"].length; i++) {

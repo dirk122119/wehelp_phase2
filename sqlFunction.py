@@ -1,14 +1,17 @@
 import json 
 import mysql.connector
+from dotenv import load_dotenv,dotenv_values
+import os
 
 def create_connection_pool():
     # change db_config on EC2
+    load_dotenv()
     db_config = {
-        'host' : 'localhost',
-        'user' : 'root',
-        'password' : 'dddddddd',
-        'database' : 'taipeiTrip',
-        'port' : 3306,
+        'host' : os.getenv('sqlHost'),
+        'user' : os.getenv('sqlUser'),
+        'password' : os.getenv('sqlPassword'),
+        'database' : os.getenv('sqlDatabase'),
+        'port' : os.getenv('sqlPort')
     }
     cnxpool = mysql.connector.pooling.MySQLConnectionPool(pool_name = "taipeiTrip",pool_size=10, **db_config)
 

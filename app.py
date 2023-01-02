@@ -6,9 +6,13 @@ import mysql.connector
 # from mysql.connector.errors import Error
 from sqlFunction import create_connection_pool
 import jwt
-from datetime import datetime,timedelta,time
+from datetime import datetime,timedelta,time,date
+from dotenv import load_dotenv,dotenv_values
+import os
+import re
 
-private_key="0xjwt"
+load_dotenv()
+private_key=os.getenv('jwtKey')
 app=Flask(__name__)
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
@@ -34,6 +38,11 @@ def booking():
 @app.route("/thankyou")
 def thankyou():
 	return render_template("thankyou.html")
+
+@app.route("/orderHistory")
+def historyOrder():
+	return render_template("orderHistory.html")
+
 
 # API
 @app.route("/api/attractions")
@@ -211,9 +220,15 @@ def registerUserAPI():
 	email= request.get_json()["email"]
 	password = request.get_json()["password"]
 	if not(name) or not(email) or not(password):
-		response = make_response(jsonify({"error":True,"message":"三者不能空白"}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+		response = make_response(jsonify({"error":True,"message":"不能空白"}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
 		return response
-
+	if not(re.search("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", email)):
+		response = make_response(jsonify({"error":True,"message":"信箱驗證錯誤"}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+		return response
+	if not(re.search("^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$", password)):
+		response = make_response(jsonify({"error":True,"message":"密碼至少需要一個大寫英文字母和一個小寫英文字母與數字，且長度大於6"}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+		return response
+	
 	connect_objt=cnx.get_connection()
 	cursor = connect_objt.cursor()
 	sql="SELECT * from membership where email=%s;"
@@ -339,15 +354,23 @@ def bookingAPI():
 			return response
 		if(request.method=="POST"):
 			attractionId = request.get_json()["attractionId"]
-			date = request.get_json()["date"]
+			formDate = request.get_json()["date"]
 			time = request.get_json()["time"]
 			price = request.get_json()["price"]
-
+			today = date.today()
+			datetime_object = datetime.strptime(formDate, '%Y-%m-%d')
+			datetime_object = datetime_object.date()
+			if not(formDate):
+				response = make_response(jsonify({"error":True,"message":"日期不能為空"}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+				return response
+			if(datetime_object<today):
+				response = make_response(jsonify({"error":True,"message":"預約時間錯誤"}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+				return response
 			connect_objt=cnx.get_connection()
 			cursor = connect_objt.cursor()
 			try:
 				sql="insert into booking (attractionId,date,time,price,userId) values (%s,%s,%s,%s,%s);"
-				val=(attractionId,date,time,price,userId)
+				val=(attractionId,formDate,time,price,userId)
 				cursor.execute(sql,val)
 				connect_objt.commit()
 				cursor.close()
@@ -355,8 +378,8 @@ def bookingAPI():
 				response = make_response(jsonify({"ok":True}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
 			except mysql.connector.Error as e:
 				response = make_response(jsonify({"error":True,"message":e.msg}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
-			except :
-				response = make_response(jsonify({"error":True,"message":"伺服器內部錯誤"}),500,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+			except Exception as e:
+				response = make_response(jsonify({"error":True,"message":f"{e}"}),500,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
 			finally:
 				return response
 		if(request.method=="DELETE"):
@@ -371,8 +394,8 @@ def bookingAPI():
 				response = make_response(jsonify({"ok":True}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
 			except mysql.connector.Error as e:
 				response = make_response(jsonify({"error":True,"message":e.msg}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
-			except :
-				response = make_response(jsonify({"error":True,"message":"伺服器內部錯誤"}),500,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+			except Exception as e:
+				response = make_response(jsonify({"error":True,"message":f"{e}"}),500,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
 			finally:
 				return response
 
@@ -388,11 +411,23 @@ def orderAPI():
 		userId=tokenDecode["id"]
 		try:
 			get =request.get_json()
+			if not(get["contact"]["name"] and get["contact"]["email"]and get["contact"]["phone"]):
+				response = make_response(jsonify({"error":True,"message":"聯絡資訊三者皆不能空白"}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+				return response
 			now = datetime.now()
+			today = date.today()
 			orderNumber = now.strftime("%Y%m%d%H%M%S%f")[:-4]
 			connect_objt=cnx.get_connection()
 			cursor = connect_objt.cursor()
 			for item in get["order"]["trip"]:
+				datetime_object = datetime.strptime(item["date"], '%Y-%m-%d')
+				datetime_object=datetime_object.date()
+				if not(item["date"]):
+					response = make_response(jsonify({"error":True,"message":"日期不能為空"}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+					return response
+				if(datetime_object<today):
+					response = make_response(jsonify({"error":True,"message":"預約時間錯誤"}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+					return response
 				sql="insert into orders (number,price,attractionId,date,time,contactName,contactEmail,contactPhone,status,userId) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"
 				val=(orderNumber,get["order"]["price"],item["attraction"]["id"],item["date"],item["time"],get["contact"]["name"],get["contact"]["email"],get["contact"]["phone"],1,userId)
 				cursor.execute(sql,val)
@@ -407,8 +442,8 @@ def orderAPI():
 			headers = {"Content-Type": "application/json","x-api-key":"partner_g8cB64Avg5NLdNSDY2At9BZoXZJrX1q7pzYUi4tf6YfdVtQoQtKKDXAt"}
 			data={
 					"prime": get["prime"],
-					"partner_key": "partner_g8cB64Avg5NLdNSDY2At9BZoXZJrX1q7pzYUi4tf6YfdVtQoQtKKDXAt",
-					"merchant_id": "dirk122119_ESUN",
+					"partner_key": os.getenv('TapPay_partner_key'),
+					"merchant_id": os.getenv('TapPay_merchant_id'),
 					"details":"TapPay Test",
 					"amount": get["order"]["price"],
 					"cardholder": {
@@ -449,8 +484,8 @@ def orderAPI():
 				response = make_response(jsonify({"error":True,"message":response["msg"],"number":orderNumber}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
 		except mysql.connector.Error as e:
 			response = make_response(jsonify({"error":True,"message":e.msg}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
-		except :
-			response = make_response(jsonify({"error":True,"message":"伺服器內部錯誤"}),500,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+		except Exception as e:
+			response = make_response(jsonify({"error":True,"message":f"{e}"}),500,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
 		finally:
 			return response
 	else:
@@ -478,6 +513,40 @@ def orderGetAPI(numberId):
 			response = make_response(jsonify({"data":{"number":numberId,"price":item[5],"trip":tripList,"contact":{"name":item[8],"email":item[9],"phone":item[10]},"status":item[11]}}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
 		else:
 			response = make_response(jsonify({"error":True,"message":"找不到此筆訂單"}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+		return response
+	else:
+		response = make_response(jsonify({"error":True,"message":"未登入系統"}),403,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+		return response
+@app.route("/api/historyOrders/<userId>")
+def historyOrdersAPI(userId):
+	token=request.cookies.get('jwt')
+	if(token):
+		tokenDecode=jwt.decode(token,private_key,algorithms="HS256")
+		userId=tokenDecode["id"]
+		connect_objt=cnx.get_connection()
+		cursor = connect_objt.cursor()
+		sql="SELECT DISTINCT(orders.number) FROM orders WHERE userId= %s;"
+		val=(userId,)
+		cursor.execute(sql,val)
+		getAllHistoryOrder=cursor.fetchall()
+		if(len(getAllHistoryOrder)>0):
+			orderList=[]
+			for ordernumber in getAllHistoryOrder:
+				sql="with added_row_number AS(SELECT view.name as viewName,view.numberId,view.address,image.imageName,orders.number,orders.price,orders.date,orders.time,orders.contactName,orders.contactEmail,orders.contactPhone,orders.status,ROW_NUMBER() OVER(PARTITION BY orders.id) AS row_numb FROM orders INNER JOIN view ON orders.attractionId = view.numberId INNER JOIN image ON orders.attractionId = image.viewId WHERE orders.number= %s)"
+				sql=sql+"SELECT * FROM added_row_number where row_numb = 1;"
+				val=(ordernumber[0],)
+				cursor.execute(sql,val)
+				orderViews=cursor.fetchall()
+				if(len(orderViews)>0):
+					tripList=[]
+					for item in orderViews:
+						tripList.append({"attraction":{"id":item[1],"name":item[0],"address":item[2],"image":item[3]},"date":item[6].strftime("%Y-%m-%d"),"time":item[7],"contact":{"name":item[8],"email":item[9],"phone":item[10]}})
+					orderList.append({"orderNumber":item[4],"status":item[11],"trip":tripList})
+			cursor.close()
+			connect_objt.close()	
+			response = make_response(jsonify({"data":{"userId":userId,"orderList":orderList}}),200,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
+		else:
+			response = make_response(jsonify({"error":True,"message":"找不到歷史訂單"}),400,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})
 		return response
 	else:
 		response = make_response(jsonify({"error":True,"message":"未登入系統"}),403,{'content-type':'application/json','Access-Control-Allow-Origin':"*"})

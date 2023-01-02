@@ -1,0 +1,21 @@
+@media only screen and (min-width: 1200px) {
+  @import "sass.css";
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  .historyOrderPageContainer {
+    display: flex;
+    justify-content: center;
+    margin-top: 46px;
+    margin-bottom: 35px;
+  }
+  .helloUserTitle{
+    width: 1000px;
+    color: var(--Secondary_Color_70);
+    font-family: var(--Button_Bold_Typeface);
+    font-weight: var(--Button_Bold_Weight);
+    font-size: var(--Button_Bold_Size);
+    line-height: var(--Button_Bold_Line_Height);
+  }
+}

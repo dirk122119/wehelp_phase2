@@ -1,18 +1,34 @@
-class bookingPage extends HTMLElement {
+import { jwtCheck } from "./myNav.mjs";
+
+class orderHistoryCard extends HTMLElement {
   static style = `
-    
+  .titleContainer{
+    display:flex;
+    justify-content:center;
+    flex-direction: column;
+}
+    .orderTitleContainer{
+        display:flex;
+        justify-content:center;
+        margin-bottom:10px
+    }
+    .orderTitle{
+        padding-left:10px;
+        width:1000px;
+        height:30px;
+        background-color:var(--Secondary_Color_50);
+        color: var(--Additional_Color_White);
+        font-family: var(--Button_Bold_Typeface);
+        font-weight: var(--Button_Bold_Weight);
+        font-size: var(--Button_Bold_Size);
+        line-height: var(--Button_Bold_Line_Height);
+        display:flex;
+        align-items: center; 
+    }
     .cardContainer{
         display:flex;
         justify-content:center;
-				margin-bottom:40px
-    }
-    .booktitle{
-        width:1000px;
-        color:var(--Secondary_Color_70);
-        font-family:var(--Button_Bold_Typeface);
-        font-weight:var(--Button_Bold_Weight);
-        font-size:var(--Button_Bold_Size);
-        line-height:var(--Button_Bold_Line_Height);
+		margin-bottom:40px
     }
     .bookingcard{
         height:200px;
@@ -231,82 +247,50 @@ class bookingPage extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
-    this.loginModal = document.querySelectorAll("my-loginmodal")[0];
     this.render();
     this.styling();
   }
-  static get observedAttributes() {
-    return ["rwd"];
-  }
-  attributeChangedCallback(name, oldvalue, newvalue) {
-    
-    if (name === "rwd" && oldvalue !== null) {
-      console.log(name, oldvalue, newvalue)
-      if (oldvalue != newvalue) {
-        if(oldvalue === "phone" && newvalue ==="desktop"){
-        }
-        else{
-          let parent = this.shadowRoot;
-          while (parent.firstChild) {
-            parent.removeChild(parent.firstChild);
-          }
-          this.styling();
-          this.render();
-        }
-       
-        
-      }
-    }
-  }
-  async getBookingInfo() { 
-    const loading = document.querySelectorAll("my-loading")[0]
-    loading.setAttribute("display","yes")
-    const res = await fetch("api/booking")
+  async getOrderHistory() {
+    this.userInfo = await jwtCheck();
+    const res = await fetch(`api/historyOrders/${this.userInfo[0]}`)
       .then((response) => response.json())
       .then((response) => {
-        loading.setAttribute("display","no")
-        this.totalCost = 0;
-        response["data"].forEach((item) => {
-          this.bookingCard(
-            `https://${item["attraction"]["image"]}`,
-            item["attraction"]["name"],
-            item["date"],
-            item["time"],
-            item["price"],
-            item["attraction"]["address"],
-            item["bookingId"],
-            item["attraction"]["id"]
-          );
-          this.deleteButton.setAttribute("bookId",item["bookingId"])
-          this.totalCost = this.totalCost + item["price"];
-          const price = document.querySelectorAll(".orderInfo")[0];
-          price.textContent=`總價：新台幣${this.totalCost}元`
+        response["data"]["orderList"].forEach((element,index) => {
+          this.orderNumberTitle(element["orderNumber"], element["trip"],index);
         });
-        const len = response["data"].length;
-        return len;
       });
   }
-  deleteBooking(id) {
-    const myHeaders = new Headers();
-    myHeaders.append("content-type", "application/json");
-
-    var requestOptions = {
-      method: "DELETE",
-      headers: myHeaders,
-      body: JSON.stringify({
-        bookingId: id,
-      }),
-    };
-    const res = fetch("api/booking", requestOptions).then((data) => {
-      window.location.reload();
+  orderNumberTitle(orderNumber, trip,index) {
+    this.titleContainer = document.createElement("div");
+    this.titleContainer.className = "titleContainer";
+    this.orderTitleContainer= document.createElement("div");
+    this.orderTitleContainer.className = "orderTitleContainer";
+    
+    this.orderTitle = document.createElement("div");
+    this.orderTitle.className = "orderTitle";
+    this.orderTitle.textContent = `訂單編號：${orderNumber}`;
+    this.tripCard = document.createElement("div");
+    this.tripCard.id=`${index}`
+    this.tripCard.setAttribute("open","true")
+    this.orderTitleContainer.appendChild(this.orderTitle)
+    this.titleContainer.appendChild(this.orderTitleContainer);
+    this.titleContainer.appendChild(this.tripCard)
+    
+    trip.forEach((view) => {
+      this.orderCard(
+        `https:${view["attraction"]["image"]}`,
+        view["attraction"]["name"],
+        view["date"],
+        view["time"],
+        view["time"] === "morning" ? 2000 : 2500,
+        view["attraction"]["address"],
+        view["attraction"]["id"]
+      );
+      this.tripCard.appendChild(this.cardContainer);
     });
+    this.shadowRoot.appendChild(this.titleContainer);
   }
-  styling() {
-    this.stylesheet = document.createElement("style");
-    this.stylesheet.textContent = bookingPage.style;
-    this.shadowRoot.appendChild(this.stylesheet);
-  }
-  bookingCard(src, view, date, period, price, address, bookingIndex,viewId) {
+  orderCard(src, view, date, period, price, address, viewId) {
     this.cardContainer = document.createElement("div");
     this.cardContainer.className = "cardContainer";
 
@@ -321,7 +305,7 @@ class bookingPage extends HTMLElement {
 
     this.infoContainer = document.createElement("div");
     this.infoContainer.className = "infoContainer";
-    this.infoContainer.setAttribute("viewId",viewId);
+    this.infoContainer.setAttribute("viewId", viewId);
 
     this.tripInfo = document.createElement("div");
     this.tripInfo.className = "infoTitle";
@@ -374,23 +358,15 @@ class bookingPage extends HTMLElement {
     this.tripAddressSpanHead.appendChild(this.tripAddressSpanContent);
     this.tripAddress.appendChild(this.tripAddressSpanHead);
 
-    this.deleteButton = document.createElement("button");
-    this.deleteButton.className = "deleteButton";
-    this.deleteButton.onclick = () => {
-      this.deleteBooking(bookingIndex);
-    };
-
     this.infoContainer.appendChild(this.tripInfo);
     this.infoContainer.appendChild(this.tripDate);
     this.infoContainer.appendChild(this.tripPeriod);
     this.infoContainer.appendChild(this.tripPrice);
     this.infoContainer.appendChild(this.tripAddress);
-    this.infoContainer.appendChild(this.deleteButton);
 
     this.card.appendChild(this.imagContainer);
     this.card.appendChild(this.infoContainer);
     this.cardContainer.appendChild(this.card);
-    this.shadowRoot.appendChild(this.cardContainer);
 
     if (this.getAttribute("rwd") === "phone") {
       this.cardContainer.style.marginBottom = "65px";
@@ -408,39 +384,14 @@ class bookingPage extends HTMLElement {
       this.imagContainer.style.height = "53vw";
     }
   }
-  
+  styling() {
+    this.stylesheet = document.createElement("style");
+    this.stylesheet.textContent = orderHistoryCard.style;
+    this.shadowRoot.appendChild(this.stylesheet);
+  }
   async render() {
-
-    await this.getBookingInfo();
-    if (this.cardContainer) {
-      const userInfo = document.querySelectorAll(".userInfoContainer")[0];
-      const cardInfo = document.querySelectorAll(".creditCardInfoContainer")[0];
-      const orderContainer = document.querySelectorAll(".orderContainer")[0];
-      const hrlist=document.querySelectorAll("hr");
-      userInfo.style.display="flex"
-      cardInfo.style.display="flex"
-      orderContainer.style.display="flex"
-      hrlist[0].style.display="flex"
-      hrlist[1].style.display="flex"
-      
-    } else {
-      if(this.noBookingContainer){
-        this.noBookingContainer.remove()
-      }
-      this.noBookingContainer = document.createElement("div");
-      this.noBookingContainer.className = "noBookingContainer";
-      this.noBooking = document.createElement("div");
-      this.noBooking.className = "noBookingMessage";
-      this.noBookingSpan = document.createElement("span");
-      this.noBookingSpan.textContent = "目前沒有任何待預訂的行程。";
-
-      this.noBooking.appendChild(this.noBookingSpan);
-      this.noBookingContainer.appendChild(this.noBooking);
-      this.shadowRoot.appendChild(this.noBookingContainer);
-    }
-    this.setAttribute("totalCost",this.totalCost)
-    
+    await this.getOrderHistory();
   }
 }
 
-export { bookingPage };
+export { orderHistoryCard };
