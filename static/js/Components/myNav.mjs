@@ -244,7 +244,7 @@ class myNav extends HTMLElement {
     }
 
     if (this.getAttribute("rwd") !== "desktop") {
-      this.navbarContainer.style.width = "100vw";
+      this.navbarContainer.style.width = "100vw";ß
       this.logo.style.paddingLeft = "10px";
       this.navlink.style.paddingRight = "10px";
     }
@@ -282,7 +282,7 @@ function jwtCheck() {
   return res;
 }
 function logout() {
-  var myHeaders = new Headers();
+var myHeaders = new Headers();
   myHeaders.append("content-type", "application/json");
 
   var requestOptions = {
